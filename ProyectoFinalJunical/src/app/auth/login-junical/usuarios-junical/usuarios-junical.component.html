@@ -1,0 +1,290 @@
+<!-- imagen de carga -->
+<section class="content">
+  <div id="loader" class="loader-wrapper">
+    <img src="/assets/dist/img/JunicalCargar.png" alt="Cargando...">
+    <div class="loader"></div>
+    <p class="loader-text">Cargando...</p> <!-- Mensaje de carga -->
+  </div>
+</section>
+<div class="contenido-oculto" style="display: none;">
+  <!-- imagen de carga -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="center-title ">Gestión y Control de Rondas</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+            <li class="breadcrumb-item active">Ronda</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Bienvenidos</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Minimizar">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- contenido  -->
+        <div class="card-header">
+          <h3 class="card-title text-center card-title m-2 text-primary font-weight-bold ">Gestión de Usuarios</h3>
+          <div class="buscador">
+            <input type="text" [(ngModel)]="searchText" (input)="performSearch()" placeholder="Buscar...">
+            <i class="fas fa-search"></i>
+          </div>
+          <br>
+          <div class="card-tools d-flex justify-content-center">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary btn-sm mx-2" (click)="onNuevaUsuarios()">
+                <i class="fas fa-plus"></i> Nuevo Usuario
+              </button>
+              <button type="button" class="btn btn-outline-success btn-sm mx-2" (click)="exportToExcel()">
+                <i class="far fa-file-excel"></i> Exportar a Excel
+              </button>
+              <button type="button" class="btn btn-outline-info btn-sm mx-2" (click)="printTable()">
+                <i class="fas fa-print"></i> Imprimir
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal de confirmación de eliminación -->
+        <div class="modal" *ngIf="showAlert" (click)="cancelDelete()">
+          <div class="modal-dialog" (click)="$event.stopPropagation()">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-center">Confirmar eliminación</h5>
+                <button type="button" class="close" aria-label="Close" (click)="cancelDelete()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>¿Estás seguro de que quieres eliminar el Usuario: "{{ usuarioToDelete?.username }}"?</p>
+                <p class="text-muted">Esta acción no se puede deshacer. Si eliminas este Usuario, no podrás recuperarlo.</p>
+                <div *ngIf="errorMessage" class="alert alert-error" role="alert">
+                  {{ errorMessage }}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" (click)="confirmDelete()">Eliminar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="cancelDelete()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="usuarioEliminado" class="alert alert-success" role="alert">
+          Usuario eliminado correctamente.
+        </div>
+        <!-- Fin de modal de Eliminar -->
+
+        <!-- Inicio de modal de inhabilitar y habilitar  -->
+        <!-- Modal de confirmación de inhabilitación -->
+        <div class="modal" *ngIf="showInhabilitarAlert" (click)="cancelInhabilitar()">
+          <div class="modal-dialog" (click)="$event.stopPropagation()">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-center">Confirmar inhabilitación</h5>
+                <button type="button" class="close" aria-label="Close" (click)="cancelInhabilitar()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>¿Estás seguro de que quieres inhabilitar el Usuario con ID: "{{ usuarioToInhabilitar}}"?</p>
+                <p class="text-muted">Esta acción no se puede deshacer.</p>
+                <div *ngIf="inhabilitarErrorMessage" class="alert alert-error" role="alert">
+                  {{ inhabilitarErrorMessage }}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" (click)="confirmInhabilitado()">Inhabilitar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="cancelInhabilitar()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="usuarioDisable" class="alert alert-success" role="alert">
+          Usuario inhabilitado correctamente.
+        </div>
+
+        <!-- Modal inicio de habilitacion -->
+        <!-- Modal de confirmación de habilitación -->
+        <div class="modal" *ngIf="showHabilitarAlert" (click)="cancelHabilitar()">
+          <div class="modal-dialog" (click)="$event.stopPropagation()">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-center">Confirmar habilitación</h5>
+                <button type="button" class="close" aria-label="Close" (click)="cancelHabilitar()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>¿Estás seguro de que quieres habilitar el Usuario con ID: "{{ usuarioToHabilitar}}"?</p>
+                <p class="text-muted">Esta acción no se puede deshacer.</p>
+                <div *ngIf="habilitarErrorMessage" class="alert alert-error" role="alert">
+                  {{ habilitarErrorMessage }}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success" (click)="confirmHabilitar()">Habilitar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="cancelHabilitar()">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="usuarioEnable" class="alert alert-success" role="alert">
+          Usuario habilitado correctamente.
+        </div>
+        <!-- Fin de modal de inhabilitar y habilitar -->
+
+        <!-- Inicio de las tablas-->
+        <div class="card-body table-responsive">
+          <table id="printable-table" class="table table-bordered table-striped">
+            <thead>
+            <tr class="text-center">
+              <th (click)="sortColumn('id')">
+                ID
+                <span *ngIf="currentColumn === 'id'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('username')">
+                Nombre
+                <span *ngIf="currentColumn === 'username'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('email')">
+                Correo
+                <span *ngIf="currentColumn === 'email'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('password')">
+                Contraseña
+                <span *ngIf="currentColumn === 'password'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('identificacion')">
+                Identificación
+                <span *ngIf="currentColumn === 'identificacion'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('celular')">
+                Celular
+                <span *ngIf="currentColumn === 'celular'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('rol')">
+                Rol
+                <span *ngIf="currentColumn === 'rol'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('cargo')">
+                Cargo
+                <span *ngIf="currentColumn === 'cargo'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('area')">
+                Area
+                <span *ngIf="currentColumn === 'area'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th (click)="sortColumn('habilitado')">
+                Estado
+                <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+              </th>
+              <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let usuario of usuarios | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
+              <td class="text-center">{{ usuario.id }}</td>
+              <td [innerHTML]="highlightMatches(usuario.username, searchText)"></td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.password }}</td>
+              <td>{{ usuario.identificacion }}</td>
+              <td>{{ usuario.celular }}</td>
+              <td>{{ usuario.rol }}</td>
+              <td>{{ usuario.cargo }}</td>
+              <td>{{ usuario.area }}</td>
+              <td class="text-center" [ngClass]="{'inhabilitada': !usuario.habilitado}">
+                {{ usuario.habilitado ? 'Habilitado' : 'Inhabilitado' }}
+              </td>
+              <td class="d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-outline-info btn-sm mr-1 tooltip-edit "
+                        [ngbTooltip]="'Actualizar'"
+                        (click)="onActualizarUsuarios(usuario)"
+                        [disabled]="!usuario.habilitado">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm mr-1 tooltip-disable"
+                        [ngbTooltip]="'Inhabilitar'"
+                        (click)="onInhabilitarUsuario(usuario.id)">
+                  <i class="fas fa-ban"></i>
+                </button>
+                <button type="button" class="btn btn-outline-success btn-sm mr-1 tooltip-enable"
+                        [ngbTooltip]="'Habilitar'"
+                        (click)="onHabilitarUsuario(usuario.id)">
+                  <i class="fas fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm tooltip-delete"
+                        [ngbTooltip]="'Eliminar'"
+                        (click)="onEliminarUsuario(usuario)"
+                        [disabled]="!usuario.habilitado">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="my-pagination-controls"
+                               (pageChange)="page = $event"
+                               previousLabel="Anterior"
+                               nextLabel="Siguiente"
+                               [directionLinks]="true"
+                               [maxSize]="10"
+                               [autoHide]="true"
+                               [responsive]="true"
+                               size="sm">
+          </pagination-controls>
+
+          <button class="btn btn-sm pagination-btn pagination-btn-primary" (click)="page = 1" [disabled]="page === 1">Primera</button>
+          <button class="btn btn-sm pagination-btn pagination-btn-light" (click)="page = totalPages" [disabled]="page === totalPages">Última</button>
+          <div class="pagination-info">
+            <p>Total de elementos: {{ (usuarios | paginate: { itemsPerPage: 5, currentPage: page }).length }}</p>
+            <p>Total de páginas: {{ Math.ceil(usuarios.length / 5) }}</p>
+          </div>
+        </div>
+        <!-- Fin de las tablas-->
+
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        2024 ...
+      </div>
+      <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+  </section>
+  <!-- /.content -->
+</div>

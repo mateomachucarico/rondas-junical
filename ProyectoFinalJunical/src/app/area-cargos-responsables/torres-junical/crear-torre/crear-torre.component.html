@@ -1,0 +1,118 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="center-title ">Gestión y Control de Rondas</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item active">Ronda</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Bienvenidos</h3>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Minimizar">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- inicio Torre nombre  -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title text-center card-title m-2 text-primary font-weight-bold ">Agregar Nueva Torre</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="crearForm" (ngSubmit)="onSubmit()">
+            <!-- inicio nombre -->
+            <div class="form-group">
+              <label for="torreName">Nombre de la Torre</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="crearForm.get('torreName')?.valid || !crearForm.get('torreName')?.touched" class="fas fa-building"></i>
+                    <i *ngIf="crearForm.get('torreName')?.invalid && crearForm.get('torreName')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="torreName" formControlName="torreName" placeholder="Ingresa el Nombre Completo">
+              </div>
+              <div *ngIf="crearForm.get('torreName')?.invalid && (crearForm.get('torreName')?.dirty || crearForm.get('torreName')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('torreName')?.errors?.['required']">El Nombre es obligatorio.</div>
+                <div class="text-danger" *ngIf="crearForm.get('torreName')?.errors?.['minlength']"><br>Debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="crearForm.get('torreName')?.errors?.['maxlength']">Debe exceder los 50 caracteres.</div>
+              </div>
+            </div>
+            <!-- fin torre nombre -->
+
+            <!-- inicio modal -->
+            <!-- Botón para abrir el modal de confirmación -->
+            <div class="form-group">
+            <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+              Crear Torre
+            </button>
+            <!-- Botones de Cancelar y Volver -->
+            <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+            <a href="torre-junical" class="btn btn-outline-info">Volver</a>
+            </div>
+            <!-- Modal de confirmación -->
+            <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de la Torre</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Detalles de la Torre -->
+                    <p>Detalles del Torre:</p>
+                    <!-- Aquí puedes mostrar los detalles de la Torre que el usuario necesita confirmar -->
+                  </div>
+                  <div class="modal-footer">
+                    <!-- Botón para cancelar -->
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                    <!-- Botón para confirmar y enviar el formulario -->
+                    <button type="submit" class="btn btn-outline-primary" [disabled]="!crearForm.valid || torreEnProceso" (click)="torreCreado = true">Confirmar y Crear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Alerta de éxito al crear el Torre -->
+            <div *ngIf="torreCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+              Torre creada correctamente.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- Alerta de error al crear el Torre -->
+            <div *ngIf="errorCrearTorre" class="alert alert-danger alert-dismissible fade show" role="alert">
+              Lo sentimos Error al crear el Torre: {{ errorCrearTorre }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- fin -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      2024 ...
+    </div>
+    <!-- /.card-footer-->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->

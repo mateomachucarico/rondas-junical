@@ -1,0 +1,68 @@
+<!-- imagen de carga -->
+<section class="content">
+  <div id="loader" class="loader-wrapper">
+    <img src="/assets/dist/img/JunicalCargar.png" alt="Cargando...">
+    <div class="loader"></div>
+    <p class="loader-text">Cargando...</p> <!-- Mensaje de carga -->
+  </div>
+</section>
+<div class="contenido-oculto" style="display: none;">
+  <!-- imagen de carga -->
+
+
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <img src="./assets/dist/img/JunicalCargar.png" style="width: 85px; height: 60px;" alt="imagLogo">
+    <a href="https://www.junicalmedical.com.co/"><b class="font-weight-bold">Rondas</b>ADMIN</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg text-primary font-weight-bold">Inicia sesión para continuar</p>
+
+      <form [formGroup]="loginForm">
+
+        <div class="input-group mb-3">
+          <input formControlName="email" type="email" class="form-control" id="email" placeholder="Correo Electrónico">
+          <div class="input-group-append">
+          <div class="input-group-text">
+            <i *ngIf="loginForm.get('email')?.valid || !loginForm.get('email')?.touched" class="fas fa-envelope"></i>
+            <i *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="fas fa-times-circle text-danger"></i>
+            </div>
+          </div>
+        </div>
+          <span class="text-danger" *ngIf="(email?.touched ?? false) && (email?.invalid ?? false)">* El correo es Invalido.</span>
+            <span class="text-danger" *ngIf="loginForm.get('email')?.errors?.['email']"> <br>*Formato de correo electrónico incorrecto.</span>
+
+
+        <!-- inicio de contraseña-->
+        <div class="input-group mb-3">
+          <input type="password" id="password" class="form-control" formControlName="password" placeholder="Ingrese su Contraseña">
+          <div class="input-group-append">
+          <div class="input-group-text">
+              <span class="fas fa-lock fas "></span>
+             </div>
+          </div>
+          <span class=" text-danger" *ngIf="(password?.invalid ?? false) && (password?.touched ?? false)">
+          * La contraseña es requerida (mínimo 10 caracteres).
+        </span>
+        </div>
+        <!-- fin de contraseña-->
+        <span class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</span>
+
+        <button type="submit" [disabled]="!loginForm.valid"  class="btn btn-outline-primary text-center btn-block"  (click)="onSubmit()">Iniciar sesión</button>
+      </form>
+
+      <p class="mb-1">
+        <a href="forgot-password">Olvidé mi contraseña</a>
+      </p>
+      <p class="mb-0">
+        <a href="register-junical" class="text-center">Nuevo Registro</a>
+      </p>
+    </div>
+
+  </div>
+</div>
+</body>
+</div>

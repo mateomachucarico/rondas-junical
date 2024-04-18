@@ -1,0 +1,141 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="center-title ">Gestión y Control de Rondas</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item active">Ronda</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Bienvenidos</h3>
+
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Minimizar">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- inicio cargo  -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title text-center card-title m-2 text-primary font-weight-bold ">Editar y Actualizar Cargo</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="editarForm" (ngSubmit)="onSubmit()">
+            <!-- inicio nombre -->
+            <div class="form-group">
+              <label for="cargoName">Nombre del Cargo</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="editarForm.get('cargoName')?.valid || !editarForm.get('cargoName')?.touched" class="fas fa-user"></i>
+                    <i *ngIf="editarForm.get('cargoName')?.invalid && editarForm.get('cargoName')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="cargoName" formControlName="cargoName" placeholder="Ingresa el Nombre Completo">
+              </div>
+              <div *ngIf="editarForm.get('cargoName')?.invalid && (editarForm.get('cargoName')?.dirty || editarForm.get('cargoName')?.touched)">
+                <div class="text-danger" *ngIf="editarForm.get('cargoName')?.errors?.['required']">El Cargo es obligatorio.</div>
+                <div class="text-danger" *ngIf="editarForm.get('cargoName')?.errors?.['minlength']"><br>El Cargo debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="editarForm.get('cargoName')?.errors?.['maxlength']">El Cargo no debe exceder los 50 caracteres.</div>
+              </div>
+            </div>
+            <!-- fin cargo  -->
+
+            <!-- inicio  descripcion -->
+            <div class="form-group">
+              <label for="cargoDescrips">Descripción del Cargo</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i *ngIf="editarForm.get('cargoDescrips')?.valid || !editarForm.get('cargoDescrips')?.touched" class="fas fa-ghost"></i>
+                <i *ngIf="editarForm.get('cargoDescrips')?.invalid && editarForm.get('cargoDescrips')?.touched" class="fas fa-times-circle text-danger"></i>
+              </span>
+                </div>
+                <textarea class="form-control" id="cargoDescrips" formControlName="cargoDescrips" placeholder="Ingrese la Descripción del Cargo"></textarea>
+              </div>
+              <div *ngIf="editarForm.get('cargoDescrips')?.invalid && (editarForm.get('cargoDescrips')?.dirty || editarForm.get('cargoDescrips')?.touched)">
+                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['required']">La Descripción  es obligatorio.</div>
+                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
+              </div>
+            </div>
+            <!-- fin descripcion  -->
+
+            <!-- inicio cargo -->
+            <!-- Botón para abrir el modal de confirmación -->
+            <div class="form-group">
+              <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+                Editar Cargo
+              </button>
+              <!-- Botones de Cancelar y Volver -->
+              <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+              <a href="cargo-respons" class="btn btn-outline-info">Volver</a>
+            </div>
+            <!-- Modal de confirmación -->
+            <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Cargo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Detalles del Cargo -->
+                    <p>Detalles del Cargo:</p>
+                    <!-- Aquí puedes mostrar los detalles del Cargo que el usuario necesita confirmar -->
+                  </div>
+                  <div class="modal-footer">
+                    <!-- Botón para cancelar -->
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                    <!-- Botón para confirmar y enviar el formulario -->
+                    <button type="submit" class="btn btn-outline-primary" [disabled]="!editarForm.valid || cargoEnProceso" (click)="cargoCreado = true">Confirmar y Crear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Alerta de éxito al crear el Cargo -->
+            <div *ngIf="cargoCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+              Cargo creado correctamente.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- Alerta de error al crear el Cargo -->
+            <div *ngIf="errorEditarCargo" class="alert alert-danger" role="alert">
+              Error al crear el piso: {{ errorEditarCargo}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- fin -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      2024 ...
+    </div>
+    <!-- /.card-footer-->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->

@@ -1,0 +1,426 @@
+<section class="content">
+  <div id="loader" class="loader-wrapper">
+    <img src="/assets/dist/img/JunicalCargar.png" alt="Cargando..." />
+    <div class="loader"></div>
+    <p class="loader-text">Cargando...</p> </div>
+</section>
+
+<div class="contenido-oculto" style="display: none;">
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title text-center text-primary font-weight-bold">Agregar Nueva Ronda</h3>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="crearForm" (ngSubmit)="onSubmit()">
+
+                <!-- Usuario Responsable Inicio -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Responsable del Soporte</h3>
+                  </div>
+                </div>
+                <!-- Usuario Responsable Fin -->
+
+                <!-- Parametrización Inicio -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Parametrización</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <!-- Inicio Torre -->
+                    <div class="form-group">
+                      <label for="torre">Nombre de la Torre</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('torre')?.valid || !crearForm.get('torre')?.touched" class="fas fa-building"></i>
+                            <i *ngIf="crearForm.get('torre')?.invalid && crearForm.get('torre')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="torre" formControlName="torre">
+                          <option value="" disabled selected>Selecciona una torre</option>
+                          <option *ngFor="let torre of torres" [ngValue]="torre">{{ torre.torreName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('torre')?.invalid && (crearForm.get('torre')?.dirty || crearForm.get('torre')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('torre')?.errors?.['required']">El Nombre de la Torre es obligatorio.</div>
+                      </div>
+                    </div>
+                    <!-- Fin Torre -->
+
+                    <!-- Inicio Piso -->
+                    <div class="form-group">
+                      <label for="piso">Selecciona un Piso</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('piso')?.valid || !crearForm.get('piso')?.touched" class="fas fa-door-open"></i>
+                            <i *ngIf="crearForm.get('piso')?.invalid && crearForm.get('piso')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="piso" formControlName="piso">
+                          <option value="" disabled selected>Selecciona un piso</option>
+                          <option *ngFor="let piso of pisos" [ngValue]="piso">{{ piso.pisoName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('piso')?.invalid && (crearForm.get('piso')?.dirty || crearForm.get('piso')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('piso')?.errors?.['required']">Seleccionar un piso es obligatorio.</div>
+                      </div>
+                    </div>
+                    <!-- Fin Piso -->
+
+                    <!-- Inicio Área -->
+                    <div class="form-group">
+                      <label for="area">Selecciona un Área</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('area')?.valid || !crearForm.get('area')?.touched" class="fas fa-map-marker-alt"></i>
+                            <i *ngIf="crearForm.get('area')?.invalid && crearForm.get('area')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="area" formControlName="area">
+                          <option value="" disabled selected>Selecciona un área</option>
+                          <option *ngFor="let area of areas" [ngValue]="area">{{ area.areaName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('area')?.invalid && (crearForm.get('area')?.dirty || crearForm.get('area')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('area')?.errors?.['required']">Seleccionar un área es obligatoria.</div>
+                      </div>
+                    </div>
+                    <!-- Fin Área -->
+
+                    <!-- Inicio Zona -->
+                    <div class="form-group">
+                      <label for="zona">Selecciona una Zona</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('zona')?.valid || !crearForm.get('zona')?.touched" class="fas fa-globe"></i>
+                            <i *ngIf="crearForm.get('zona')?.invalid && crearForm.get('zona')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="zona" formControlName="zona">
+                          <option value="" disabled selected>Selecciona una zona</option>
+                          <option *ngFor="let zona of zonas" [ngValue]="zona">{{ zona.zonaName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('zona')?.invalid && (crearForm.get('zona')?.dirty || crearForm.get('zona')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('zona')?.errors?.['required']">Seleccionar una zona es obligatoria.</div>
+                      </div>
+                    </div>
+                    <!-- Fin Zona -->
+
+                    <!-- Inicio Categoría -->
+                    <div class="form-group">
+                      <label for="categoria">Selecciona una Categoría</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('categoria')?.valid || !crearForm.get('categoria')?.touched" class="fas fa-list-ul"></i>
+                            <i *ngIf="crearForm.get('categoria')?.invalid && crearForm.get('categoria')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="categoria" formControlName="categoria">
+                          <option value="" disabled selected>Selecciona una categoría</option>
+                          <option *ngFor="let categoria of categorias" [ngValue]="categoria">{{ categoria.categName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('categoria')?.invalid && (crearForm.get('categoria')?.dirty || crearForm.get('categoria')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('categoria')?.errors?.['required']">Seleccionar una categoría es obligatoria.</div>
+                      </div>
+                    </div>
+                    <!-- Fin Categoría -->
+                  </div>
+                </div>
+                <!-- Parametrización Fin -->
+
+                <!-- Area Responsable Inicio -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Responsable del Área de Trabajo</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="responJefeArea">Responsable del Área</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('responJefeArea')?.valid || !crearForm.get('responJefeArea')?.touched" class="fas fa-user"></i>
+                            <i *ngIf="crearForm.get('responJefeArea')?.invalid && crearForm.get('responJefeArea')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <select class="form-control" id="responJefeArea" formControlName="responJefeArea">
+                          <option value="" disabled selected>Selecciona un responsable</option>
+                          <option *ngFor="let responJefeArea of responJefeAreas" [ngValue]="responJefeArea">{{ responJefeArea.responName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('responJefeArea')?.invalid && (crearForm.get('responJefeArea')?.dirty || crearForm.get('responJefeArea')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('responJefeArea')?.errors?.['required']">Seleccionar un responsable es obligatorio.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Area Responsable Fin -->
+
+
+                <!-- Inicio de Fecha y Hora -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Fecha y Horario</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="rondaFecha" class="control-label">Fecha:</label>
+                    <div>
+                      <input type="date" class="form-control" id="rondaFecha" formControlName="rondaFecha" placeholder="Fecha requerida" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="rondaHoraInicio" class="control-label">Hora de inicio:</label>
+                    <div>
+                      <input type="time" class="form-control" id="rondaHoraInicio" formControlName="rondaHoraInicio" placeholder="Hora de inicio requerida" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="rondaHoraFin" class="control-label">Hora final:</label>
+                    <div>
+                      <input type="time" class="form-control" id="rondaHoraFin" formControlName="rondaHoraFin" placeholder="Hora final requerida" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Fin de Fecha y Hora -->
+
+              <!-- Inicio de Hallazgo -->
+              <!-- inicio  Descripción -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Hallazgo</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="rondaDescrip">Descripción del Hallazgo</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('rondaDescrip')?.valid || !crearForm.get('rondaDescrip')?.touched" class="fas fa-ghost"></i>
+                            <i *ngIf="crearForm.get('rondaDescrip')?.invalid && crearForm.get('rondaDescrip')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <textarea class="form-control" id="rondaDescrip" formControlName="rondaDescrip" placeholder="Ingrese la Descripción del Hallazgo"></textarea>
+                      </div>
+                      <div *ngIf="crearForm.get('rondaDescrip')?.invalid && (crearForm.get('rondaDescrip')?.dirty || crearForm.get('rondaDescrip')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaDescrip')?.errors?.['required']">La Descripción  es obligatorio.</div>
+                        <div class="text-danger" *ngIf="crearForm.get('rondaDescrip')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
+                        <div class="text-danger" *ngIf="crearForm.get('rondaDescrip')?.errors?.['maxlength']">La Descripción no debe exceder los 200 caracteres.</div>
+                      </div>
+                    </div>
+                    <!-- Inicio Prioridad -->
+                    <div class="form-group">
+                      <label for="rondaPrioridad">Prioridad del Hallazgo</label>
+                      <select class="form-control" id="rondaPrioridad" formControlName="rondaPrioridad">
+                        <option value="">Seleccione una prioridad</option>
+                        <option value="baja">Prioridad Baja</option>
+                        <option value="media">Prioridad Media</option>
+                        <option value="alta">Prioridad Alta</option>
+                        <option value="casoEspecial">Caso Especial</option>
+                      </select>
+                      <div *ngIf="crearForm.get('rondaPrioridad')?.invalid && (crearForm.get('rondaPrioridad')?.dirty || crearForm.get('rondaPrioridad')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaPrioridad')?.errors?.['required']">La Prioridad es obligatoria.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin de prioridad  -->
+
+                <!-- Inicio de Foto del hallazgo  -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Fotos del Hallazgo</h3>
+                  </div>
+                  <div class="card-body">
+                    <input type="file" (change)="seleccionarFotos($event)" accept="image/*" id="rondaFoto" class="form-control-file mb-2" style="display: none;">
+                    <div *ngIf="crearForm.get('rondaFoto')?.invalid && (crearForm.get('rondaFoto')?.dirty || crearForm.get('rondaFoto')?.touched)">
+                      <div class="text-danger">Debe seleccionar al menos una foto.</div>
+                    </div>
+                    <p>Seleccione hasta 4 fotos (máximo 500MB cada una) en formato JPG, PNG, GIF o BMP:</p>
+                    <label for="fotos" class="btn btn-outline-success">
+                      <i class="fas fa-image mr-1"></i> Seleccione archivos
+                    </label>
+                    <input type="file" (change)="seleccionarFotos($event)" accept="image/*" id="fotos" class="form-control-file mb-2" style="display: none;">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-4 mb-3" *ngFor="let file of selectedFiles; let i = index">
+                        <div class="card">
+                          <img [src]="getBase64(file)" alt="Foto del Hallazgo {{ i + 1 }}" class="card-img-top img-fluid" style="max-height: 200px;">
+                          <div class="card-body">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Acciones">
+                              <button class="btn btn-outline-danger" (click)="eliminarFoto(i)">
+                                <span class="d-md-none">
+                                  <i class="fas fa-trash"></i>
+                                </span>
+                                <span class="d-none d-md-inline">Eliminar</span>
+                              </button>
+                              <button class="btn btn-outline-primary" (click)="verFotoCompleta(file)">
+                                <span class="d-md-none">
+                                  <i class="fas fa-eye"></i>
+                                </span>
+                                <span class="d-none d-md-inline">Ver</span>
+                              </button>
+                              <button class="btn btn-outline-warning" (click)="descargarFoto(file)">
+                                <span class="d-md-none">
+                                  <i class="fas fa-download"></i>
+                                </span>
+                                <span class="d-none d-md-inline">Descargar</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="erroresFotos.length > 0">
+                      <ul class="list-group">
+                        <li class="list-group-item text-danger" *ngFor="let error of erroresFotos">{{ error }}</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin de Foto del hallazgo  -->
+
+                <!-- Inicio de acciones correctivas del hallazgo  -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Soluciones Correctivas</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="rondaCorrectivo">Descripción</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('rondaCorrectivo')?.valid || !crearForm.get('rondaCorrectivo')?.touched" class="fas fa-tools text-succes"></i>
+                            <i *ngIf="crearForm.get('rondaCorrectivo')?.invalid && crearForm.get('rondaCorrectivo')?.touched" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <textarea class="form-control" id="rondaCorrectivo" formControlName="rondaCorrectivo" placeholder="Ingrese las acciones realizadas para solucionar el problema"></textarea>
+                      </div>
+                      <div *ngIf="crearForm.get('rondaCorrectivo')?.invalid && (crearForm.get('rondaCorrectivo')?.dirty || crearForm.get('rondaCorrectivo')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaCorrectivo')?.errors?.['required']">Las Soluciones Correctivas son obligatorias.</div>
+                        <div class="text-danger" *ngIf="crearForm.get('rondaCorrectivo')?.errors?.['minlength']">Las Soluciones Correctivas deben tener al menos 5 caracteres.</div>
+                        <div class="text-danger" *ngIf="crearForm.get('rondaCorrectivo')?.errors?.['maxlength']">Las Soluciones Correctivas no deben exceder los 200 caracteres.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin de acciones correctivas del hallazgo  -->
+
+                <!-- Inicio de solución del hallazgo -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Soluciones del Hallazgo</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="rondaSolucion">¿Se solucionó el hallazgo?</label>
+                      <select class="form-control" id="rondaSolucion" formControlName="rondaSolucion">
+                        <option value="">Seleccione una opción</option>
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                      </select>
+                      <div *ngIf="crearForm.get('rondaSolucion')?.invalid && (crearForm.get('rondaSolucion')?.dirty || crearForm.get('rondaSolucion')?.touched)">
+                        <div class="text-danger">La selección es obligatoria.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin de solución del hallazgo -->
+
+                <!-- Inicio No solucionado -->
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">No Solucionado</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="rondaNoSolucion">Motivo de No Solución</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                            <i *ngIf="crearForm.get('rondaNoSolucion')?.valid || !crearForm.get('rondaNoSolucion')?.touched" class="fas fa-question-circle text-success"></i>
+                            <i *ngIf="crearForm.get('rondaNoSolucion')?.invalid && (crearForm.get('rondaNoSolucion')?.dirty || crearForm.get('rondaNoSolucion')?.touched)" class="fas fa-times-circle text-danger"></i>
+                          </span>
+                        </div>
+                        <textarea class="form-control" id="rondaNoSolucion" formControlName="rondaNoSolucion" placeholder="Ingrese el motivo por el cual el hallazgo no fue solucionado"></textarea>
+                      </div>
+                      <div *ngIf="crearForm.get('rondaSolucion')?.value === false && (crearForm.get('rondaNoSolucion')?.invalid && (crearForm.get('rondaNoSolucion')?.dirty || crearForm.get('rondaNoSolucion')?.touched))">
+                        <div class="text-danger">Debe especificar el motivo de no solución.</div>
+                      </div>
+                      <div *ngIf="crearForm.get('rondaNoSolucion')?.errors?.['minlength'] && (crearForm.get('rondaNoSolucion')?.dirty || crearForm.get('rondaNoSolucion')?.touched)">
+                        <div class="text-danger">El campo debe tener al menos 5 caracteres.</div>
+                      </div>
+                      <div *ngIf="crearForm.get('rondaNoSolucion')?.errors?.['maxlength'] && (crearForm.get('rondaNoSolucion')?.dirty || crearForm.get('rondaNoSolucion')?.touched)">
+                        <div class="text-danger">El campo no debe exceder los 50 caracteres.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Fin No solucionado -->
+
+                <!-- Fin de Hallazgo -->
+
+                <!-- inicio Modal-->
+                <!-- Botón para abrir el modal de confirmación -->
+                <div class="form-group">
+                  <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+                    Crear Ronda
+                  </button>
+                  <!-- Botones de Cancelar y Volver -->
+                  <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+                  <a href="dashboard" class="btn btn-outline-info">Volver</a>
+                </div>
+                <!-- Modal de confirmación -->
+                <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Area</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Detalles de la Ronda -->
+                        <p>Detalles de la Ronda:</p>
+                        <!-- Aquí puedes mostrar los detalles de la Ronda que el usuario necesita confirmar -->
+                      </div>
+                      <div class="modal-footer">
+                        <!-- Botón para cancelar -->
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                        <!-- Botón para confirmar y enviar el formulario -->
+                        <button type="submit" class="btn btn-outline-primary" [disabled]="!crearForm.valid || rondaEnProceso" (click)="rondaCreado = true">Confirmar y Crear</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Alerta de éxito al crear el Ronda -->
+                <div *ngIf="rondaCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+                  Ronda creada correctamente.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- Alerta de error al crear la Ronda -->
+                <div *ngIf="errorCrearRonda" class="alert alert-danger" role="alert">
+                  Lo sentimos Error al crear la Ronda: {{ errorCrearRonda}}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- fin -->
+              </form>
+            </div>
+          </div>
+
+</div>

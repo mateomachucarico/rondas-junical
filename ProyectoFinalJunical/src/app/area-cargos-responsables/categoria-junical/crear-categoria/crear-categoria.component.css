@@ -1,0 +1,7 @@
+
+
+.alert-success {
+  background-color: #c7f464; /* Color verde más claro */
+  color: #000; /* Color de texto negro */
+  border-color: #bce841; /* Color de borde verde más claro */
+}

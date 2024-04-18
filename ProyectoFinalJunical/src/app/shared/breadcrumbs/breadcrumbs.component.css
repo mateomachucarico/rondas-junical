@@ -1,0 +1,32 @@
+
+/* Estilos para el título "Gestión y Control de Rondas" */
+.center-title {
+  max-width: 80%; /* Establece un ancho máximo menor para el título */
+  white-space: nowrap; /* Evita que el texto se envuelva */
+  overflow: hidden; /* Oculta el texto si excede el contenedor */
+  text-overflow: ellipsis; /* Añade puntos suspensivos si el texto se corta */
+}
+
+.content-header .col-sm-6 h1 {
+  max-width: 80%; /* Establece un ancho máximo menor para el título */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.content-header {
+  position: fixed;
+  margin-top: 60px; /* Ajusta según sea necesario */
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #f8f9fa;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+

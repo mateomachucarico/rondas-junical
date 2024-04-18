@@ -1,0 +1,141 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="center-title ">Gestión y Control de Rondas</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item active">Ronda</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+  <!-- Default box -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Bienvenidos</h3>
+
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Minimizar">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- inicio Area  -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title text-center card-title m-2 text-primary font-weight-bold ">Editar y Actualizar Area</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="editarForm" (ngSubmit)="onSubmit()">
+            <!-- inicio nombre -->
+            <div class="form-group">
+              <label for="areaName">Nombre del Area</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="editarForm.get('areaName')?.valid || !editarForm.get('areaName')?.touched" class="fas fa-user"></i>
+                    <i *ngIf="editarForm.get('areaName')?.invalid && editarForm.get('areaName')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="areaName" formControlName="areaName" placeholder="Ingresa el Nombre Completo">
+              </div>
+              <div *ngIf="editarForm.get('areaName')?.invalid && (editarForm.get('areaName')?.dirty || editarForm.get('areaName')?.touched)">
+                <div class="text-danger" *ngIf="editarForm.get('areaName')?.errors?.['required']">El Area es obligatorio.</div>
+                <div class="text-danger" *ngIf="editarForm.get('areaName')?.errors?.['minlength']"><br>El Area debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="editarForm.get('areaName')?.errors?.['maxlength']">El Area no debe exceder los 50 caracteres.</div>
+              </div>
+            </div>
+            <!-- fin area  -->
+
+            <!-- inicio  descripcion -->
+            <!-- <div class="form-group">
+              <label for="areaDescripc">Descripción del Area</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i *ngIf="editarForm.get('areaDescripc')?.valid || !editarForm.get('areaDescripc')?.touched" class="fas fa-ghost"></i>
+                <i *ngIf="editarForm.get('areaDescripc')?.invalid && editarForm.get('areaDescripc')?.touched" class="fas fa-times-circle text-danger"></i>
+              </span>
+                </div>
+                <textarea class="form-control" id="areaDescripc" formControlName="areaDescripc" placeholder="Ingrese la Descripción del Area"></textarea>
+              </div>
+              <div *ngIf="editarForm.get('areaDescripc')?.invalid && (editarForm.get('areaDescripc')?.dirty || editarForm.get('areaDescripc')?.touched)">
+                <div class="text-danger" *ngIf="editarForm.get('areaDescripc')?.errors?.['required']">La Descripción  es obligatorio.</div>
+                <div class="text-danger" *ngIf="editarForm.get('areaDescripc')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="editarForm.get('areaDescripc')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
+              </div>
+            </div> -->
+            <!-- fin descripcion  -->
+
+            <!-- inicio area -->
+            <!-- Botón para abrir el modal de confirmación -->
+            <div class="form-group">
+              <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+                Editar Area
+              </button>
+              <!-- Botones de Cancelar y Volver -->
+              <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+              <a href="area-respons" class="btn btn-outline-info">Volver</a>
+            </div>
+            <!-- Modal de confirmación -->
+            <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Area</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Detalles del Area -->
+                    <p>Detalles del Area:</p>
+                    <!-- Aquí puedes mostrar los detalles del Area que el usuario necesita confirmar -->
+                  </div>
+                  <div class="modal-footer">
+                    <!-- Botón para cancelar -->
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                    <!-- Botón para confirmar y enviar el formulario -->
+                    <button type="submit" class="btn btn-outline-primary" [disabled]="!editarForm.valid || areaEnProceso" (click)="areaCreado = true">Confirmar y Crear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Alerta de éxito al crear el Area -->
+            <div *ngIf="areaCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+              Area creado correctamente.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- Alerta de error al crear el Area -->
+            <div *ngIf="errorEditarArea" class="alert alert-danger" role="alert">
+              Error al crear el piso: {{ errorEditarArea}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- fin -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      2024 ...
+    </div>
+    <!-- /.card-footer-->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->

@@ -1,0 +1,9 @@
+body {
+  background: radial-gradient(circle, #03b8f3, #aeecb3);
+}
+.error-message {
+  height: 1.5em; /* Altura fija para el espacio del mensaje de error */
+}
+.form-group {
+  margin-bottom: 1.5em; /* Espacio entre los campos del formulario */
+}

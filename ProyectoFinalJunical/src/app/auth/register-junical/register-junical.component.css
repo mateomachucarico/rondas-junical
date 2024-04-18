@@ -1,0 +1,19 @@
+.contenido-oculto {
+  display: none; /* Oculta el contenido por defecto */
+  overflow: hidden; /* Evita cualquier desbordamiento que pueda causar que el fondo blanco aparezca */
+}
+body {
+  background: radial-gradient(circle, #03b8f3, #aeecb3);
+}
+.fixed-content {
+  height: 800px; /* Altura fija deseada */
+  overflow: auto; /* Permitir desplazamiento si el contenido supera la altura */
+}
+.register-page {
+  overflow: hidden; /* Evita que el contenido desborde y cree un espacio en blanco adicional */
+
+}
+
+
+
+

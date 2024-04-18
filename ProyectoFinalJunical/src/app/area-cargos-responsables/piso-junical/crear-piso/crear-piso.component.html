@@ -1,0 +1,177 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="center-title ">Gestión y Control de Rondas</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+          <li class="breadcrumb-item active">Ronda</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+  <!-- Default box -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Bienvenidos</h3>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Minimizar">
+          <i class="fas fa-minus"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- inicio nombre piso  -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title text-center card-title m-2 text-primary font-weight-bold ">Agregar Nuevo Piso</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="crearForm" (ngSubmit)="onSubmit()">
+            <!-- inicio nombre -->
+            <div class="form-group">
+              <label for="pisoName">Nombre del Piso</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="crearForm.get('pisoName')?.valid || !crearForm.get('pisoName')?.touched" class="fas fa-user"></i>
+                    <i *ngIf="crearForm.get('pisoName')?.invalid && crearForm.get('pisoName')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" id="pisoName" formControlName="pisoName" placeholder="Ingresa el Nombre Completo">
+              </div>
+              <div *ngIf="crearForm.get('pisoName')?.invalid && (crearForm.get('pisoName')?.dirty || crearForm.get('pisoName')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('pisoName')?.errors?.['required']">El Piso es obligatorio.</div>
+                <div class="text-danger" *ngIf="crearForm.get('pisoName')?.errors?.['minlength']"><br>El Piso debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="crearForm.get('pisoName')?.errors?.['maxlength']">El Piso no debe exceder los 50 caracteres.</div>
+              </div>
+            </div>
+            <!-- fin nombre piso  -->
+
+            <!-- inicio  descripcion del piso -->
+            <!-- <div class="form-group">
+              <label for="pisoDescripc">Descripción del Piso</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i *ngIf="crearForm.get('pisoDescripc')?.valid || !crearForm.get('pisoDescripc')?.touched" class="fas fa-ghost"></i>
+                <i *ngIf="crearForm.get('pisoDescripc')?.invalid && crearForm.get('pisoDescripc')?.touched" class="fas fa-times-circle text-danger"></i>
+              </span>
+                </div>
+                <textarea class="form-control" id="pisoDescripc" formControlName="pisoDescripc" placeholder="Ingrese la Descripción del Piso"></textarea>
+              </div>
+              <div *ngIf="crearForm.get('pisoDescripc')?.invalid && (crearForm.get('pisoDescripc')?.dirty || crearForm.get('pisoDescripc')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['required']">La Descripción  es obligatorio.</div>
+                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
+                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
+              </div>
+            </div>-->
+            <!-- fin descripcion del piso  -->
+
+            <!-- inicio numero del piso -->
+            <div class="form-group">
+              <label for="pisoNumber">Número de Piso</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text">
+                <i *ngIf="!isInvalidPisoNumber()" class="fas fa-id-card"></i>
+                <i *ngIf="isInvalidPisoNumber()" class="fas fa-times-circle text-danger"></i>
+                </span>
+                </div>
+                <input type="text" class="form-control" id="pisoNumber" formControlName="pisoNumber" placeholder="Ingrese el Número de Piso">
+              </div>
+              <div *ngIf="isInvalidPisoNumber()">
+                <div class="text-danger">{{ getErrorPisoNumber() }}</div>
+              </div>
+            </div>
+            <!-- fin numero de piso-->
+
+            <!-- inicio nombre de la torre para el piso-->
+            <!--  -->
+            <div class="form-group">
+              <label for="torre">Nombre de la Torre</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i *ngIf="crearForm.get('torre')?.valid || !crearForm.get('torre')?.touched" class="fas fa-building"></i>
+                  <i *ngIf="crearForm.get('torre')?.invalid && crearForm.get('torre')?.touched" class="fas fa-times-circle text-danger"></i>
+                </span>
+                </div>
+                <select class="form-control" id="torre" formControlName="torre">
+                  <option value="" disabled selected>Selecciona una torre</option>
+                  <option *ngFor="let torre of torres" [ngValue]="torre"> {{ torre.torreName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('torre')?.invalid && (crearForm.get('torre')?.dirty || crearForm.get('torre')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('torre')?.errors?.['required']">El Nombre de la Torre es obligatorio.</div>
+              </div>
+            </div>
+            <!-- fin nombre de la torre para el piso-->
+
+            <!-- Botones en una fila y centrados en dispositivos móviles -->
+            <div class="form-group">
+              <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+                Crear Piso
+              </button>
+              <!-- Botones de Cancelar y Volver -->
+              <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+              <a href="piso-junical" class="btn btn-outline-info">Volver</a>
+            </div>
+            <!-- Modal de confirmación -->
+              <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de piso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Detalles del piso -->
+                    <p>Detalles del piso:</p>
+                    <!-- Aquí puedes mostrar los detalles del piso que el usuario necesita confirmar -->
+                  </div>
+                  <div class="modal-footer">
+                    <!-- Botón para cancelar -->
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                    <!-- Botón para confirmar y enviar el formulario -->
+                    <button type="submit" class="btn btn-outline-primary" [disabled]="!crearForm.valid || pisoEnProceso" (click)="pisoCreado = true">Confirmar y Crear</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Alerta de éxito al crear el piso -->
+            <div *ngIf="pisoCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+              Piso creado correctamente.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- Alerta de error al crear el piso -->
+            <div *ngIf="errorCrearPiso" class="alert alert-danger alert-dismissible fade show" role="alert">
+              Lo sentimos Error al crear el Piso: {{ errorCrearPiso}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <!-- fin -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      2024 ...
+    </div>
+    <!-- /.card-footer-->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
