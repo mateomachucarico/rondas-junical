@@ -71,7 +71,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <p>¿Estás seguro de que quieres eliminar el Usuario: "{{ usuarioToDelete?.username }}"?</p>
+                <p>¿Estás seguro de que quieres eliminar el Usuario: "{{ usuarioToDelete?.userName }}"?</p>
                 <p class="text-muted">Esta acción no se puede deshacer. Si eliminas este Usuario, no podrás recuperarlo.</p>
                 <div *ngIf="errorMessage" class="alert alert-error" role="alert">
                   {{ errorMessage }}
@@ -91,7 +91,8 @@
 
         <!-- Inicio de modal de inhabilitar y habilitar  -->
         <!-- Modal de confirmación de inhabilitación -->
-        <div class="modal" *ngIf="showInhabilitarAlert" (click)="cancelInhabilitar()">
+        <!--
+                <div class="modal" *ngIf="showInhabilitarAlert" (click)="cancelInhabilitar()">
           <div class="modal-dialog" (click)="$event.stopPropagation()">
             <div class="modal-content">
               <div class="modal-header">
@@ -117,9 +118,6 @@
         <div *ngIf="usuarioDisable" class="alert alert-success" role="alert">
           Usuario inhabilitado correctamente.
         </div>
-
-        <!-- Modal inicio de habilitacion -->
-        <!-- Modal de confirmación de habilitación -->
         <div class="modal" *ngIf="showHabilitarAlert" (click)="cancelHabilitar()">
           <div class="modal-dialog" (click)="$event.stopPropagation()">
             <div class="modal-content">
@@ -146,7 +144,7 @@
         <div *ngIf="usuarioEnable" class="alert alert-success" role="alert">
           Usuario habilitado correctamente.
         </div>
-        <!-- Fin de modal de inhabilitar y habilitar -->
+        -->
 
         <!-- Inicio de las tablas-->
         <div class="card-body table-responsive">
@@ -207,12 +205,14 @@
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
               </th>
-              <th (click)="sortColumn('habilitado')">
+              <!--
+               <th (click)="sortColumn('habilitado')">
                 Estado
                 <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
               </th>
+               -->
               <th>Acciones</th>
             </tr>
             </thead>
@@ -237,16 +237,21 @@
                         [disabled]="!usuario.habilitado">
                   <i class="fas fa-edit"></i>
                 </button>
+                <!--
                 <button type="button" class="btn btn-outline-secondary btn-sm mr-1 tooltip-disable"
                         [ngbTooltip]="'Inhabilitar'"
                         (click)="onInhabilitarUsuario(usuario.id)">
                   <i class="fas fa-ban"></i>
                 </button>
+                -->
+
+                <!--
                 <button type="button" class="btn btn-outline-success btn-sm mr-1 tooltip-enable"
                         [ngbTooltip]="'Habilitar'"
                         (click)="onHabilitarUsuario(usuario.id)">
                   <i class="fas fa-check"></i>
                 </button>
+                -->
                 <button type="button" class="btn btn-outline-danger btn-sm tooltip-delete"
                         [ngbTooltip]="'Eliminar'"
                         (click)="onEliminarUsuario(usuario)"

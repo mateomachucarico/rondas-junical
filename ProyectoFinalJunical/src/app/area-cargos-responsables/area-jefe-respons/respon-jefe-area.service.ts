@@ -4,29 +4,13 @@ import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {entornos} from "../../../Entorno/entornos";
 
-interface Area
-{
-  id: number;
-  areaName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
-interface Cargo
-{
-  id: number;
-  cargoName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
 interface ResponJefeArea {
   id: number;
   responName: string;
   responEmail: string;
-  area: Area;
-  cargo: Cargo;
-  //responFirma: string;
   habilitado:boolean;
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,7 +19,7 @@ export class ResponJefeAreaService {
   //dynamicHost: string = "localhost:8080"
   // URL BASE API
   dynamicHost = entornos.dynamicHost;
-  private baseUrl: string = `http://${this.dynamicHost}/api/responJefeAreas`;  //Url Base API
+  private baseUrl: string = `http://${this.dynamicHost}/api`;  //Url Base API
 
   constructor(private http: HttpClient) { }
 
@@ -55,25 +39,13 @@ export class ResponJefeAreaService {
   }
   //Recuperar todos los jefes
   recuperarTodosResponJefeAreas(): Observable<ResponJefeArea[]>{
-    return this.http.get<ResponJefeArea[]>(`${this.baseUrl}/responJefeAreas/obtenerTodosResponJefeAreas`)
+    return this.http.get<ResponJefeArea[]>(`${this.baseUrl}/responJefeAreas/obtenerTodosLosResponJefeArea`)
       .pipe(
         catchError(this.handleError)
       );
   }
-  //Recuperar Areas
-  recuperarTodosAreas(): Observable<Area[]> {
-    return this.http.get<Area[]>(`${this.baseUrl}/areas/obtenerTodosLosAreas`)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-  //Recuperar Piso
-  recuperarTodosCargos(): Observable<Cargo[]> {
-    return this.http.get<Cargo[]>(`${this.baseUrl}/cargos/obtenerTodosLosCargos`)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+
+
   //Obtener ResponJefeArea por Id
   obtenerResponJefeArea(id: number): Observable<ResponJefeArea>{
     return this.http.get<ResponJefeArea>(`${this.baseUrl}/responJefeAreas/recuperarPorId/${id}`)
@@ -83,12 +55,12 @@ export class ResponJefeAreaService {
   }
   //Actulizar un ResponJefeArea
   actualizarResponJefeArea(id: number, responJefeAreaActualizada: ResponJefeArea): Observable<ResponJefeArea>{
-    responJefeAreaActualizada.id=id;
     return this.http.put<ResponJefeArea>(`${this.baseUrl}/responJefeAreas/${id}`, responJefeAreaActualizada)
       .pipe(
         catchError(this.handleError)
       );
   }
+
   //Inhabilitar ResponJefeArea
   inhabilitarResponJefeArea(id: number): Observable<void>{
     return this.http.put<void>(`${this.baseUrl}/responJefeAreas/${id}/inhabilitar`, null)
@@ -117,8 +89,6 @@ export class ResponJefeAreaService {
         catchError(this.handleError)
       );
   }
-
-
 
   handleError(error: HttpErrorResponse): Observable<never> {
     // Verifica si es un error del cliente o del servidor

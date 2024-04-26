@@ -17,7 +17,7 @@ public class CategSoporControlador {
     @Autowired
     private CategSoporRepositorio categSoporRepositorio;
 
-
+    //Necesito realiar lo siguiente: tengo que subir mi proyecto realizado en angular phpstrord
     // Método para guardar un nuevo categoria
     @PostMapping("/categSopor/guardarCategSopor")
     public ResponseEntity<CategSopor> guardarCategSpor(@RequestBody CategSopor categSopor) {

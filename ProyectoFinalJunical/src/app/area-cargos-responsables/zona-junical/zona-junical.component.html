@@ -165,6 +165,24 @@
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
             </th>
+            <th (click)="sortColumn('torreName')">
+              Torre
+              <span *ngIf="currentColumn === 'torreName'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+            </th>
+            <th (click)="sortColumn('pisoName')">
+              Piso
+              <span *ngIf="currentColumn === 'pisoName'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+            </th>
+            <th (click)="sortColumn('areaName')">
+              Area
+              <span *ngIf="currentColumn === 'areaName'" class="sorting-icon">
+          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+        </span>
+            </th>
             <th (click)="sortColumn('habilitado')">
               Estado
               <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
@@ -178,6 +196,9 @@
           <tr *ngFor="let zona of zonas | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
             <td class="text-center">{{ zona.id }}</td>
             <td [innerHTML]="highlightMatches(zona.zonaName, searchText)"></td>
+            <td>{{ zona.torre?.torreName }}</td>
+            <td>{{ zona.piso?.pisoName }}</td>
+            <td>{{ zona.area?.areaName }}</td>
             <td class="text-center" [ngClass]="{'inhabilitada': !zona.habilitado}">
               {{ zona.habilitado ? 'Habilitado' : 'Inhabilitado' }}
             </td>

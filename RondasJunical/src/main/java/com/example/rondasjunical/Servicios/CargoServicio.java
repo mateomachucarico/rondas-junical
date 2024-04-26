@@ -1,5 +1,4 @@
 package com.example.rondasjunical.Servicios;
-
 import com.example.rondasjunical.Entidades.Cargo;
 import com.example.rondasjunical.Excepciones.CargoNotFoundException;
 import com.example.rondasjunical.Repositorios.CargoRepositorio;
@@ -41,6 +40,7 @@ public class CargoServicio {
     public Cargo actualizarCargo(Cargo cargo) {
         return cargoRepositorio.save(cargo);
     }
+
     //Metodo inhabilitar un cargo
     public void inhabilitarCargo(Long id) {
         Cargo cargo = cargoRepositorio.findById(id)

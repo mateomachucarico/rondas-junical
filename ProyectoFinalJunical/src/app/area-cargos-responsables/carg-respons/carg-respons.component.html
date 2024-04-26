@@ -164,12 +164,6 @@
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
             </th>
-            <th (click)="sortColumn('cargoDescrips')">
-              Descripción
-              <span *ngIf="currentColumn === 'cargoDescrips'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
-            </th>
             <th (click)="sortColumn('habilitado')">
               Estado
               <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
@@ -183,7 +177,7 @@
           <tr *ngFor="let cargo of cargos | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
             <td class="text-center">{{ cargo.id }}</td>
             <td [innerHTML]="highlightMatches(cargo.cargoName, searchText)"></td>
-            <td class="text-center">{{ cargo.cargoDescrips }}</td>
+            <!-- <td class="text-center">{{ cargo.cargoDescrips }}</td> -->
             <td class="text-center" [ngClass]="{'inhabilitada': !cargo.habilitado}">
               {{ cargo.habilitado ? 'Habilitado' : 'Inhabilitado' }}
             </td>

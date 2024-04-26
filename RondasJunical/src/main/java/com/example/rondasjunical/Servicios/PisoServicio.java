@@ -20,8 +20,10 @@ public class PisoServicio {
     // Crud
 
     //Obtener todos los pisos
-    public List<Piso> obtenerTodosLosPisos() {
-        return pisoRepositorio.findAll();
+    public List<Piso> obtenerTodosLosPisos()
+    {
+        List<Piso> pisos = pisoRepositorio.findAll();
+        return pisos;
     }
     //Obtener piso por Id
     public Piso obtenerPisoPorId(Long id) {
@@ -43,20 +45,22 @@ public class PisoServicio {
     public Piso actualizarPiso(Piso piso) {
         return pisoRepositorio.save(piso);
     }
+
     //Metodo inhabilitar piso
-    public void inhabilitarPiso(Long id) {
-        Piso piso = pisoRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Piso no encontrada con el id: " + id));
-        piso.setHabilitado(false); // Actualizar el estado
-        pisoRepositorio.save(piso);
-    }
+//    public void inhabilitarPiso(Long id) {
+//        Piso piso = pisoRepositorio.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Piso no encontrada con el id: " + id));
+//        piso.setHabilitado(false); // Actualizar el estado
+//        pisoRepositorio.save(piso);
+//    }
     //Metodo habilitar piso
-    public void habilitarPiso(Long id) {
-        Piso piso = pisoRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Piso no encontrada con el id: " + id));
-        piso.setHabilitado(true); // Actualizar el estado
-        pisoRepositorio.save(piso);
-    }
+//    public void habilitarPiso(Long id) {
+//        Piso piso = pisoRepositorio.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Piso no encontrada con el id: " + id));
+//        piso.setHabilitado(true); // Actualizar el estado
+//        pisoRepositorio.save(piso);
+//    }
+
     //Eliminar piso
     public void eliminarPiso(Long id) {
         pisoRepositorio.deleteById(id);

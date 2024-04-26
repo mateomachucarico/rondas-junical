@@ -1,5 +1,4 @@
 package com.example.rondasjunical.Seguridad;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -16,15 +15,15 @@ public class CorsConfig
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allow requests from the Angular frontend (update with your frontend URL)
-        //config.addAllowedOrigin("http://10.100.207.13");
+        // Permitir solicitudes desde la interfaz Angular (actualice con la URL de su interfaz)
+        config.addAllowedOrigin("http://10.100.207.13");
         config.addAllowedOrigin("http://localhost");
         config.addAllowedOrigin("http://localhost:80");
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedOrigin("http://localhost:8082");
         config.addAllowedOrigin("http://localhost:8080");
 
-        // Allow common HTTP methods (GET, POST, PUT, DELETE, etc.)
+        // Permitir métodos HTTP comunes (GET, POST, PUT, DELETE, etc.)
         config.addAllowedMethod("*");
 
         // Allow common HTTP headers

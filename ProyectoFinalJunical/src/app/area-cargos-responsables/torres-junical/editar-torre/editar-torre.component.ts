@@ -10,7 +10,7 @@ interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
+
 }
 @Component({
   providers: [TorresService, HttpClient],
@@ -27,7 +27,7 @@ interface Torre {
 })
 export class EditarTorreComponent implements  OnInit{
   editarForm!: FormGroup;
-  torre: Torre = {id: 0, torreName: '', habilitado: false };
+  torre!: Torre;
   // Variables para mensajes
   torreCreado: boolean = false;
   errorEditarTorre: string = '';

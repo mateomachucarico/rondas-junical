@@ -23,11 +23,10 @@ public class AreaControlador {
     @Autowired
     private AreaRepositorio areaRepositorio;
 
-
-    // Método para guardar un nuevo area
+    // Método para guardar un nuevo área
     @PostMapping("/areas/guardarArea")
     public ResponseEntity<Area> guardarArea(@RequestBody Area area) {
-        if (area.getAreaName() == null) {
+        if (area.getAreaName() == null || area.getResponJefeArea() == null) { // Verificamos que el nombre del área y el jefe de área no sean nulos
             // Crear un objeto Área con mensajes de error
             Area errorResponse = new Area();
             errorResponse.setAreaName("Error: Datos de área no válidos");

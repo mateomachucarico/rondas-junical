@@ -89,65 +89,6 @@
       </div>
       <!-- Fin de modal de Eliminar -->
 
-      <!-- Inicio de modal de inhabilitar y habilitar  -->
-      <!-- Modal de confirmación de inhabilitación -->
-      <div class="modal" *ngIf="showInhabilitarAlert" (click)="cancelInhabilitar()">
-        <div class="modal-dialog" (click)="$event.stopPropagation()">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-center">Confirmar inhabilitación</h5>
-              <button type="button" class="close" aria-label="Close" (click)="cancelInhabilitar()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>¿Estás seguro de que quieres inhabilitar el piso con ID: "{{ pisoToInhabilitar}}"?</p>
-              <p class="text-muted">Esta acción no se puede deshacer.</p>
-              <div *ngIf="inhabilitarErrorMessage" class="alert alert-error" role="alert">
-                {{ inhabilitarErrorMessage }}
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-danger" (click)="confirmInhabilitado()">Inhabilitar</button>
-              <button type="button" class="btn btn-outline-secondary" (click)="cancelInhabilitar()">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="pisoDisable" class="alert alert-success" role="alert">
-        Piso inhabilitado correctamente.
-      </div>
-
-      <!-- Modal inicio de habilitacion -->
-      <!-- Modal de confirmación de habilitación -->
-      <div class="modal" *ngIf="showHabilitarAlert" (click)="cancelHabilitar()">
-        <div class="modal-dialog" (click)="$event.stopPropagation()">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-center">Confirmar habilitación</h5>
-              <button type="button" class="close" aria-label="Close" (click)="cancelHabilitar()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>¿Estás seguro de que quieres habilitar el piso con ID: "{{ pisoToHabilitar}}"?</p>
-              <p class="text-muted">Esta acción no se puede deshacer.</p>
-              <div *ngIf="habilitarErrorMessage" class="alert alert-error" role="alert">
-                {{ habilitarErrorMessage }}
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-success" (click)="confirmHabilitar()">Habilitar</button>
-              <button type="button" class="btn btn-outline-secondary" (click)="cancelHabilitar()">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="pisoEnable" class="alert alert-success" role="alert">
-        Piso habilitado correctamente.
-      </div>
-      <!-- Fin de modal de inhabilitar y habilitar -->
-
       <!-- Inicio de las tablas-->
       <div class="card-body table-responsive">
         <table id="printable-table" class="table table-bordered table-striped">
@@ -156,39 +97,26 @@
             <th (click)="sortColumn('id')">
               ID
               <span *ngIf="currentColumn === 'id'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
             </th>
             <th (click)="sortColumn('pisoName')">
               Nombre
               <span *ngIf="currentColumn === 'pisoName'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
             </th>
-            <!-- <th (click)="sortColumn('pisoDescripc')">
-              Descripción
-              <span *ngIf="currentColumn === 'pisoDescripc'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
-            </th> -->
-
             <th (click)="sortColumn('pisoNumber')">
               Numero de Piso
               <span *ngIf="currentColumn === 'pisoNumber'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
             </th>
-            <th (click)="sortColumn('torre.nombre')">
+            <th (click)="sortColumn('torre.torreName')">
               Torre
-              <span *ngIf="currentColumn === 'torre.nombre'" class="sorting-icon">
-              <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-            </span>
-            </th>
-            <th (click)="sortColumn('habilitado')">
-              Estado
-              <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
+              <span *ngIf="currentColumn === 'torre.torreName'" class="sorting-icon">
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
             </th>
             <th>Acciones</th>
           </tr>
@@ -197,33 +125,19 @@
           <tr *ngFor="let piso of pisos | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
             <td class="text-center">{{ piso.id }}</td>
             <td [innerHTML]="highlightMatches(piso.pisoName, searchText)"></td>
-            <!--<td>{{ piso.pisoDescripc }}</td>-->
             <td>{{ piso.pisoNumber }}</td>
-            <td>{{ piso.torre?.torreName}}</td>
-            <td class="text-center" [ngClass]="{'inhabilitada': !piso.habilitado}">
-              {{ piso.habilitado ? 'Habilitado' : 'Inhabilitado' }}
-            </td>
+            <td>{{ piso.torre?.torreName }}</td>
             <td class="d-flex justify-content-center align-items-center">
               <button type="button" class="btn btn-outline-info btn-sm mr-1 tooltip-edit "
                       [ngbTooltip]="'Actualizar'"
                       (click)="onActualizarPiso(piso)"
-                      [disabled]="!piso.habilitado">
+              >
                 <i class="fas fa-edit"></i>
-              </button>
-              <button type="button" class="btn btn-outline-secondary btn-sm mr-1 tooltip-disable"
-                      [ngbTooltip]="'Inhabilitar'"
-                      (click)="onInhabilitarPiso(piso.id)">
-                <i class="fas fa-ban"></i>
-              </button>
-              <button type="button" class="btn btn-outline-success btn-sm mr-1 tooltip-enable"
-                      [ngbTooltip]="'Habilitar'"
-                      (click)="onHabilitarPiso(piso.id)">
-                <i class="fas fa-check"></i>
               </button>
               <button type="button" class="btn btn-outline-danger btn-sm tooltip-delete"
                       [ngbTooltip]="'Eliminar'"
                       (click)="onEliminarPiso(piso)"
-                      [disabled]="!piso.habilitado">
+              >
                 <i class="fas fa-trash"></i>
               </button>
             </td>
@@ -244,11 +158,12 @@
         <button class="btn btn-sm pagination-btn pagination-btn-primary" (click)="page = 1" [disabled]="page === 1">Primera</button>
         <button class="btn btn-sm pagination-btn pagination-btn-light" (click)="page = totalPages" [disabled]="page === totalPages">Última</button>
         <div class="pagination-info">
-          <p>Total de elementos: {{ (pisos | paginate: { itemsPerPage: 5, currentPage: page }).length }}</p>
-          <p>Total de páginas: {{ Math.ceil(pisos.length / 5) }}</p>
+          <p>Total de elementos: {{ (pisos | paginate: { itemsPerPage: itemsPerPage, currentPage: page, totalItems: collectionSize }).length }}</p>
+          <p>Total de páginas: {{ totalPages }}</p>
         </div>
       </div>
-      <!-- Fin de las tablas-->
+        <!-- Fin de las tablas-->
+
       <!--  -->
     </div>
     <!-- /.card-body -->

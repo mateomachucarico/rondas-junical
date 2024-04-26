@@ -9,33 +9,32 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatCell, MatCellDef} from "@angular/material/table";
 import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../../../area-cargos-responsables/filter.pipe";
-import {UsuariosService} from "./usuarios.service";
 import * as ExcelJS from "exceljs";
+import {LoadingService} from "../../../Duplicados/loading.service";
+import {AuthService} from "../../auth.service";
+
 //Interfaces
 interface Rol
 {
   id: number;
   rolName: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
 interface Cargo {
   id: number;
   cargoName: string;
-  cargoDescrips: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
 }
 interface Area
 {
   id: number;
   areaName: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
+
 interface Usuario {
   id: number;
-  username: string;
+  userName: string;
   email: string;
   password: string;
   identificacion: string;
@@ -43,9 +42,6 @@ interface Usuario {
   rol: Rol;
   cargo: Cargo;
   area: Area;
-  habilitado: boolean;
-  //[key: string]: boolean | number | string;
-
 }
 interface Item {
   id: number;
@@ -53,7 +49,7 @@ interface Item {
 
 }
 @Component({
-  providers: [UsuariosService, HttpClient],
+  providers: [HttpClient, LoadingService, AuthService],
   selector: 'app-usuarios-junical',
   standalone: true,
   imports: [
@@ -117,26 +113,16 @@ export class UsuariosJunicalComponent implements  OnInit{
 
   constructor(
     private router: Router,
-    private usuarioService: UsuariosService,
+    private authService: AuthService,
+    private loadingService: LoadingService,
+
   ) { }
 
   ngOnInit(): void {
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement; // Type assertion
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   printTable() {
     window.print();
@@ -152,29 +138,26 @@ export class UsuariosJunicalComponent implements  OnInit{
   protected readonly Math = Math;
 
   // Método para preparar los usuario para inhabilitación
+  /*
   onInhabilitarUsuario(usuarioId: number) {
-    // Guarda el usuario que se va a inhabilitar
     this.usuarioToInhabilitar = usuarioId;
-    // Muestra la alerta
     this.showInhabilitarAlert = true;
   }
   confirmInhabilitado() {
     if (this.usuarioToInhabilitar) {
-      this.usuarioService.inhabilitarUsuario(this.usuarioToInhabilitar).subscribe(() => {
+      this.authService.inhabilitarUsuario(this.usuarioToInhabilitar).subscribe(() => {
         const usuario  = this.usuarios.find(p => p.id === this.usuarioToInhabilitar);
         if (usuario){
           usuario['habilitado'] = false;
         }
         this.usuarioToInhabilitar = null;
-        this.usuarioDisable = true; // Mostrar mensaje de eliminación correcta
+        this.usuarioDisable = true;
         setTimeout(() => {
-          this.usuarioDisable = false; // Ocultar el mensaje después de cierto tiempo (por ejemplo, 3 segundos)
+          this.usuarioDisable = false;
         }, 3000);
       }, error => {
         console.error('Error al Inhabilitar el usuario:', error);
-        // Mostrar mensaje de error al instante
         this.inhabilitarErrorMessage = 'Hubo un error al Inhabilitar el usuario. Por favor, inténtalo de nuevo más tarde.';
-        // Ocultar el modal después de 8 segundos
         setTimeout(() => {
           this.showInhabilitarAlert = false;
         }, 8000);
@@ -183,20 +166,16 @@ export class UsuariosJunicalComponent implements  OnInit{
     }
   }
   cancelInhabilitar() {
-    // Cierra la alerta
     this.showInhabilitarAlert = false;
-    // Restablece el valor de this.usuarioToInhabilitar
     this.usuarioToInhabilitar = null;
   }
   onHabilitarUsuario(usuarioId: number) {
-    // Guarda el usuario que se va a habilitado
     this.usuarioToHabilitar = usuarioId;
-    // Muestra la alerta
     this.showHabilitarAlert = true;
   }
   confirmHabilitar() {
     if (this.usuarioToHabilitar) {
-      this.usuarioService.habilitarUsuario(this.usuarioToHabilitar).subscribe(() => {
+      this.authService.habilitarUsuario(this.usuarioToHabilitar).subscribe(() => {
         const usuario  = this.usuarios.find(p =>p.id === this.usuarioToInhabilitar);
         if (usuario){
           usuario['habilitado'] = true;
@@ -220,11 +199,11 @@ export class UsuariosJunicalComponent implements  OnInit{
     }
   }
   cancelHabilitar() {
-    // Cierra la alerta
     this.showHabilitarAlert = false;
-    // Restablece el valor de this.usuarioToInhabilitar
     this.usuarioToHabilitar = null;
   }
+  */
+
   exportToExcel() {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Usuarios');
@@ -238,7 +217,7 @@ export class UsuariosJunicalComponent implements  OnInit{
       {header: 'Rol', key: 'rol', width: 15},
       {header: 'Cargo', key: 'cargo', width: 15},
       {header: 'Area', key: 'area', width: 15},
-      {header: 'Habilitado', key: 'habilitado', width: 15}
+      //{header: 'Habilitado', key: 'habilitado', width: 15}
     ];
 
     this.usuarios.forEach(usuario => {
@@ -263,8 +242,8 @@ export class UsuariosJunicalComponent implements  OnInit{
   sortData() {
     if (this.currentColumn) {
       this.usuarios.sort((a, b) => {
-        const aValue = (a as any)[this.currentColumn];
-        const bValue = (b as any)[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }
@@ -287,7 +266,7 @@ export class UsuariosJunicalComponent implements  OnInit{
   confirmDelete() {
     if (this.usuarioToDelete) {
       this.showAlert = false;
-      this.usuarioService.eliminarUsuario(this.usuarioToDelete.id).subscribe(() => {
+      this.authService.eliminarUsuario(this.usuarioToDelete.id).subscribe(() => {
         this.usuarios = this.usuarios.filter(p => p.id !== this.usuarioToDelete!.id);
         this.usuarioToDelete = null;
         this.usuarioEliminado = true; // Mostrar mensaje de eliminación correcta
@@ -334,4 +313,4 @@ export class UsuariosJunicalComponent implements  OnInit{
     return content.replace(regex, match => `<span class="highlight">${match}</span>`);
   }
 }
-//lo voy a programar con angular utilizando la plantilla adminLTE
+

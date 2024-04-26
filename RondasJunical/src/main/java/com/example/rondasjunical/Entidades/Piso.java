@@ -1,9 +1,6 @@
 package com.example.rondasjunical.Entidades;
-
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.List;
 @Entity
 @Table(name = "piso")
 public class Piso {
@@ -18,8 +15,19 @@ public class Piso {
     @Column(name = "piso_number")
     private Long pisoNumber;
 
-    @Column(name = "habilitado")
-    private boolean habilitado;
+    @OneToOne
+    @JoinColumn(name = "id_torre")
+    private Torre torre;
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_torre", nullable = false)
+//    private Torre torre;
+//
+//    @OneToMany(mappedBy = "piso")
+//    private List<Area> areas;
+
+//    @Column(name = "habilitado")
+//    private boolean habilitado;
 
     // Constructor
     public Piso() {}
@@ -49,52 +57,38 @@ public class Piso {
         this.pisoNumber = pisoNumber;
     }
 
-    public boolean isHabilitado() {
-        return habilitado;
-    }
+//    public boolean isHabilitado() {
+//        return habilitado;
+//    }
+//
+//    public void setHabilitado(boolean habilitado) {
+//        this.habilitado = habilitado;
+//    }
 
-    public void setHabilitado(boolean habilitado) {
-        this.habilitado = habilitado;
-    }
+    //Relaciones
 
-    // Relación con Torre
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "torre_id") // Ensure the foreign key column name matches
-    private Torre torre;
+//    public Torre getTorre() {
+//        return torre;
+//    }
+//
+//    public void setTorre(Torre torre) {
+//        this.torre = torre;
+//    }
+//
+//    public List<Area> getAreas() {
+//        return areas;
+//    }
+//
+//    public void setAreas(List<Area> areas) {
+//        this.areas = areas;
+//    }
 
-    // Getters y setters para la relación con Torre
     public Torre getTorre() {
         return torre;
     }
 
     public void setTorre(Torre torre) {
         this.torre = torre;
-    }
-
-    // Relación con Zonas
-    @OneToMany(mappedBy = "piso", cascade = CascadeType.ALL)
-    private Set<Zona> zonas = new HashSet<>();
-
-    // Getters y setters para la relación con Zonas
-    public Set<Zona> getZonas() {
-        return zonas;
-    }
-
-    public void setZonas(Set<Zona> zonas) {
-        this.zonas = zonas;
-    }
-
-    // Relación con Áreas
-    @OneToMany(mappedBy = "piso", cascade = CascadeType.ALL)
-    private Set<Area> areas = new HashSet<>();
-
-    // Getters y setters para la relación con Áreas
-    public Set<Area> getAreas() {
-        return areas;
-    }
-
-    public void setAreas(Set<Area> areas) {
-        this.areas = areas;
     }
 
     // Método toString()
@@ -104,7 +98,7 @@ public class Piso {
                 "id=" + id +
                 ", pisoName='" + pisoName + '\'' +
                 ", pisoNumber=" + pisoNumber +
-                ", habilitado=" + habilitado +
+//                ", habilitado=" + habilitado +
                 '}';
     }
 }

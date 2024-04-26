@@ -1,0 +1,405 @@
+/* Styles Globales */
+.pagination-info {
+  font: 16px Arial, sans-serif;
+  color: #333;
+  text-align: center;
+  margin: 1rem auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.pagination-info p {
+  margin-bottom: 0.5rem;
+}
+.pagination-info .total-items {
+  color: #007bff;
+}
+.pagination-info .current-page {
+  font-weight: bold;
+}
+.pagination-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.pagination-btn-primary {
+  background-color: #eef0f3;
+  color: #333;
+  border-color: #f7f9fc;
+}
+.pagination-btn-primary:hover {
+  background-color: #0067cc;
+}
+.pagination-btn-light {
+  background-color: #fff;
+  color: #333;
+  border-color: #ddd;
+}
+.pagination-btn-light:hover {
+  background-color: #6ef170;
+}
+.pagination-btn:disabled {
+  background-color: #f5f5f5;
+  cursor: default;
+  border-color: #ddd;
+}
+/*  Fin de pagination */
+
+/*  nodal de confirmation de eliminación */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+.modal-dialog {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 5px;
+  animation: slideIn 0.3s ease;
+}
+.modal-content {
+  padding: 20px;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.modal-title {
+  margin: 0;
+}
+.modal-body {
+  padding-bottom: 20px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+.close {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideIn {
+  from { transform: translateY(-50%); }
+  to { transform: translateY(0); }
+}
+
+/* alerta de eliminado correctamente */
+.alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  width: 300px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+.alert-error {
+  background-color: #dc3545;
+  color: #fff;
+}
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+/* Estilos para dispositivos con una anchura máxima de 480px */
+@media only screen and (max-width: 480px) {
+  .center-title {
+    font-size: 18px; /* Reducir el tamaño del título */
+  }
+
+  .breadcrumb {
+    font-size: 12px; /* Reducir el tamaño del breadcrumb */
+  }
+
+  .card-title {
+    font-size: 16px; /* Reducir el tamaño del título de la tarjeta */
+  }
+
+  .card-body .btn {
+    font-size: 12px; /* Reducir el tamaño de fuente de los botones */
+    padding: 5px 10px; /* Ajustar el espaciado de los botones */
+  }
+
+  .modal-dialog {
+    width: 300px; /* Reducir el ancho del modal */
+  }
+
+  .modal-body p {
+    font-size: 14px; /* Reducir el tamaño de fuente del texto en el modal */
+  }
+
+  .pagination-btn {
+    padding: 5px 10px; /* Ajustar el espaciado de los botones de paginación */
+  }
+}
+
+/* Estilos para dispositivos con una anchura máxima de 320px */
+@media only screen and (max-width: 320px) {
+  .center-title {
+    font-size: 16px; /* Reducir el tamaño del título */
+  }
+
+  .breadcrumb {
+    font-size: 10px; /* Reducir el tamaño del breadcrumb */
+  }
+
+  .card-title {
+    font-size: 14px; /* Reducir el tamaño del título de la tarjeta */
+  }
+
+  .card-body .btn {
+    font-size: 10px; /* Reducir el tamaño de fuente de los botones */
+    padding: 3px 8px; /* Ajustar el espaciado de los botones */
+  }
+
+  .modal-dialog {
+    width: 280px; /* Reducir el ancho del modal */
+  }
+
+  .modal-body p {
+    font-size: 12px; /* Reducir el tamaño de fuente del texto en el modal */
+  }
+
+  .pagination-btn {
+    padding: 3px 8px; /* Ajustar el espaciado de los botones de paginación */
+  }
+}
+
+/* Responsive Iconos */
+
+@media only screen and (max-width: 480px) {
+  .d-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .d-flex .btn {
+    margin-bottom: 8px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .d-flex .btn {
+    padding: 3px 8px;
+  }
+}
+
+/* estilos para el buscador */
+.buscador {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 10px auto;
+}
+
+input {
+  flex: 1;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  color: #333;
+
+  /* Pseudo-clases */
+
+  &:hover {
+    border-color: #999;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+  }
+
+  &:active {
+    background-color: #f0f0f0;
+  }
+}
+
+.fa-search {
+  margin-left: 10px;
+  color: #999;
+
+  /* Pseudo-clases */
+
+  &:hover {
+    color: #000;
+  }
+}
+
+/* Media queries */
+
+@media (max-width: 768px) {
+  .buscador {
+    width: 100%;
+  }
+}
+
+/* Transiciones */
+
+input:focus {
+  transition: all 0.2s ease-in-out;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+}
+
+/* Flexbox */
+
+.buscador {
+  justify-content: space-between;
+}
+
+/* CSS Grid */
+
+.buscador {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+}
+
+input {
+  grid-area: 1 / 1;
+}
+
+.fa-search {
+  grid-area: 1 / 2;
+  justify-self: end;
+}
+
+/*
+tr.inhabilitada {
+background-color: #ffdddd;
+}
+*/
+
+
+.inhabilitada {
+  background-color: #f2dede;
+  color: #a94442;
+  position: relative; /* Posicionamiento relativo para el icono */
+
+
+  &::before {
+    position: absolute; /* Posicionamiento absoluto dentro de la torre */
+    top: 50%;
+    left: 85%;
+    right: 50px; /* Posiciona el icono a 10px del borde derecho */
+    transform: translateY(-50%); /* Centra el icono verticalmente */
+    font-family: "Font Awesome 5 Free", serif; /* Ejemplo de familia de iconos */
+    font-weight: 900; /* Peso de la fuente para el icono */
+    content: "\f023"; /* Código Unicode para el icono de candado cerrado */
+    color: #a94442;
+  }
+}
+@media (max-width: 500px) {
+  .inhabilitada {
+    position: relative;
+  }
+
+  .inhabilitada::before {
+    position: absolute;
+    left: calc(50% - 10px); /* Centra el icono horizontalmente */
+    top: calc(50% - 10px); /* Centra el icono verticalmente */
+  }
+}
+
+/* Animation de carga */
+.loader-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards; /* Animación de opacidad */
+}
+.loader-text {
+  font-size: 25px;
+  color: #333; /* Color del texto */
+  margin-top: 20px; /* Espacio entre el loader y el texto */
+  text-align: center; /* Alinea el texto al centro */
+}
+.loader-wrapper img {
+  max-width: 80%; /* Limita el ancho máximo de la imagen al 80% del contenedor */
+  max-height: 50vh; /* Limita la altura máxima de la imagen al 50% de la altura de la ventana */
+}
+.loader-wrapper {
+  background: linear-gradient(to bottom, #ffffff, #f2f2f2);
+}
+.loader {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #00bcd4; /* Cambia el color según desees */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agrega una sombra suave */
+}
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes pulse {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1); }
+  100% { transform: scale(0.9); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media screen and (max-width: 768px) {
+  .loader-wrapper {
+    height: 100vh; /* Ajusta la altura del contenedor en dispositivos móviles */
+  }
+}
+@media screen and (max-width: 480px) { /* Aplica estilos específicos para pantallas con un ancho máximo de 480px */
+  .loader-wrapper img {
+    max-width: 90%; /* Reduzca el ancho máximo de la imagen en pantallas más pequeñas */
+    max-height: 40vh; /* Reduzca la altura máxima de la imagen en pantallas más pequeñas */
+  }
+}
+
+
+

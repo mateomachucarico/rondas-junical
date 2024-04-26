@@ -820,7 +820,7 @@
   var SELECTOR_DROPDOWN_MENU_ACTIVE = '.dropdown-menu.show';
   var SELECTOR_DROPDOWN_TOGGLE = '[data-toggle="dropdown"]';
   var CLASS_NAME_DROPDOWN_RIGHT = 'dropdown-menu-right';
-  var CLASS_NAME_DROPDOWN_SUBMENU = 'dropdown-submenu';
+  var CLASS_NAME_DROPDOWN_SUBMENU = 'dropdown-submenu'; // TODO: this is unused; should be removed along with the extend?
 
   var Default$9 = {};
   /**
@@ -1391,14 +1391,14 @@
     };
 
     _proto.removeActiveTab = function removeActiveTab(type, element) {
-      if (type === 'all') {
+      if (type == 'all') {
         $__default["default"](SELECTOR_TAB_NAVBAR_NAV_ITEM).remove();
         $__default["default"](SELECTOR_TAB_PANE).remove();
         $__default["default"](SELECTOR_TAB_EMPTY).show();
-      } else if (type === 'all-other') {
+      } else if (type == 'all-other') {
         $__default["default"](SELECTOR_TAB_NAVBAR_NAV_ITEM + ":not(.active)").remove();
         $__default["default"](SELECTOR_TAB_PANE + ":not(.active)").remove();
-      } else if (type === 'only-this') {
+      } else if (type == 'only-this') {
         var $navClose = $__default["default"](element);
         var $navItem = $navClose.parent('.nav-item');
         var $navItemParent = $navItem.parent();
@@ -1407,7 +1407,7 @@
         $navItem.remove();
         $__default["default"]("#" + tabId).remove();
 
-        if ($__default["default"](SELECTOR_TAB_CONTENT).children().length === $__default["default"](SELECTOR_TAB_EMPTY + ", " + SELECTOR_TAB_LOADING).length) {
+        if ($__default["default"](SELECTOR_TAB_CONTENT).children().length == $__default["default"](SELECTOR_TAB_EMPTY + ", " + SELECTOR_TAB_LOADING).length) {
           $__default["default"](SELECTOR_TAB_EMPTY).show();
         } else {
           var prevNavItemIndex = navItemIndex - 1;
@@ -1424,10 +1424,10 @@
 
         $__default["default"](SELECTOR_TAB_PANE + ".active").remove();
 
-        if ($__default["default"](SELECTOR_TAB_CONTENT).children().length === $__default["default"](SELECTOR_TAB_EMPTY + ", " + SELECTOR_TAB_LOADING).length) {
+        if ($__default["default"](SELECTOR_TAB_CONTENT).children().length == $__default["default"](SELECTOR_TAB_EMPTY + ", " + SELECTOR_TAB_LOADING).length) {
           $__default["default"](SELECTOR_TAB_EMPTY).show();
         } else {
-          const _prevNavItemIndex = _navItemIndex - 1;
+          var _prevNavItemIndex = _navItemIndex - 1;
 
           this.switchTab(_$navItemParent.children().eq(_prevNavItemIndex).find('a.nav-link'));
         }
@@ -1453,25 +1453,25 @@
     ;
 
     _proto._init = function _init() {
-      const usingDefTab = $__default["default"](SELECTOR_TAB_CONTENT).children().length > 2;
+      var usingDefTab = $__default["default"](SELECTOR_TAB_CONTENT).children().length > 2;
 
       this._setupListeners();
 
       this._fixHeight(true);
 
       if (usingDefTab) {
-        const $el = $__default["default"]("" + SELECTOR_TAB_PANE).first(); // eslint-disable-next-line no-console
+        var $el = $__default["default"]("" + SELECTOR_TAB_PANE).first(); // eslint-disable-next-line no-console
 
         console.log($el);
-        const uniqueName = $el.attr('id').replace('panel-', '');
-        const navId = "#tab-" + uniqueName;
+        var uniqueName = $el.attr('id').replace('panel-', '');
+        var navId = "#tab-" + uniqueName;
         this.switchTab(navId, true);
       }
     };
 
     _proto._initFrameElement = function _initFrameElement() {
       if (window.frameElement && this._config.autoIframeMode) {
-        const $body = $__default["default"]('body');
+        var $body = $__default["default"]('body');
         $body.addClass(CLASS_NAME_IFRAME_MODE$1);
 
         if (this._config.autoDarkMode) {
@@ -1481,14 +1481,14 @@
     };
 
     _proto._navScroll = function _navScroll(offset) {
-      const leftPos = $__default["default"](SELECTOR_TAB_NAVBAR_NAV).scrollLeft();
+      var leftPos = $__default["default"](SELECTOR_TAB_NAVBAR_NAV).scrollLeft();
       $__default["default"](SELECTOR_TAB_NAVBAR_NAV).animate({
         scrollLeft: leftPos + offset
       }, 250, 'linear');
     };
 
     _proto._setupListeners = function _setupListeners() {
-      const _this3 = this;
+      var _this3 = this;
 
       $__default["default"](window).on('resize', function () {
         setTimeout(function () {
@@ -1528,9 +1528,9 @@
       });
       $__default["default"](document).on('click', SELECTOR_DATA_TOGGLE_CLOSE, function (e) {
         e.preventDefault();
-        let target = e.target;
+        var target = e.target;
 
-        if (target.nodeName === 'I') {
+        if (target.nodeName == 'I') {
           target = e.target.offsetParent;
         }
 
@@ -1541,12 +1541,12 @@
 
         _this3.toggleFullscreen();
       });
-      let mousedown = false;
-      let mousedownInterval = null;
+      var mousedown = false;
+      var mousedownInterval = null;
       $__default["default"](document).on('mousedown', SELECTOR_DATA_TOGGLE_SCROLL_LEFT, function (e) {
         e.preventDefault();
         clearInterval(mousedownInterval);
-        let scrollOffset = _this3._config.scrollOffset;
+        var scrollOffset = _this3._config.scrollOffset;
 
         if (!_this3._config.scrollBehaviorSwap) {
           scrollOffset = -scrollOffset;
@@ -1563,7 +1563,7 @@
       $__default["default"](document).on('mousedown', SELECTOR_DATA_TOGGLE_SCROLL_RIGHT, function (e) {
         e.preventDefault();
         clearInterval(mousedownInterval);
-        let scrollOffset = _this3._config.scrollOffset;
+        var scrollOffset = _this3._config.scrollOffset;
 
         if (_this3._config.scrollBehaviorSwap) {
           scrollOffset = -scrollOffset;
@@ -1589,9 +1589,9 @@
     _proto._setItemActive = function _setItemActive(href) {
       $__default["default"](SELECTOR_SIDEBAR_MENU_ITEM + ", " + SELECTOR_HEADER_DROPDOWN_ITEM).removeClass('active');
       $__default["default"](SELECTOR_HEADER_MENU_ITEM).parent().removeClass('active');
-      const $headerMenuItem = $__default["default"](SELECTOR_HEADER_MENU_ITEM + "[href$=\"" + href + "\"]");
-      const $headerDropdownItem = $__default["default"](SELECTOR_HEADER_DROPDOWN_ITEM + "[href$=\"" + href + "\"]");
-      const $sidebarMenuItem = $__default["default"](SELECTOR_SIDEBAR_MENU_ITEM + "[href$=\"" + href + "\"]");
+      var $headerMenuItem = $__default["default"](SELECTOR_HEADER_MENU_ITEM + "[href$=\"" + href + "\"]");
+      var $headerDropdownItem = $__default["default"](SELECTOR_HEADER_DROPDOWN_ITEM + "[href$=\"" + href + "\"]");
+      var $sidebarMenuItem = $__default["default"](SELECTOR_SIDEBAR_MENU_ITEM + "[href$=\"" + href + "\"]");
       $headerMenuItem.each(function (i, e) {
         $__default["default"](e).parent().addClass('active');
       });
@@ -1600,7 +1600,7 @@
       });
       $sidebarMenuItem.each(function (i, e) {
         $__default["default"](e).addClass('active');
-        $__default["default"](e).parents('.nav-preview').prevAll('.nav-link').addClass('active');
+        $__default["default"](e).parents('.nav-treeview').prevAll('.nav-link').addClass('active');
       });
     };
 
@@ -1615,9 +1615,9 @@
         $__default["default"](SELECTOR_TAB_EMPTY + ", " + SELECTOR_TAB_LOADING + ", " + SELECTOR_CONTENT_IFRAME).height(windowHeight - navbarHeight);
         $__default["default"](SELECTOR_CONTENT_WRAPPER).height(windowHeight);
       } else {
-        const contentWrapperHeight = parseFloat($__default["default"](SELECTOR_CONTENT_WRAPPER).css('height'));
+        var contentWrapperHeight = parseFloat($__default["default"](SELECTOR_CONTENT_WRAPPER).css('height'));
 
-        const _navbarHeight = $__default["default"](SELECTOR_TAB_NAV).outerHeight();
+        var _navbarHeight = $__default["default"](SELECTOR_TAB_NAV).outerHeight();
 
         if (tabEmpty == true) {
           setTimeout(function () {
@@ -1632,16 +1632,16 @@
 
     IFrame._jQueryInterface = function _jQueryInterface(config) {
       if ($__default["default"](SELECTOR_DATA_TOGGLE$1).length > 0) {
-        let data = $__default["default"](this).data(DATA_KEY$7);
+        var data = $__default["default"](this).data(DATA_KEY$7);
 
         if (!data) {
           data = $__default["default"](this).data();
         }
 
-        const _options = $__default["default"].extend({}, Default$7, typeof config === 'object' ? config : data);
+        var _options = $__default["default"].extend({}, Default$7, typeof config === 'object' ? config : data);
 
         localStorage.setItem('AdminLTE:IFrame:Options', JSON.stringify(_options));
-        const plugin = new IFrame($__default["default"](this), _options);
+        var plugin = new IFrame($__default["default"](this), _options);
         $__default["default"](this).data(DATA_KEY$7, typeof config === 'object' ? config : data);
 
         if (typeof config === 'string' && /createTab|openTabSidebar|switchTab|removeActiveTab/.test(config)) {
@@ -1697,7 +1697,7 @@
   var SELECTOR_CONTROL_SIDEBAR_CONTENT = '.control-sidebar-content';
   var SELECTOR_CONTROL_SIDEBAR_BTN = '[data-widget="control-sidebar"]';
   var SELECTOR_FOOTER = '.main-footer';
-  const SELECTOR_PUSHMENU_BTN = '[data-widget="pushmenu"]';
+  var SELECTOR_PUSHMENU_BTN = '[data-widget="pushmenu"]';
   var SELECTOR_LOGIN_BOX = '.login-box';
   var SELECTOR_REGISTER_BOX = '.register-box';
   var SELECTOR_PRELOADER = '.preloader';
@@ -1938,22 +1938,23 @@
    * Constants
    * ====================================================
    */
-  const NAME$5 = 'PushMenu';
-  const DATA_KEY$5 = 'lte.pushmenu';
-  const EVENT_KEY$2 = "." + DATA_KEY$5;
-  const JQUERY_NO_CONFLICT$5 = $__default["default"].fn[NAME$5];
-  const EVENT_COLLAPSED$1 = "collapsed" + EVENT_KEY$2;
-  const EVENT_COLLAPSED_DONE = "collapsed-done" + EVENT_KEY$2;
-  const EVENT_SHOWN = "shown" + EVENT_KEY$2;
-  const SELECTOR_TOGGLE_BUTTON$1 = '[data-widget="pushmenu"]';
-  const SELECTOR_BODY = 'body';
-  const SELECTOR_OVERLAY = '#sidebar-overlay';
-  const SELECTOR_WRAPPER = '.wrapper';
-  const CLASS_NAME_COLLAPSED = 'sidebar-collapse';
-  const CLASS_NAME_OPEN$3 = 'sidebar-open';
-  const CLASS_NAME_IS_OPENING$1 = 'sidebar-is-opening';
-  const CLASS_NAME_CLOSED = 'sidebar-closed';
-  const Default$5 = {
+
+  var NAME$5 = 'PushMenu';
+  var DATA_KEY$5 = 'lte.pushmenu';
+  var EVENT_KEY$2 = "." + DATA_KEY$5;
+  var JQUERY_NO_CONFLICT$5 = $__default["default"].fn[NAME$5];
+  var EVENT_COLLAPSED$1 = "collapsed" + EVENT_KEY$2;
+  var EVENT_COLLAPSED_DONE = "collapsed-done" + EVENT_KEY$2;
+  var EVENT_SHOWN = "shown" + EVENT_KEY$2;
+  var SELECTOR_TOGGLE_BUTTON$1 = '[data-widget="pushmenu"]';
+  var SELECTOR_BODY = 'body';
+  var SELECTOR_OVERLAY = '#sidebar-overlay';
+  var SELECTOR_WRAPPER = '.wrapper';
+  var CLASS_NAME_COLLAPSED = 'sidebar-collapse';
+  var CLASS_NAME_OPEN$3 = 'sidebar-open';
+  var CLASS_NAME_IS_OPENING$1 = 'sidebar-is-opening';
+  var CLASS_NAME_CLOSED = 'sidebar-closed';
+  var Default$5 = {
     autoCollapseSize: 992,
     enableRemember: false,
     noTransitionAfterReload: true,
@@ -1963,7 +1964,8 @@
    * Class Definition
    * ====================================================
    */
-  const PushMenu = /*#__PURE__*/function () {
+
+  var PushMenu = /*#__PURE__*/function () {
     function PushMenu(element, options) {
       this._element = element;
       this._options = $__default["default"].extend({}, Default$5, options);
@@ -2163,26 +2165,26 @@
    * ====================================================
    */
 
-  const NAME$4 = 'SidebarSearch';
-  const DATA_KEY$4 = 'lte.sidebar-search';
-  const JQUERY_NO_CONFLICT$4 = $__default["default"].fn[NAME$4];
-  const CLASS_NAME_OPEN$2 = 'sidebar-search-open';
-  const CLASS_NAME_ICON_SEARCH = 'fa-search';
-  const CLASS_NAME_ICON_CLOSE = 'fa-times';
-  const CLASS_NAME_HEADER = 'nav-header';
-  const CLASS_NAME_SEARCH_RESULTS = 'sidebar-search-results';
-  const CLASS_NAME_LIST_GROUP = 'list-group';
-  const SELECTOR_DATA_WIDGET$1 = '[data-widget="sidebar-search"]';
-  const SELECTOR_SIDEBAR = '.main-sidebar .nav-sidebar';
-  const SELECTOR_NAV_LINK = '.nav-link';
-  const SELECTOR_NAV_TREEVIEW = '.nav-treeview';
-  const SELECTOR_SEARCH_INPUT$1 = SELECTOR_DATA_WIDGET$1 + " .form-control";
-  const SELECTOR_SEARCH_BUTTON = SELECTOR_DATA_WIDGET$1 + " .btn";
-  const SELECTOR_SEARCH_ICON = SELECTOR_SEARCH_BUTTON + " i";
-  const SELECTOR_SEARCH_LIST_GROUP = "." + CLASS_NAME_LIST_GROUP;
-  const SELECTOR_SEARCH_RESULTS = "." + CLASS_NAME_SEARCH_RESULTS;
-  const SELECTOR_SEARCH_RESULTS_GROUP = SELECTOR_SEARCH_RESULTS + " ." + CLASS_NAME_LIST_GROUP;
-  const Default$4 = {
+  var NAME$4 = 'SidebarSearch';
+  var DATA_KEY$4 = 'lte.sidebar-search';
+  var JQUERY_NO_CONFLICT$4 = $__default["default"].fn[NAME$4];
+  var CLASS_NAME_OPEN$2 = 'sidebar-search-open';
+  var CLASS_NAME_ICON_SEARCH = 'fa-search';
+  var CLASS_NAME_ICON_CLOSE = 'fa-times';
+  var CLASS_NAME_HEADER = 'nav-header';
+  var CLASS_NAME_SEARCH_RESULTS = 'sidebar-search-results';
+  var CLASS_NAME_LIST_GROUP = 'list-group';
+  var SELECTOR_DATA_WIDGET$1 = '[data-widget="sidebar-search"]';
+  var SELECTOR_SIDEBAR = '.main-sidebar .nav-sidebar';
+  var SELECTOR_NAV_LINK = '.nav-link';
+  var SELECTOR_NAV_TREEVIEW = '.nav-treeview';
+  var SELECTOR_SEARCH_INPUT$1 = SELECTOR_DATA_WIDGET$1 + " .form-control";
+  var SELECTOR_SEARCH_BUTTON = SELECTOR_DATA_WIDGET$1 + " .btn";
+  var SELECTOR_SEARCH_ICON = SELECTOR_SEARCH_BUTTON + " i";
+  var SELECTOR_SEARCH_LIST_GROUP = "." + CLASS_NAME_LIST_GROUP;
+  var SELECTOR_SEARCH_RESULTS = "." + CLASS_NAME_SEARCH_RESULTS;
+  var SELECTOR_SEARCH_RESULTS_GROUP = SELECTOR_SEARCH_RESULTS + " ." + CLASS_NAME_LIST_GROUP;
+  var Default$4 = {
     arrowSign: '->',
     minLength: 3,
     maxResults: 7,
@@ -2882,22 +2884,23 @@
    * Constants
    * ====================================================
    */
-  const NAME = 'Treeview';
-  const DATA_KEY = 'lte.treeview';
-  const EVENT_KEY = "." + DATA_KEY;
-  const JQUERY_NO_CONFLICT = $__default["default"].fn[NAME];
-  const EVENT_EXPANDED = "expanded" + EVENT_KEY;
-  const EVENT_COLLAPSED = "collapsed" + EVENT_KEY;
-  const EVENT_LOAD_DATA_API = "load" + EVENT_KEY;
-  const SELECTOR_LI = '.nav-item';
-  const SELECTOR_LINK = '.nav-link';
-  const SELECTOR_TREEVIEW_MENU = '.nav-treeview';
-  const SELECTOR_OPEN = '.menu-open';
-  const SELECTOR_DATA_WIDGET = '[data-widget="treeview"]';
-  const CLASS_NAME_OPEN = 'menu-open';
-  const CLASS_NAME_IS_OPENING = 'menu-is-opening';
-  const CLASS_NAME_SIDEBAR_COLLAPSED = 'sidebar-collapse';
-  const Default = {
+
+  var NAME = 'Treeview';
+  var DATA_KEY = 'lte.treeview';
+  var EVENT_KEY = "." + DATA_KEY;
+  var JQUERY_NO_CONFLICT = $__default["default"].fn[NAME];
+  var EVENT_EXPANDED = "expanded" + EVENT_KEY;
+  var EVENT_COLLAPSED = "collapsed" + EVENT_KEY;
+  var EVENT_LOAD_DATA_API = "load" + EVENT_KEY;
+  var SELECTOR_LI = '.nav-item';
+  var SELECTOR_LINK = '.nav-link';
+  var SELECTOR_TREEVIEW_MENU = '.nav-treeview';
+  var SELECTOR_OPEN = '.menu-open';
+  var SELECTOR_DATA_WIDGET = '[data-widget="treeview"]';
+  var CLASS_NAME_OPEN = 'menu-open';
+  var CLASS_NAME_IS_OPENING = 'menu-is-opening';
+  var CLASS_NAME_SIDEBAR_COLLAPSED = 'sidebar-collapse';
+  var Default = {
     trigger: SELECTOR_DATA_WIDGET + " " + SELECTOR_LINK,
     animationSpeed: 300,
     accordion: true,
@@ -2909,14 +2912,14 @@
    * ====================================================
    */
 
-  const Treeview = /*#__PURE__*/function () {
+  var Treeview = /*#__PURE__*/function () {
     function Treeview(element, config) {
       this._config = config;
       this._element = element;
     } // Public
 
 
-    const _proto = Treeview.prototype;
+    var _proto = Treeview.prototype;
 
     _proto.init = function init() {
       $__default["default"]("" + SELECTOR_LI + SELECTOR_OPEN + " " + SELECTOR_TREEVIEW_MENU + SELECTOR_OPEN).css('display', 'block');
@@ -2925,13 +2928,13 @@
     };
 
     _proto.expand = function expand(treeviewMenu, parentLi) {
-      const _this = this;
+      var _this = this;
 
       var expandedEvent = $__default["default"].Event(EVENT_EXPANDED);
 
       if (this._config.accordion) {
-        const openMenuLi = parentLi.siblings(SELECTOR_OPEN).first();
-        const openTreeview = openMenuLi.find(SELECTOR_TREEVIEW_MENU).first();
+        var openMenuLi = parentLi.siblings(SELECTOR_OPEN).first();
+        var openTreeview = openMenuLi.find(SELECTOR_TREEVIEW_MENU).first();
         this.collapse(openTreeview, openMenuLi);
       }
 
@@ -2947,9 +2950,9 @@
     };
 
     _proto.collapse = function collapse(treeviewMenu, parentLi) {
-      const _this2 = this;
+      var _this2 = this;
 
-      const collapsedEvent = $__default["default"].Event(EVENT_COLLAPSED);
+      var collapsedEvent = $__default["default"].Event(EVENT_COLLAPSED);
       parentLi.removeClass(CLASS_NAME_IS_OPENING + " " + CLASS_NAME_OPEN);
       treeviewMenu.stop().slideUp(this._config.animationSpeed, function () {
         $__default["default"](_this2._element).trigger(collapsedEvent);
@@ -2959,9 +2962,9 @@
     };
 
     _proto.toggle = function toggle(event) {
-      const $relativeTarget = $__default["default"](event.currentTarget);
-      const $parent = $relativeTarget.parent();
-      let treeviewMenu = $parent.find("> " + SELECTOR_TREEVIEW_MENU);
+      var $relativeTarget = $__default["default"](event.currentTarget);
+      var $parent = $relativeTarget.parent();
+      var treeviewMenu = $parent.find("> " + SELECTOR_TREEVIEW_MENU);
 
       if (!treeviewMenu.is(SELECTOR_TREEVIEW_MENU)) {
         if (!$parent.is(SELECTOR_LI)) {
@@ -2974,8 +2977,8 @@
       }
 
       event.preventDefault();
-      const parentLi = $relativeTarget.parents(SELECTOR_LI).first();
-      const isOpen = parentLi.hasClass(CLASS_NAME_OPEN);
+      var parentLi = $relativeTarget.parents(SELECTOR_LI).first();
+      var isOpen = parentLi.hasClass(CLASS_NAME_OPEN);
 
       if (isOpen) {
         this.collapse($__default["default"](treeviewMenu), parentLi);
@@ -2986,9 +2989,9 @@
     ;
 
     _proto._setupListeners = function _setupListeners() {
-      const _this3 = this;
+      var _this3 = this;
 
-      const elementId = this._element.attr('id') !== undefined ? "#" + this._element.attr('id') : '';
+      var elementId = this._element.attr('id') !== undefined ? "#" + this._element.attr('id') : '';
       $__default["default"](document).on('click', "" + elementId + this._config.trigger, function (event) {
         _this3.toggle(event);
       });
@@ -3003,9 +3006,9 @@
 
     Treeview._jQueryInterface = function _jQueryInterface(config) {
       return this.each(function () {
-        let data = $__default["default"](this).data(DATA_KEY);
+        var data = $__default["default"](this).data(DATA_KEY);
 
-        const _options = $__default["default"].extend({}, Default, $__default["default"](this).data());
+        var _options = $__default["default"].extend({}, Default, $__default["default"](this).data());
 
         if (!data) {
           data = new Treeview($__default["default"](this), _options);

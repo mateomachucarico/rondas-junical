@@ -6,13 +6,35 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AreaService} from "../area.service";
 import {ActivatedRoute} from "@angular/router";
 
+
+/*
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+
+}
+
+ */
+interface ResponJefeArea {
+  id: number;
+  responName: string;
+  responEmail: string;
+  habilitado:boolean;
+}
 interface Area {
   id: number;
   areaName: string;
-  //areaDescripc: string;
+  //torre: Torre;
+  //piso: Piso;
+  responJefeArea: ResponJefeArea;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
-
 }
 @Component({
   providers:[AreaService, HttpClient],
@@ -29,7 +51,7 @@ interface Area {
 })
 export class EditarAreaComponent  implements  OnInit{
   editarForm!: FormGroup;
-  area: Area = {id: 0, areaName: '', habilitado: false };
+  area!: Area;
   // Variables para mensajes
   areaCreado: boolean = false;
   errorEditarArea: string = '';
@@ -45,7 +67,6 @@ export class EditarAreaComponent  implements  OnInit{
   ngOnInit(): void {
     this.editarForm = this.formBuilder.group({
       areaName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      //areaDescripc: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     });
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
@@ -56,7 +77,7 @@ export class EditarAreaComponent  implements  OnInit{
             this.area = response;
             this.editarForm.patchValue({
               areaName: response.areaName,
-              //areaDescripc: response.areaDescripc
+
             });
           },
           (error) => {

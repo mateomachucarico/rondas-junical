@@ -9,9 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 interface Cargo {
   id: number;
   cargoName: string;
-  cargoDescrips: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
 }
 @Component({
   providers: [CargoService, HttpClient],
@@ -28,7 +26,7 @@ interface Cargo {
 })
 export class EditarCargoComponent implements  OnInit{
   editarForm!: FormGroup;
-  cargo: Cargo = {id: 0, cargoName: '', cargoDescrips:'', habilitado: false };
+  cargo: Cargo = {id: 0, cargoName: '', habilitado: true };
   // Variables para mensajes
   cargoCreado: boolean = false;
   errorEditarCargo: string = '';
@@ -44,7 +42,7 @@ export class EditarCargoComponent implements  OnInit{
   ngOnInit(): void {
     this.editarForm = this.formBuilder.group({
       cargoName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      cargoDescrips: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+
     });
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
@@ -55,7 +53,7 @@ export class EditarCargoComponent implements  OnInit{
             this.cargo = response;
             this.editarForm.patchValue({
               cargoName: response.cargoName,
-              cargoDescrips: response.cargoDescrips
+
             });
           },
           (error) => {
@@ -116,7 +114,5 @@ export class EditarCargoComponent implements  OnInit{
   get cargoName() {
     return this.editarForm.get('cargoName');
   }
-  get cargoDescrips() {
-    return this.editarForm.get('cargoDescrips');
-  }
+
 }

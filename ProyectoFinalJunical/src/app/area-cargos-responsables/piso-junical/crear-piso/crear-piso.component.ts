@@ -9,18 +9,13 @@ interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 
 interface Piso {
   id: number;
   pisoName: string;
-  //pisoDescripc: string;
   pisoNumber: string;
   torre: Torre;
-  habilitado: boolean;
-  //[key: string]: boolean | number | string;
-
 }
 @Component({
   providers: [PisoService, HttpClient],
@@ -41,13 +36,12 @@ interface Piso {
 })
 export class CrearPisoComponent implements OnInit {
   crearForm!: FormGroup;
-  piso: Piso = { id: 0, pisoName: '', pisoNumber: '',habilitado:false,
-    torre: { id: 0, torreName: '', habilitado: false}
-  };
+  piso!: Piso;
   errorCrearPiso: string = ''; // Inicialización de la variable
   pisoCreado: boolean = false;
   pisoEnProceso: boolean = false;
   torres: Torre[] = [];
+  pisos: Piso[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,24 +52,19 @@ export class CrearPisoComponent implements OnInit {
   ngOnInit(): void {
     this.crearForm = this.formBuilder.group({
       pisoName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      //pisoDescripc: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       pisoNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(1), Validators.maxLength(5)]],
       torre: ['', [Validators.required]],
     });
-    this.cargarTorres()
+    this.cargarTorres();
   }
 
-
   cargarTorres(): void {
-    // Llamar a tu servicio para obtener todas las torres
     this.pisoService.recuperarTodosTorres().subscribe(
       (torres: Torre[]) => {
-        // Filtrar solo las torres habilitadas
         this.torres = torres.filter(torre => torre.habilitado);
       },
       (error) => {
         console.error(error);
-        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
       }
     );
   }
@@ -142,8 +131,8 @@ export class CrearPisoComponent implements OnInit {
   get pisoNumber() {
     return this.crearForm.get('pisoNumber');
   }
-  get torre_Name() {
-    return this.crearForm.get('torre_Name');
+  get torre() {
+    return this.crearForm.get('torre');
   }
   //Validación para PisoNumber
   isInvalidPisoNumber() {

@@ -38,7 +38,7 @@ public class RolControlador {
     }
 
     // Recuperar rol por ID
-    @GetMapping("/rol/recuperarPorId/{id}")
+    @GetMapping("/roles/recuperarPorId/{id}")
     public ResponseEntity<Rol> obtenerRolPorId(@PathVariable Long id) {
         Rol rol = rolServicio.obtenerRolPorId(id);
         return ResponseEntity.ok(rol);
@@ -68,13 +68,13 @@ public class RolControlador {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Rol con ID " + id + " eliminada correctamente.");
     }
     // Inhabilitar Rol
-    @PostMapping("/roles/{id}/inhabilitar")
+    @PutMapping("/roles/{id}/inhabilitar")
     public ResponseEntity<Void> inhabilitarRolPorId(@PathVariable Long id) {
         rolServicio.inhabilitarRol(id);
             return ResponseEntity.ok().build();
     }
     // habilitar Rol
-    @PostMapping("/roles/{id}/habilitar")
+    @PutMapping("/roles/{id}/habilitar")
     public ResponseEntity<Void> habilitarRolPorId(@PathVariable Long id) {
         rolServicio.habilitarRol(id);
         return ResponseEntity.ok().build();

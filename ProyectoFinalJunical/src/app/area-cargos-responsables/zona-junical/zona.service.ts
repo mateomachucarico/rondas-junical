@@ -4,11 +4,28 @@ import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {entornos} from "../../../Entorno/entornos";
 
+interface Area {
+  id: number;
+  areaName: string;
+  habilitado: boolean;
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+}
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+}
 interface Zona {
   id: number;
   zonaName: string;
+  torre: Torre;
+  piso: Piso;
+  area: Area;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
 @Injectable({
   providedIn: 'root'
@@ -17,7 +34,7 @@ export class ZonaService {
   //dynamicHost: string = "localhost:8080"
   // URL BASE API
   dynamicHost = entornos.dynamicHost;
-  private baseUrl: string = `http://${this.dynamicHost}/api/zonas`;  //Url Base API
+  private baseUrl: string = `http://${this.dynamicHost}/api`;  //Url Base API
   constructor(private http: HttpClient) {
 
   }
@@ -56,14 +73,37 @@ export class ZonaService {
         catchError(this.handleError)
       );
   }
-  //Obtener piso por Id
+  //Recuperar todas las torres
+  recuperarTodosTorres(): Observable<Torre[]>{
+    return this.http.get<Torre[]>(`${this.baseUrl}/torres/obtenerTodosLosTorres`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Recuperar todas las piso
+  recuperarTodosPisos(): Observable<Piso[]>{
+    return this.http.get<Piso[]>(`${this.baseUrl}/pisos/obtenerTodosLosPisos`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Recuperar todas la área
+  recuperarTodosAreas(): Observable<Area[]>{
+    return this.http.get<Area[]>(`${this.baseUrl}/areas/obtenerTodosLosAreas`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+
+  //Obtener zona por Id
   obtenerZona(id: number): Observable<Zona>{
     return  this.http.get<Zona>(`${this.baseUrl}/zonas/recuperarPorId/${id}`)
       .pipe(
         catchError(this.handleError)
       );
   }
-  //Actualizar piso
+  //Actualizar zona
   actualizarZona(id: number, zonaActualizada: Zona): Observable<Zona>{
     zonaActualizada.id=id;
     return this.http.put<Zona>(`${this.baseUrl}/zonas/${id}`, zonaActualizada)

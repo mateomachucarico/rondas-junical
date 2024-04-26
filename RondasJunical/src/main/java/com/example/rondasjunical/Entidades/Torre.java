@@ -1,6 +1,7 @@
 package com.example.rondasjunical.Entidades;
 import jakarta.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,9 @@ public class Torre {
 
     @Column(name = "habilitado")
     private boolean habilitado;
+
+//    @OneToMany(mappedBy = "torre")
+//    private List<Piso> pisos;
 
     // Constructores
     public Torre() {}
@@ -49,30 +53,14 @@ public class Torre {
     }
 
     // Relaciones
-    @OneToMany(mappedBy = "torre", cascade = CascadeType.ALL)
-    private Set<Piso> pisos = new HashSet<>();
 
-    // Getters y setters
-    public Set<Piso> getPisos() {
-        return pisos;
-    }
-
-    public void setPisos(Set<Piso> pisos) {
-        this.pisos = pisos;
-    }
-
-    // Relaciones torre y area
-
-    @OneToMany(mappedBy = "torre", cascade = CascadeType.ALL)
-    private Set<Area> areas = new HashSet<>();
-
-    //Getters y setters
-    public Set<Area> getAreas() {
-        return areas;
-    }
-    public void setAreas(Set<Area> areas) {
-        this.areas = areas;
-    }
+//    public List<Piso> getPisos() {
+//        return pisos;
+//    }
+//
+//    public void setPisos(List<Piso> pisos) {
+//        this.pisos = pisos;
+//    }
 
 
     @OneToMany(mappedBy = "torre")
@@ -86,6 +74,8 @@ public class Torre {
     public void setAsignarRondas(Set<AsignarRonda> asignarRondas) {
         this.asignarRondas = asignarRondas;
     }
+
+    //Relaciones
 
     // Método toString()
     @Override

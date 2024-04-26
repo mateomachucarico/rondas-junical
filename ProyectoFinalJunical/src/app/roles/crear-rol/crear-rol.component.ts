@@ -11,7 +11,7 @@ interface Rol {
   rolFechaCreac: Date;
   rolFechaModic: Date;
   habilitado: boolean;
-  [key: string]: boolean | number | string | Date;
+
 }
 @Component({
   providers: [RolesService, HttpClient],
@@ -32,14 +32,8 @@ interface Rol {
 export class CrearRolComponent implements  OnInit{
 
   crearForm!: FormGroup;
-  rol: Rol = {
-    id: 0,
-    rolName: '',
-    rolDescripc: '',
-    rolFechaCreac: new Date(),
-    rolFechaModic: new Date(),
-    habilitado: false
-  };
+  rol!: Rol;
+  roles: Rol [] = [];
   rolCreado: boolean = false;
   rolEnProceso: boolean = false;
   errorCrearRol: string = '';
@@ -54,8 +48,8 @@ export class CrearRolComponent implements  OnInit{
     this.crearForm = this.formBuilder.group({
       rolName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       rolDescripc: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]], // Aquí corregido
-      rolFechaCreac: [null, Validators.required],
-      rolFechaModic: [null, Validators.required],
+      rolFechaCreac: ['',Validators.required],
+      rolFechaModic: ['',Validators.required],
     });
   }
   onSubmit(): void {

@@ -22,7 +22,7 @@ public class CargoControlador {
     // Método para guardar un nuevo cargo
     @PostMapping("/cargos/guardarCargo")
     public ResponseEntity<Cargo> guardarCargo(@RequestBody Cargo cargo) {
-        if (cargo.getCargoName() == null || cargo.getCargoDescrips() == null) {
+        if (cargo.getCargoName() == null ) {
             // Manejar valores nulos (lanzar excepción, devolver mensaje de error)
             return ResponseEntity.badRequest().build();
         }

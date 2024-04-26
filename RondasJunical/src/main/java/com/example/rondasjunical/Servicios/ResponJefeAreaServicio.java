@@ -1,6 +1,4 @@
 package com.example.rondasjunical.Servicios;
-
-
 import com.example.rondasjunical.Entidades.ResponJefeArea;
 import com.example.rondasjunical.Repositorios.ResponJefeAreaRepositorio;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,6 +15,8 @@ public class ResponJefeAreaServicio {
     public ResponJefeAreaServicio(ResponJefeAreaRepositorio responJefeAreaRepositorio){
         this.responJefeAreaRepositorio = responJefeAreaRepositorio;
     }
+
+
 
     //CRUD
 

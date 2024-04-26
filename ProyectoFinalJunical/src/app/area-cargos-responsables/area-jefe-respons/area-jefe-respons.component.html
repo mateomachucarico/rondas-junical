@@ -170,24 +170,6 @@
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
               </th>
-              <th (click)="sortColumn('responArea')">
-                Area
-                <span *ngIf="currentColumn === 'responArea'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
-              </th>
-              <th (click)="sortColumn('responCargo')">
-                Cargo
-                <span *ngIf="currentColumn === 'responCargo'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
-              <!--<th (click)="sortColumn('responFirma')">
-                Firma
-                <span *ngIf="currentColumn === 'responFirma'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span> -->
-
-              </th>
               <th (click)="sortColumn('habilitado')">
                 Estado
                 <span *ngIf="currentColumn === 'habilitado'" class="sorting-icon">
@@ -200,11 +182,8 @@
             <tbody>
             <tr *ngFor="let responJefeArea of responJefeAreas | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
               <td class="text-center">{{ responJefeArea.id }}</td>
-              <td class="text-center">{{ responJefeArea.responEmail }}</td>
-              <td class="text-center">{{ responJefeArea.responArea }}</td>
-              <td class="text-center">{{ responJefeArea.responCargo }}</td>
-              <!--<td class="text-center">{{ responJefeArea.responFirma }}</td>-->
               <td [innerHTML]="highlightMatches(responJefeArea.responName, searchText)"></td>
+              <td class="text-center">{{ responJefeArea.responEmail }}</td>
               <td class="text-center" [ngClass]="{'inhabilitada': !responJefeArea.habilitado}">
                 {{ responJefeArea.habilitado ? 'Habilitado' : 'Inhabilitado' }}
               </td>

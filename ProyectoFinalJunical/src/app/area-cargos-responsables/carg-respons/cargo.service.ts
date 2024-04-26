@@ -9,7 +9,7 @@ interface Cargo {
   cargoName: string;
   cargoDescrips: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
+
 }
 @Injectable({
   providedIn: 'root'

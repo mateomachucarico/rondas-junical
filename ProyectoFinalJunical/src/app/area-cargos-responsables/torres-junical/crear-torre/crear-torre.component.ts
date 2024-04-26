@@ -8,7 +8,7 @@ interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
+
 }
 @Component({
   providers: [TorresService, HttpClient],
@@ -27,7 +27,8 @@ interface Torre {
 })
 export class CrearTorreComponent implements OnInit{
   crearForm!: FormGroup;
-  torre: Torre = {id: 0, torreName: '',habilitado:false };
+  //
+  torre!: Torre;
   torreCreado: boolean = false;
   torreEnProceso: boolean = false;
   errorCrearTorre: string = ''; // Inicialización de la variable
@@ -44,6 +45,7 @@ export class CrearTorreComponent implements OnInit{
       torreName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     });
   }
+
   onSubmit(): void {
     if (this.crearForm.valid) {
       const torreName = this.crearForm.value.torreName;

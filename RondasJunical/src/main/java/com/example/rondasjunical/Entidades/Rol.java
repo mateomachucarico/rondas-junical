@@ -1,19 +1,24 @@
 package com.example.rondasjunical.Entidades;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "rol")
 public class Rol {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "rol_name")
     private String rolName;
+
+//    @JsonCreator
+//    public Rol(@JsonProperty("rol_name") String rol_name) {
+//        this.rolName = rol_name;
+//    }
 
     @Column(name = "rol_descripc")
     private String rolDescripc;
@@ -84,7 +89,7 @@ public class Rol {
 //        this.usuarios = usuarios;
 //    }
 
-    // Getter y setter para el campo habilitado
+     //Getter y setter para el campo habilitado
     public boolean isHabilitado() {
         return habilitado;
     }

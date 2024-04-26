@@ -11,13 +11,14 @@ import {MatCell, MatCellDef} from "@angular/material/table";
 import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FilterPipe} from "../filter.pipe";
+import {LoadingService} from "../../Duplicados/loading.service";
 
 
 interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
+
 }
 
 interface SearchHistoryItem {
@@ -31,7 +32,7 @@ interface Item {
 
 }
 @Component({
-  providers: [TorresService, HttpClient],
+  providers: [TorresService, HttpClient, LoadingService],
   selector: 'app-torres-junical',
   standalone: true,
   imports: [
@@ -95,26 +96,16 @@ export class TorresJunicalComponent implements OnInit {
     private torresServicio: TorresService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
   ) {
   }
 
   ngOnInit() {
     this.cargarTorres();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -122,15 +113,15 @@ export class TorresJunicalComponent implements OnInit {
   }
   //Nueva Torre
   onNuevaTorre() {
-    this.router.navigate(['crear-torre']);
+    this.router.navigate(['/crear-torre']);
   }
   // Actualizar torre
   onActualizarTorre(torre: Torre) {
     const torreId = torre.id;
-    this.router.navigate(['editar-torre', torreId]);
+    this.router.navigate(['/editar-torre', torreId]);
   }
   protected readonly Math = Math;
-  private column: any;
+
 
   // Carga los datos de la base de datos.
   cargarTorres() {
@@ -138,6 +129,7 @@ export class TorresJunicalComponent implements OnInit {
     this.torresServicio.recuperarTodosTorres().subscribe(
       data => {
         console.log("Datos recibidos del servidor:", data);
+        console.log("Cantidad de registros recibidos:", data.length); // Agregado para verificar la cantidad de registros recibidos
         this.torres = data.map(torre => {
           return {
             id: torre.id,
@@ -151,10 +143,10 @@ export class TorresJunicalComponent implements OnInit {
       },
       error => {
         console.error('Error al cargar las torres:', error);
-        console.error('Error al cargar las torres:', error);
       }
     );
   }
+
   // Método para preparar la torre para inhabilitación
   onInhabilitarTorre(torreId: number) {
     // Guarda el ID de la torre que se va a inhabilitar
@@ -195,6 +187,8 @@ export class TorresJunicalComponent implements OnInit {
     this.torreIdToHabilitar = torreId;
     // Muestra la alerta
     this.showHabilitarAlert = true;
+
+    console.log("El método onHabilitarTorre se ha llamado con éxito.");
   }
   confirmHabilitar() {
     if (this.torreIdToHabilitar) {
@@ -255,8 +249,8 @@ export class TorresJunicalComponent implements OnInit {
   sortData() {
     if (this.currentColumn) {
       this.torres.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }

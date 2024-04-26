@@ -1,16 +1,33 @@
 import {Component, OnInit} from '@angular/core';
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AppComponent} from "../../../app.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {ZonaService} from "../zona.service";
 import {ActivatedRoute} from "@angular/router";
 
+interface Area {
+  id: number;
+  areaName: string;
+  habilitado: boolean;
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+}
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+}
 interface Zona {
   id: number;
   zonaName: string;
+  torre: Torre;
+  piso: Piso;
+  area: Area;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
 @Component({
   providers: [ZonaService, HttpClient],
@@ -20,14 +37,18 @@ interface Zona {
     NgIf,
     ReactiveFormsModule,
     AppComponent,
-    HttpClientModule
+    HttpClientModule,
+    NgForOf
   ],
   templateUrl: './editar-zona.component.html',
   styleUrl: './editar-zona.component.css'
 })
 export class EditarZonaComponent implements OnInit{
   editarForm!: FormGroup;
-  zona: Zona = {id: 0, zonaName: '', habilitado: false };
+  zona!: Zona;
+  torres: Torre []=[];
+  pisos: Piso []=[];
+  areas: Area []=[];
   // Variables para mensajes
   zonaCreado: boolean = false;
   errorEditarZona: string = '';
@@ -43,6 +64,10 @@ export class EditarZonaComponent implements OnInit{
   ngOnInit(): void {
     this.editarForm = this.formBuilder.group({
       zonaName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      torre: ['', [Validators.required]],
+      piso: ['', [Validators.required]],
+      area: ['', [Validators.required]],
+
     });
     this.activatedRoute.params.subscribe(params => {
       const id = params['id'];
@@ -68,7 +93,41 @@ export class EditarZonaComponent implements OnInit{
         console.error('No se proporcionó un ID válido en la URL...');
       }
     });
+    this.cargarTorres();
+    this.cargarPisos();
+    this.cargarAreas();
   }
+cargarTorres(): void {
+  this.zonaService.recuperarTodosTorres().subscribe(
+    (torres: Torre[]) => {
+      this.torres = torres.filter(torre => torre.habilitado);
+    },
+    (error) => {
+      console.error(error);
+    }
+  );
+}
+  cargarPisos(): void {
+    this.zonaService.recuperarTodosPisos().subscribe(
+      (pisos: Piso[]) => {
+        this.pisos = pisos; // Assign all pisos without filtering
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+  cargarAreas(): void {
+    this.zonaService.recuperarTodosAreas().subscribe(
+      (areas: Area[]) => {
+        this.areas = areas.filter(area => area.habilitado);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
   onSubmit(): void {
     // Verificar si el ID de la zona es válido
     if (this.zonaId <= 0) {
@@ -113,5 +172,13 @@ export class EditarZonaComponent implements OnInit{
   get zonaName() {
     return this.editarForm.get('zonaName');
   }
-
+  get torre() {
+    return this.editarForm.get('torre');
+  }
+  get piso() {
+    return this.editarForm.get('piso');
+  }
+  get area() {
+    return this.editarForm.get('area');
+  }
 }

@@ -11,13 +11,30 @@ import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../filter.pipe";
 import * as ExcelJS from "exceljs";
 import {ZonaService} from "./zona.service";
+import {LoadingService} from "../../Duplicados/loading.service";
 
-
+interface Area {
+  id: number;
+  areaName: string;
+  habilitado: boolean;
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+}
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+}
 interface Zona {
   id: number;
   zonaName: string;
+  torre: Torre;
+  piso: Piso;
+  area: Area;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
 interface SearchHistoryItem {
   // Define la estructura de un elemento del historial de búsqueda
@@ -27,11 +44,9 @@ interface SearchHistoryItem {
 interface Item {
   id: number;
   zonaName: string;
-
-
 }
 @Component({
-  providers: [ZonaService, HttpClient],
+  providers: [ZonaService, HttpClient, LoadingService],
   selector: 'app-zona-junical',
   standalone: true,
   imports: [
@@ -57,8 +72,12 @@ interface Item {
   styleUrl: './zona-junical.component.css'
 })
 export class ZonaJunicalComponent implements OnInit{
-  protected zona!: Zona;
+  //protected zona!: Zona;
+  zona!: Zona;
   zonas: Zona[] = [];
+  torres: Torre[] = [];
+  pisos: Piso[] = [];
+  areas: Area [] = [];
   page = 1; // Inicializa la página en 1
   itemsPerPage = 5; // Número de elementos por página
   totalPages = 0; // Número total de páginas
@@ -97,24 +116,18 @@ export class ZonaJunicalComponent implements OnInit{
     private router: Router,
     private zonaServicio: ZonaService,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
+
   ) { }
   ngOnInit(): void {
     this.cargarZonas();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    this.cargarTorres();
+    this.cargarPisos();
+    this.cargarAreas();
+// Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -131,7 +144,6 @@ export class ZonaJunicalComponent implements OnInit{
   }
 
   protected readonly Math = Math;
-  private column: any;
 
   // Carga los datos de la base de datos
   cargarZonas() {
@@ -143,7 +155,10 @@ export class ZonaJunicalComponent implements OnInit{
           return {
             id: zona.id,
             zonaName: zona.zonaName,
-            habilitado: zona.habilitado, // Almacena directamente el valor de habilitado
+            torre: zona.torre,
+            piso: zona.piso,
+            area: zona.area,
+            habilitado: zona.habilitado,
           };
         });
         this.totalPages = Math.ceil(this.zonas.length / this.itemsPerPage);
@@ -151,6 +166,65 @@ export class ZonaJunicalComponent implements OnInit{
       },
       error => {
         console.error('Error al cargar las zonas:', error);
+      }
+    );
+  }
+  cargarTorres(){
+    this.zonaServicio.recuperarTodosTorres().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.torres = data.map(torre => {
+          return {
+            id: torre.id,
+            torreName: torre.torreName,
+            habilitado: torre.habilitado,
+          };
+        });
+        this.totalPages = Math.ceil(this.torres.length / this.itemsPerPage);
+        console.log("Datos de torre cargados correctamente:", this.torres);
+      },
+      error => {
+        console.error('Error al cargar las torres:', error);
+      }
+    );
+  }
+  cargarPisos(){
+    this.zonaServicio.recuperarTodosPisos().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.pisos = data.map(piso => {
+          return {
+            id: piso.id,
+            pisoName: piso.pisoName,
+            pisoNumber: piso.pisoNumber
+
+          };
+        });
+        this.totalPages = Math.ceil(this.pisos.length / this.itemsPerPage);
+        console.log("Datos de pisos cargados correctamente:", this.pisos);
+      },
+      error => {
+        console.error('Error al cargar los pisos:', error);
+      }
+    );
+  }
+  cargarAreas() {
+    // Lógica para cargar los datos de la base de datos.
+    this.zonaServicio.recuperarTodosAreas().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.areas = data.map(area => {
+          return {
+            id: area.id,
+            areaName: area.areaName,
+            habilitado: area.habilitado,
+          };
+        });
+        this.totalPages = Math.ceil(this.areas.length / this.itemsPerPage);
+        console.log("Datos de areas cargados correctamente:", this.areas);
+      },
+      error => {
+        console.error('Error al cargar las areas:', error);
       }
     );
   }
@@ -254,8 +328,8 @@ export class ZonaJunicalComponent implements OnInit{
   sortData() {
     if (this.currentColumn) {
       this.zonas.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }

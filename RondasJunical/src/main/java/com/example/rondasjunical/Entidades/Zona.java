@@ -6,11 +6,35 @@ import jakarta.persistence.*;
 @Table(name = "zona")
 public class Zona {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "zona_name")
     private String zonaName;
+
+    @OneToOne
+    @JoinColumn(name = "id_torre")
+    private Torre torre;
+
+    @OneToOne
+    @JoinColumn(name = "id_piso")
+    private Piso piso;
+
+    @OneToOne
+    @JoinColumn(name = "id_area")
+    private Area area;
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_torre", nullable = false)
+//    private Torre torre;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_piso", nullable = false)
+//    private Piso piso;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_area", nullable = false)
+//    private Area area;
 
     @Column(name = "habilitado")
     private boolean habilitado;
@@ -43,6 +67,46 @@ public class Zona {
         this.habilitado = habilitado;
     }
 
+    //Relacion
+
+//    public Torre getTorre() {
+//        return torre;
+//    }
+//
+//    public void setTorre(Torre torre) {
+//        this.torre = torre;
+//    }
+//
+//    public Area getArea() {
+//        return area;
+//    }
+//
+//    public void setArea(Area area) {
+//        this.area = area;
+//    }
+
+    public Torre getTorre() {
+        return torre;
+    }
+
+    public void setTorre(Torre torre) {
+        this.torre = torre;
+    }
+
+    public Piso getPiso() {
+        return piso;
+    }
+
+    public void setPiso(Piso piso) {
+        this.piso = piso;
+    }
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
 
     // Método toString()
     @Override
@@ -53,33 +117,4 @@ public class Zona {
                 ", habilitado=" + habilitado +
                 '}';
     }
-
-    // Relación entre Torre, piso, area, zona
-    @ManyToOne
-    @JoinColumn(name = "piso_id")
-    private Piso piso;
-
-    // Relación con Area
-//    @OneToOne(mappedBy = "zona", cascade = CascadeType.ALL)
-//    private Area area;
-
-    // Getters y setters para la relación con Piso
-    public Piso getPiso() {
-        return piso;
-    }
-
-    public void setPiso(Piso piso) {
-        this.piso = piso;
-    }
-
-    // Getters y setters para la relación con Area
-//    public Area getArea() {
-//        return area;
-//    }
-//
-//    public void setArea(Area area) {
-//        this.area = area;
-//    }
-
-
 }

@@ -22,7 +22,7 @@ public class PisoControlador {
     // Método para guardar un nuevo piso
     @PostMapping("/pisos/guardarPiso")
     public ResponseEntity<Piso> guardarPiso(@RequestBody Piso piso) {
-        if (piso.getPisoName() == null || piso.getPisoNumber() == null) {
+        if (piso.getPisoName() == null || piso.getPisoNumber() == null || piso.getTorre()== null) {
             // Manejar valores nulos (lanzar excepción, devolver mensaje de error)
             return ResponseEntity.badRequest().build();
         }
@@ -35,8 +35,7 @@ public class PisoControlador {
     // Recuperar todas los pisos
     @GetMapping("/pisos/obtenerTodosLosPisos")
     public ResponseEntity<List<Piso>> obtenerTodosLosPisos() {
-        List<Piso> pisos = pisoServicio.obtenerTodosLosPisos();
-        return ResponseEntity.ok(pisos);
+        return ResponseEntity.ok(pisoServicio.obtenerTodosLosPisos());
     }
 
     // Recuperar piso por ID
@@ -72,18 +71,18 @@ public class PisoControlador {
     }
 
     // Inhabilitar piso
-    @PutMapping("/pisos/{id}/inhabilitar")
-    public ResponseEntity<Void> inhabilitarPiso(@PathVariable Long id) {
-        pisoServicio.inhabilitarPiso(id);
-        return ResponseEntity.ok().build();
-    }
+//    @PutMapping("/pisos/{id}/inhabilitar")
+//    public ResponseEntity<Void> inhabilitarPiso(@PathVariable Long id) {
+//        pisoServicio.inhabilitarPiso(id);
+//        return ResponseEntity.ok().build();
+//    }
 
     // Habilitar piso
-    @PutMapping("/pisos/{id}/habilitar")
-    public ResponseEntity<Void> habilitarPiso(@PathVariable Long id) {
-        pisoServicio.habilitarPiso(id);
-        return ResponseEntity.ok().build();
-    }
+//    @PutMapping("/pisos/{id}/habilitar")
+//    public ResponseEntity<Void> habilitarPiso(@PathVariable Long id) {
+//        pisoServicio.habilitarPiso(id);
+//        return ResponseEntity.ok().build();
+//    }
 
 // verificar si una piso existe en la base de datos
     @GetMapping("/pisos/existe/{pisoNumber}")

@@ -57,26 +57,6 @@
             </div>
             <!-- fin cargo  -->
 
-            <!-- inicio  descripcion -->
-            <div class="form-group">
-              <label for="cargoDescrips">Descripción del Cargo</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i *ngIf="editarForm.get('cargoDescrips')?.valid || !editarForm.get('cargoDescrips')?.touched" class="fas fa-ghost"></i>
-                <i *ngIf="editarForm.get('cargoDescrips')?.invalid && editarForm.get('cargoDescrips')?.touched" class="fas fa-times-circle text-danger"></i>
-              </span>
-                </div>
-                <textarea class="form-control" id="cargoDescrips" formControlName="cargoDescrips" placeholder="Ingrese la Descripción del Cargo"></textarea>
-              </div>
-              <div *ngIf="editarForm.get('cargoDescrips')?.invalid && (editarForm.get('cargoDescrips')?.dirty || editarForm.get('cargoDescrips')?.touched)">
-                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['required']">La Descripción  es obligatorio.</div>
-                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
-                <div class="text-danger" *ngIf="editarForm.get('cargoDescrips')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
-              </div>
-            </div>
-            <!-- fin descripcion  -->
-
             <!-- inicio cargo -->
             <!-- Botón para abrir el modal de confirmación -->
             <div class="form-group">
@@ -85,7 +65,7 @@
               </button>
               <!-- Botones de Cancelar y Volver -->
               <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
-              <a href="cargo-respons" class="btn btn-outline-info">Volver</a>
+              <a href="dashboard/cargo-respons" class="btn btn-outline-info">Volver</a>
             </div>
             <!-- Modal de confirmación -->
             <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">

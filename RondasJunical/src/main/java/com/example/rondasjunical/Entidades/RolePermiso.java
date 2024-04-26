@@ -19,4 +19,5 @@ public class RolePermiso {
     private Permiso permiso;
 
     // Otros campos y métodos
+    //
 }

@@ -3,13 +3,28 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {CommonModule, KeyValuePipe, NgForOf, NgIf} from "@angular/common";
 import {ZonaService} from "../zona.service";
 import {HttpClient, HttpClientModule, HttpErrorResponse} from "@angular/common/http";
-
-
+interface Area {
+  id: number;
+  areaName: string;
+  habilitado: boolean;
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+}
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+}
 interface Zona {
   id: number;
   zonaName: string;
+  torre: Torre;
+  piso: Piso;
+  area: Area;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
 }
 @Component({
   providers: [ZonaService, HttpClient],
@@ -30,11 +45,14 @@ interface Zona {
 export class CrearZonaComponent implements  OnInit{
 
   crearForm!: FormGroup;
-  zona: Zona = {id: 0, zonaName: '', habilitado: false };
+  zona!: Zona;
+  zonas: Zona [] = [];
+  torres: Torre []=[];
+  pisos: Piso[] = [];
+  areas: Area [] = [];
   zonaCreado: boolean = false;
   zonaEnProceso: boolean = false
   errorCrearZona: string = '';
-  //pisos: Piso[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,8 +64,47 @@ export class CrearZonaComponent implements  OnInit{
   ngOnInit(): void {
     this.crearForm = this.formBuilder.group({
       zonaName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+      torre: ['', [Validators.required]],
+      piso: ['', [Validators.required]],
+      area: ['', [Validators.required]],
+
     });
-    //this.cargarPisos();
+    this.cargarTorres();
+    this.cargarPisos();
+    this.cargarAreas();
+  }
+  cargarTorres(): void{
+    this.zonaService.recuperarTodosTorres().subscribe(
+      (torres: Torre[]) =>{
+        this.torres = torres;
+      },
+      (error) => {
+        console.error(error);
+        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+      }
+    );
+  }
+  cargarPisos(): void{
+    this.zonaService.recuperarTodosPisos().subscribe(
+      (pisos: Piso[]) =>{
+        this.pisos = pisos;
+      },
+      (error) => {
+        console.error(error);
+        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+      }
+    );
+  }
+  cargarAreas(): void{
+    this.zonaService.recuperarTodosAreas().subscribe(
+      (areas: Area[]) =>{
+        this.areas = areas;
+      },
+      (error) => {
+        console.error(error);
+        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+      }
+    );
   }
 
   onSubmit(): void {
@@ -108,5 +165,14 @@ export class CrearZonaComponent implements  OnInit{
   //get
   get zonaName() {
     return this.crearForm.get('zonaName');
+  }
+  get torre() {
+    return this.crearForm.get('torre');
+  }
+  get piso() {
+    return this.crearForm.get('piso');
+  }
+  get area() {
+    return this.crearForm.get('area');
   }
 }

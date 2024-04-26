@@ -57,25 +57,73 @@
             </div>
             <!-- fin area  -->
 
-            <!-- inicio  descripcion -->
-            <!-- <div class="form-group">
-              <label for="areaDescripc">Descripción del Área</label>
+            <!-- inicio  torre -->
+            <!--
+             <div class="form-group">
+              <label for="torre">Nombre de la Torre</label>
               <div class="input-group">
                 <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i *ngIf="crearForm.get('areaDescripc')?.valid || !crearForm.get('areaDescripc')?.touched" class="fas fa-ghost"></i>
-                <i *ngIf="crearForm.get('areaDescripc')?.invalid && crearForm.get('areaDescripc')?.touched" class="fas fa-times-circle text-danger"></i>
-              </span>
+                <span class="input-group-text">
+                  <i *ngIf="crearForm.get('torre')?.valid || !crearForm.get('torre')?.touched" class="fas fa-building"></i>
+                  <i *ngIf="crearForm.get('torre')?.invalid && crearForm.get('torre')?.touched" class="fas fa-times-circle text-danger"></i>
+                </span>
                 </div>
-                <textarea class="form-control" id="areaDescripc" formControlName="areaDescripc" placeholder="Ingrese la Descripción del Área"></textarea>
+                <select class="form-control" id="torre" formControlName="torre">
+                  <option value="" disabled selected>Selecciona una torre</option>
+                  <option *ngFor="let torre of torres" [ngValue]="torre"> {{ torre.torreName }} </option>
+                </select>
               </div>
-              <div *ngIf="crearForm.get('areaDescripc')?.invalid && (crearForm.get('areaDescripc')?.dirty || crearForm.get('areaDescripc')?.touched)">
-                <div class="text-danger" *ngIf="crearForm.get('areaDescripc')?.errors?.['required']">La Descripción  es obligatorio.</div>
-                <div class="text-danger" *ngIf="crearForm.get('areaDescripc')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
-                <div class="text-danger" *ngIf="crearForm.get('areaDescripc')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
+              <div *ngIf="crearForm.get('torre')?.invalid && (crearForm.get('torre')?.dirty || crearForm.get('torre')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('torre')?.errors?.['required']">El Nombre de la Torre es obligatorio.</div>
+              </div>
+            </div>
+            -->
+
+            <!-- fin torre  -->
+
+            <!-- Inicio Piso -->
+            <!--  <div class="form-group">
+              <label for="piso">Piso</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="crearForm.get('piso')?.valid || !crearForm.get('piso')?.touched" class="fas fa-building"></i>
+                    <i *ngIf="crearForm.get('piso')?.invalid && crearForm.get('piso')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <select class="form-control" id="piso" formControlName="piso">
+                  <option value="" disabled selected>Selecciona un piso</option>
+                  <option *ngFor="let piso of pisos" [ngValue]="piso"> {{ piso.pisoName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('piso')?.invalid && (crearForm.get('piso')?.dirty || crearForm.get('piso')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('piso')?.errors?.['required']">El campo de piso es obligatorio.</div>
               </div>
             </div> -->
-            <!-- fin descripcion  -->
+
+            <!-- Fin Piso -->
+
+            <!-- Inicio ResponJefeArea -->
+            <div class="form-group">
+              <label for="responJefeArea">Responsable de Área</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i *ngIf="crearForm.get('responJefeArea')?.valid || !crearForm.get('responJefeArea')?.touched" class="fas fa-user-tie"></i>
+                      <i *ngIf="crearForm.get('responJefeArea')?.invalid && crearForm.get('responJefeArea')?.touched" class="fas fa-times-circle text-danger"></i>
+                    </span>
+                </div>
+                <select class="form-control" id="responJefeArea" formControlName="responJefeArea">
+                  <option value="" disabled selected>Selecciona un responsable de área</option>
+                  <option *ngFor="let responJefeArea of responJefeAreas" [ngValue]="responJefeArea"> {{ responJefeArea.responName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('responJefeArea')?.invalid && (crearForm.get('responJefeArea')?.dirty || crearForm.get('responJefeArea')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('responJefeArea')?.errors?.['required']">El campo de responsable de área es obligatorio.</div>
+              </div>
+            </div>
+            <!-- Fin ResponJefeArea -->
+
 
             <!-- inicio -->
             <!-- Botón para abrir el modal de confirmación -->
@@ -85,7 +133,7 @@
             </button>
             <!-- Botones de Cancelar y Volver -->
             <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
-            <a href="area-respons" class="btn btn-outline-info">Volver</a>
+            <a href="dashboard/area-respons" class="btn btn-outline-info">Volver</a>
             </div>
             <!-- Modal de confirmación -->
             <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">

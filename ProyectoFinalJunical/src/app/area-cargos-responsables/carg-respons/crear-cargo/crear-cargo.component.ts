@@ -7,9 +7,7 @@ import {HttpClient, HttpClientModule, HttpErrorResponse} from "@angular/common/h
 interface Cargo {
   id: number;
   cargoName: string;
-  cargoDescrips: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
 }
 
 @Component({
@@ -28,7 +26,7 @@ interface Cargo {
 })
 export class CrearCargoComponent implements OnInit{
   crearForm!: FormGroup;
-  cargo: Cargo = {id: 0, cargoName: '', cargoDescrips: '', habilitado: false};
+  cargo: Cargo = {id: 0, cargoName: '', habilitado: true};
   cargoCreado: boolean = false;
   cargoEnProceso: boolean = false;
   errorCrearCargo: string = '';
@@ -42,7 +40,7 @@ export class CrearCargoComponent implements OnInit{
   ngOnInit(): void {
     this.crearForm = this.formBuilder.group({
       cargoName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      cargoDescrips: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]], // Aquí corregido
+      //cargoDescrips: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]], // Aquí corregido
     });
   }
 
@@ -105,7 +103,4 @@ export class CrearCargoComponent implements OnInit{
     return this.crearForm.get('cargoName');
   }
 
-  get cargoDescrips() {
-    return this.crearForm.get('cargoDescrips');
-  }
 }

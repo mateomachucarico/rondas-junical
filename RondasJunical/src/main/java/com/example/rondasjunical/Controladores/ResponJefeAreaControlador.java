@@ -22,7 +22,7 @@ public class ResponJefeAreaControlador {
     // Método para guardar un nuevo responsable
     @PostMapping("/responJefeAreas/guardarResponJefeArea")
     public ResponseEntity<ResponJefeArea> guardarResponJefeArea(@RequestBody ResponJefeArea responJefeArea) {
-        if (responJefeArea.getResponName() == null || responJefeArea.getResponEmail() == null || responJefeArea.getResponArea() == null || responJefeArea.getResponCargo()== null) {
+        if (responJefeArea.getResponName() == null || responJefeArea.getResponEmail() == null) {
             // Manejar valores nulos (lanzar excepción, devolver mensaje de error)
             return ResponseEntity.badRequest().build();
         }

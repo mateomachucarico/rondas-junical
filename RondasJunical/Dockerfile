@@ -1,5 +1,11 @@
 # Utiliza la imagen base de OpenJDK 11
-FROM openjdk:20-ea-1-jdk-slim
+#FROM openjdk:20-ea-1-jdk-slim
+FROM openjdk:21
+#FROM openjdk:11
+#FROM openjdk:17-alpine
+#FROM openjdk:22-ea-1-jdk-slim
+
+
 
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app

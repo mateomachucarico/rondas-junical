@@ -11,11 +11,12 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatCell, MatCellDef} from "@angular/material/table";
+import {LoadingService} from "../../Duplicados/loading.service";
 interface Categoria {
   id: number;
   categName: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
+
 }
 
 interface SearchHistoryItem {
@@ -30,7 +31,7 @@ interface Item {
 
 }
 @Component({
-  providers: [CategoriaService, HttpClient],
+  providers: [CategoriaService, HttpClient, LoadingService],
   selector: 'app-categoria-junical',
   standalone: true,
   imports: [
@@ -96,26 +97,16 @@ export class CategoriaJunicalComponent implements  OnInit {
     private router: Router,
     private categoriaServicio: CategoriaService,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
   ) {
   }
 
   ngOnInit(): void {
     this.cargarCategorias();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -132,7 +123,6 @@ export class CategoriaJunicalComponent implements  OnInit {
   }
 
   protected readonly Math = Math;
-  private column: any;
 
   // Carga los datos de la base de datos.
   cargarCategorias() {
@@ -255,8 +245,8 @@ export class CategoriaJunicalComponent implements  OnInit {
   sortData() {
     if (this.currentColumn) {
       this.categorias.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }
@@ -280,6 +270,7 @@ export class CategoriaJunicalComponent implements  OnInit {
     if (this.categoriaToDelete) {
       this.showAlert = false;
       this.categoriaServicio.eliminarCategoria(this.categoriaToDelete.id).subscribe(() => {
+        console.log('Categoría eliminada:', this.categoriaToDelete); // Registrar la categoría eliminada en la consola
         this.categorias = this.categorias.filter(p => p.id !== this.categoriaToDelete!.id);
         this.categoriaToDelete = null;
         this.categoriaEliminado = true; // Mostrar mensaje de eliminación correcta
@@ -287,9 +278,9 @@ export class CategoriaJunicalComponent implements  OnInit {
           this.categoriaEliminado = false; // Ocultar el mensaje después de cierto tiempo (por ejemplo, 3 segundos)
         }, 3000);
       }, error => {
-        console.error('Error al eliminar el categoria:', error);
+        console.error('Error al eliminar la categoría:', error);
         // Mostrar mensaje de error al instante
-        this.errorMessage = 'Hubo un error al eliminar el categoria. Por favor, inténtalo de nuevo más tarde.';
+        this.errorMessage = 'Hubo un error al eliminar la categoría. Por favor, inténtalo de nuevo más tarde.';
         // Ocultar el modal después de 8 segundos
         setTimeout(() => {
           this.showAlert = false;
@@ -297,6 +288,7 @@ export class CategoriaJunicalComponent implements  OnInit {
       });
     }
   }
+
   cancelDelete() {
     // Cierra la alerta
     this.showAlert = false;

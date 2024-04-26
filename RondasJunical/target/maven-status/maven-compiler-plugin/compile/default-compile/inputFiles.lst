@@ -14,17 +14,16 @@ C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Repositorios\RolePermisoRepositorio.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Repositorios\TorreRepositorio.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\InformacRondaServicio.java
-C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\RegistroUsuarioException.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\ResponJefeAreaServicio.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\CategSopor.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Seguridad\CorsConfig.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Excepciones\PermisoNotFoundException.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Excepciones\AreaNotFoundException.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\CargoServicio.java
-C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\InformacRonda.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\Cargo.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Excepciones\ResponJefeAreaNotFoundException.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Repositorios\ResponJefeAreaRepositorio.java
+C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\Ronda.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\Usuario.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Controladores\AsignarRondasControlador.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Excepciones\ZonaNotFoundException.java
@@ -35,7 +34,6 @@ C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\AsignarRondaServicio.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\CategSoporServicio.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\ZonaServicio.java
-C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Servicios\CorreoElectronicoDuplicadoException.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Entidades\FotoHallazgo.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Controladores\CategSoporControlador.java
 C:\Users\matia\OneDrive\Escritorio\copia de seguridad angular\RondasJunical\src\main\java\com\example\rondasjunical\Excepciones\CategSoporNotFoundException.java

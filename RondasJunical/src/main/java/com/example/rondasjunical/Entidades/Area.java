@@ -1,22 +1,32 @@
 package com.example.rondasjunical.Entidades;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "area")
 public class Area {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "area_name")
     private String areaName;
 
+//    @OneToMany(mappedBy = "area")
+//    private List<Zona> zonas;
+
     @Column(name = "habilitado")
     private boolean habilitado;
 
+    @OneToOne
+    @JoinColumn(name = "respon_jefe_area_id")
+    private ResponJefeArea responJefeArea;
+
+
     // Constructores
-    public Area() { }
+    public Area() {
+    }
 
     // Getters y setters
     public Long getId() {
@@ -45,6 +55,24 @@ public class Area {
         this.habilitado = habilitado;
     }
 
+//    public List<Zona> getZonas() {
+//        return zonas;
+//    }
+//
+//    public void setZonas(List<Zona> zonas) {
+//        this.zonas = zonas;
+//    }
+
+    // Getter y setter para la relación con ResponJefeArea
+
+    public ResponJefeArea getResponJefeArea() {
+        return responJefeArea;
+    }
+
+    public void setResponJefeArea(ResponJefeArea responJefeArea) {
+        this.responJefeArea = responJefeArea;
+    }
+
 
     // Método toString()
     @Override
@@ -55,58 +83,4 @@ public class Area {
                 ", habilitado=" + habilitado +
                 '}';
     }
-
-    // Relación con Torre.
-//    @OneToOne
-//    @JoinColumn(name = "torre_id", unique = true)
-//    private Torre torre;
-
-//     Getters y setters para la relación con Torre
-//    public Torre getTorre() {
-//        return torre;
-//    }
-//
-//    public void setTorre(Torre torre) {
-//        this.torre = torre;
-//    }
-
-    // Relación con Piso
-    @ManyToOne
-    @JoinColumn(name = "piso_id")
-    private Piso piso;
-
-    // Getters y setters para la relación con Piso
-    public Piso getPiso() {
-        return piso;
-    }
-
-    public void setPiso(Piso piso) {
-        this.piso = piso;
-    }
-
-    // Relación con Area con Torre
-    @ManyToOne
-    @JoinColumn(name = "torre_id")
-    private Torre torre;
-    public Torre getTorre() {
-        return torre;
-    }
-    public void setTorre(Torre torre) {
-        this.torre = torre;
-    }
-
-    // Relación con el responsable de área
-    @ManyToOne
-    @JoinColumn(name = "respon_id")
-    private ResponJefeArea responJefeArea;
-
-    // Getters y setters para la relación con ResponJefeArea
-    public ResponJefeArea getResponJefeArea() {
-        return responJefeArea;
-    }
-
-    public void setResponJefeArea(ResponJefeArea responJefeArea) {
-        this.responJefeArea = responJefeArea;
-    }
 }
-//pero si un area puede tener solo una torre porfavor realizar la correción

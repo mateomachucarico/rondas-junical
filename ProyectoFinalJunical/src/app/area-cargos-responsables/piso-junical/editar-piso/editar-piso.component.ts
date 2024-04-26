@@ -11,17 +11,14 @@ interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 
 
 interface Piso {
   id: number;
   pisoName: string;
-  //pisoDescripc: string;
   pisoNumber: string;
   torre: Torre;
-  //[key: string]: boolean | number | string;
 }
 
 @Component({
@@ -40,13 +37,14 @@ interface Piso {
 })
 export class EditarPisoComponent implements OnInit {
   editarForm!: FormGroup;
-  piso: Piso = { id: 0, pisoName: '', pisoNumber: '', torre: {id: 0, torreName: '', habilitado: false}  };
+  piso!: Piso;
   // Variables para mensajes
   pisoCreado: boolean = false;
   errorEditarPiso: string = '';
   pisoEnProceso: boolean = false;
   pisoId: number = 0;
   torres: Torre[] = [];
+  pisos: Piso[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,7 +56,6 @@ export class EditarPisoComponent implements OnInit {
   ngOnInit(): void {
     this.editarForm = this.formBuilder.group({
       pisoName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-      //pisoDescripc: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       pisoNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.minLength(1), Validators.maxLength(5)]],
       torre: ['', [Validators.required]],
     });
@@ -73,7 +70,6 @@ export class EditarPisoComponent implements OnInit {
             this.piso = response; // Asignar el valor del piso obtenido del servicio
             this.editarForm.patchValue({
               pisoName: response.pisoName,
-              //pisoDescripc: response.pisoDescripc,
               pisoNumber: response.pisoNumber,
               torre: response.torre
             });
@@ -91,15 +87,12 @@ export class EditarPisoComponent implements OnInit {
   }
 
 cargarTorres(): void {
-  // Llamar a tu servicio para obtener todas las torres
   this.pisoService.recuperarTodosTorres().subscribe(
     (torres: Torre[]) => {
-      // Filtrar solo las torres habilitadas
       this.torres = torres.filter(torre => torre.habilitado);
     },
     (error) => {
       console.error(error);
-      // Manejar el error, por ejemplo, mostrar un mensaje al usuario
     }
   );
 }

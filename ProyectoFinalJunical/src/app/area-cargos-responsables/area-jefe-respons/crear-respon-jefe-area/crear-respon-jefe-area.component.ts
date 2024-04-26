@@ -1,39 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   FormsModule,
-  ReactiveFormsModule, ValidationErrors,
-  ValidatorFn,
+  ReactiveFormsModule,
   Validators
 } from "@angular/forms";
 import {KeyValuePipe, NgForOf, NgIf} from "@angular/common";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {ResponJefeAreaService} from "../respon-jefe-area.service";
-import SignaturePad from 'signature_pad';
 
-interface Area
-{
-  id: number;
-  areaName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
-interface Cargo
-{
-  id: number;
-  cargoName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
 interface ResponJefeArea {
   id: number;
   responName: string;
   responEmail: string;
-  area: Area;
-  cargo: Cargo;
-  //responFirma: string;
   habilitado:boolean;
 }
 @Component({
@@ -53,14 +33,12 @@ interface ResponJefeArea {
 })
 export class CrearResponJefeAreaComponent implements OnInit{
   crearForm!: FormGroup;
+  responJefeAreas: ResponJefeArea [] = [];
+  responJefeArea! : ResponJefeArea;
   responJefeAreaCreado: boolean = false;
   responJefeAreaEnProceso: boolean = false;
-  responJefeArea: ResponJefeArea = {id:0, responName: '', responEmail: '', area: { id: 0, areaName: '', habilitado: false }, cargo: { id: 0, cargoName: '', habilitado: false }, habilitado:false };
   errorCrearResponJefeArea: string = ''; // Inicialización de la variable
-  private signaturePad: any;
-  private firmaLimpiada: boolean = false;
-  areas: Area[] = [];
-  cargos: Cargo[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
@@ -71,39 +49,10 @@ export class CrearResponJefeAreaComponent implements OnInit{
     this.crearForm = this.formBuilder.group({
       responName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       responEmail: ['', [Validators.required, Validators.email]],
-      area: ['', [Validators.required]],
-      cargo: ['', [Validators.required]],
-      //responFirma: ['', [this.firmaRequeridaValidator()]], // Agregar validación de firma requerida
+
     });
-    this.cargarAreas();
-    this.cargarCargos();
   }
-  cargarAreas(): void {
-    // Llamar a tu servicio para obtener todas las torres
-    this.responJefeAreaService.recuperarTodosAreas().subscribe(
-      (areas: Area[]) => {
-        // Filtrar solo las torres habilitadas
-        this.areas = areas.filter(area => area.habilitado);
-      },
-      (error) => {
-        console.error(error);
-        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
-      }
-    );
-  }
-  cargarCargos(): void {
-    // Llamar a tu servicio para obtener todas las torres
-    this.responJefeAreaService.recuperarTodosCargos().subscribe(
-      (cargos: Cargo[]) => {
-        // Filtrar solo las torres habilitadas
-        this.cargos = cargos.filter(cargo => cargo.habilitado);
-      },
-      (error) => {
-        console.error(error);
-        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
-      }
-    );
-  }
+
   onSubmit(): void {
     if (this.crearForm.valid) {
       const responName = this.crearForm.value.responName;
@@ -175,41 +124,6 @@ export class CrearResponJefeAreaComponent implements OnInit{
   }
   get responEmail() {
     return this.crearForm.get('responEmail');
-  }
-  get responArea() {
-    return this.crearForm.get('responArea');
-  }
-  get responCargo() {
-    return this.crearForm.get('responCargo');
-  }
-
-  // hacer la firma
-  limpiarFirma() {
-    if (this.signaturePad) {
-      this.signaturePad.clear();
-      this.firmaLimpiada = true;
-    } else {
-      console.error('SignaturePad no inicializado.');
-    }
-  }
-  initSignaturePad() {
-    const canvas = document.getElementById('firmaResponsableArea') as HTMLCanvasElement;
-    if (canvas) {
-      this.signaturePad = new SignaturePad(canvas);
-      this.signaturePad.on();
-    } else {
-      console.error('Elemento de lienzo no encontrado.');
-    }
-  }
-  // Función para validar que la firma es obligatoria
-  firmaRequeridaValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const firma = control.value;
-      if (!firma) {
-        return { firmaRequerida: true };
-      }
-      return null;
-    };
   }
 }
 

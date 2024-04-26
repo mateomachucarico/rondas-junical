@@ -1,8 +1,7 @@
 package com.example.rondasjunical.Entidades;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name="cargo")
@@ -14,11 +13,17 @@ public class Cargo {
     @Column(name = "cargo_name")
     private String cargoName;
 
-    @Column(name = "cargo_descripc")
-    private String cargoDescrips;
+//    @JsonCreator
+//    public Cargo(@JsonProperty("cargo_name") String cargo_name) {
+//        this.cargoName = cargo_name;
+//    }
 
     @Column(name = "habilitado")
     private boolean habilitado;
+
+//    @ManyToOne
+//    @JoinColumn(name = "jefe_area_id")
+//    private ResponJefeArea jefeArea;
 
     // Constructores
     public Cargo(){}
@@ -43,13 +48,7 @@ public class Cargo {
         this.cargoName = cargoName;
     }
 
-    public String getCargoDescrips(){
-        return cargoDescrips;
-    }
 
-    public void setCargoDescrips(String cargoDescrips) {
-        this.cargoDescrips = cargoDescrips;
-    }
     // Getter y setter para el campo habilitado
     public boolean isHabilitado() {
         return habilitado;
@@ -65,22 +64,17 @@ public class Cargo {
         return "Cargo{" +
                 "id=" + id +
                 ", cargoName='" + cargoName + '\'' +
-                ", cargoDescrips='" + cargoDescrips + '\'' +
                 ", habilitado=" + habilitado +
                 '}';
     }
 
-
     // Relación con el responsable de área
-    @ManyToMany(mappedBy = "cargos")
-    private Set<ResponJefeArea> responJefeArea = new HashSet<>();
+//    public ResponJefeArea getJefeArea() {
+//        return jefeArea;
+//    }
 
-    // Getters y setters para la relación con ResponJefeArea
-    public Set<ResponJefeArea> getResponJefeArea() {
-        return responJefeArea;
-    }
+//    public void setJefeArea(ResponJefeArea jefeArea) {
+//        this.jefeArea = jefeArea;
+//    }
 
-    public void setResponJefeArea(Set<ResponJefeArea> responJefeArea) {
-        this.responJefeArea = responJefeArea;
-    }
 }

@@ -18,11 +18,11 @@ public class AsignarRondaServicio {
 
     // crud
 
-    //Obtener todas asignaciones de rondas
+    //Obtener todas asignaciones de Ronda
     public List<AsignarRonda> obtenerTodosLosAsignarRonda(){
         return asignarRondaRepositorio.findAll();
     }
-    //Obtener asignaciones de rondas  por Id
+    //Obtener asignaciones de Ronda  por Id
     public AsignarRonda obtenerAsignarRondaPorId(Long id){
         return asignarRondaRepositorio.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Ronda Asignada no Encontrada con Id" + id));

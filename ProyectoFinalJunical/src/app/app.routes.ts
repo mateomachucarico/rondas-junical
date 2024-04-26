@@ -4,7 +4,6 @@ import { LoginJunicalComponent } from "./auth/login-junical/login-junical.compon
 import { PagesComponent } from "./pages/pages.component";
 import { DashboardComponent } from "./pages/dashboard/dashboard.component";
 import { RegisterJunicalComponent } from "./auth/register-junical/register-junical.component";
-import { ForgotPasswordComponent } from "./auth/forgot-password/forgot-password.component";
 import {AreaResponsComponent} from "./area-cargos-responsables/area-respons/area-respons.component";
 import {CrearAreaComponent} from "./area-cargos-responsables/area-respons/crear-area/crear-area.component";
 import {CargResponsComponent} from "./area-cargos-responsables/carg-respons/carg-respons.component";
@@ -38,16 +37,19 @@ import {EditarZonaComponent} from "./area-cargos-responsables/zona-junical/edita
 import {EditarRolComponent} from "./roles/editar-rol/editar-rol.component";
 import {CrearRondaComponent} from "./RONDAS/crear-ronda/crear-ronda.component";
 import {EditarUsuariosComponent} from "./auth/login-junical/usuarios-junical/editar-usuarios/editar-usuarios.component";
-import {NotificacionesService} from "./area-cargos-responsables/Notificaciones/notificaciones.service";
 import {
   NotificacionesJunicalComponent
 } from "./area-cargos-responsables/Notificaciones/notificaciones-junical/notificaciones-junical.component";
-
-
+import {ReportesComponent} from "./reportes/reportes.component";
+import {PermisosComponent} from "./roles/permisos/permisos.component";
+import {CalendarioComponent} from "./reportes/calendario/calendario.component";
+import {AppComponent} from "./app.component";
 
 export const routes: Routes = [
   // Ruta de inicio de sesión primero para acceso inicial
-  { path: '', redirectTo: 'login-junical', pathMatch: 'full' }, // Redirigir al login
+  { path: '', redirectTo: 'login-junical', pathMatch: 'full' },
+  { path: '', component: AppComponent },
+  // Redirigir al login
   { path: 'login-junical', component: LoginJunicalComponent },
 
   // Ruta de registro
@@ -60,51 +62,55 @@ export const routes: Routes = [
     canActivate: [/* Agregue su guardia de autenticación aquí */], // Panel seguro
     children: [
       { path: '', component: DashboardComponent },
+      //Ronda Soporte
       { path: 'crear-ronda', component: CrearRondaComponent },
-
+      /* Rutas del Dashboard */
       {path:'piso-junical', component: PisoJunicalComponent},
-
-      { path: 'torre-junical', component: TorresJunicalComponent, // Componente principal para torre-junical
-        children: [
-          { path: 'crear-torre', component: CrearTorreComponent }, // Ruta hija para crear torre
-          { path: 'editar-torre/:id', component: EditarTorreComponent } // Ruta hija para editar torre con parámetro de id
-        ]
+      {path: 'reporte-general', component: ReportesComponent},
+      {path:'area-respons', component: AreaResponsComponent},
+      {path:'respons-jefearea', component: AreaJefeResponsComponent},
+      {path:'categoria-junical', component: CategoriaJunicalComponent},
+      {path: 'zona-junical', component: ZonaJunicalComponent},
+      {path: 'cargo-respons', component: CargResponsComponent},
+      {path: 'roles', component: RolesComponent},
+      {path: 'permisos', component: PermisosComponent},
+      {path: 'notificaciones-junical', component: NotificacionesJunicalComponent},
+      {path: 'calendario', component: CalendarioComponent},
+      {path: 'lista-usuarios', component: UsuariosJunicalComponent},
+      { path: 'torre-junical', component: TorresJunicalComponent,
 
       },
     ]
   },
-
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-
-  // Error routes (optional)
-  //{ path: 'error-505', component: ServerErrorComponent },
-  {path: 'crear-area',component: CrearAreaComponent},
-  {path:'area-respons', component: AreaResponsComponent},
-  {path:'editar-area/:id', component: EditarAreaComponent},
-  {path: 'cargo-respons', component: CargResponsComponent},
-  {path: 'crear-cargo', component: CrearCargoComponent},
-  {path:'editar-cargo/:id',component: EditarCargoComponent},
-
+  /* Torres */
+  { path: 'crear-torre', component: CrearTorreComponent },
+  { path: 'editar-torre/:id', component: EditarTorreComponent },
+  /* Pisos */
   {path:'crear-piso',component:CrearPisoComponent},
   {path: 'editar-piso/:id', component: EditarPisoComponent},
-
-  {path:'usuarios-junical', component: UsuariosJunicalComponent},
-  {path: 'editar-usuario/:id', component: EditarUsuariosComponent},
-  {path:'categoria-junical', component: CategoriaJunicalComponent},
-  {path:'crear-categoria', component: CrearCategoriaComponent},
-  {path:'editar-categoria/:id', component: EditarCategoriaComponent},
-  {path: 'zona-junical', component: ZonaJunicalComponent},
-  {path: 'crear-zona', component: CrearZonaComponent},
-  {path: 'editar-zona/:id', component: EditarZonaComponent},
-  {path: 'roles', component: RolesComponent},
-  {path:'crear-rol', component: CrearRolComponent},
-  {path:'editar-rol/:id', component: EditarRolComponent},
-  {path:'respons-jefearea', component: AreaJefeResponsComponent},
+  /* Responsables Area */
   {path: 'crear-responjefearea', component: CrearResponJefeAreaComponent},
   {path: 'editar-jefe/:id', component: EditarJefeComponent},
-  //Ronda Soporte
-  //{path: 'crear-ronda',component: CrearRondaComponent},
-  {path: 'notificaciones-junical', component: NotificacionesJunicalComponent},
+  /* Categorias */
+  {path:'crear-categoria', component: CrearCategoriaComponent},
+  {path:'editar-categoria/:id', component: EditarCategoriaComponent},
+  /* Zonas */
+  {path: 'crear-zona', component: CrearZonaComponent},
+  {path: 'editar-zona/:id', component: EditarZonaComponent},
+  /* Areas */
+  {path: 'crear-area',component: CrearAreaComponent},
+  {path:'editar-area/:id', component: EditarAreaComponent},
+  /* Cargos */
+  {path: 'crear-cargo', component: CrearCargoComponent},
+  {path:'editar-cargo/:id',component: EditarCargoComponent},
+  /* Roles */
+  {path:'crear-rol', component: CrearRolComponent},
+  {path:'editar-rol/:id', component: EditarRolComponent},
+  /* Users */
+  {path: 'editar-usuario/:id', component: EditarUsuariosComponent},
+
+
+
 
   { path: '**', component: NopageFoundComponent }, // Comodín para rutas inigualables
 ];

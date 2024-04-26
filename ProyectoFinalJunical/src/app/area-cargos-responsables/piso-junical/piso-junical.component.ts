@@ -6,31 +6,28 @@ import { PisoService } from "./crear-piso/piso.service";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { NgxPaginationModule } from 'ngx-pagination';
 import * as ExcelJS from 'exceljs';
-
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatCell, MatCellDef} from "@angular/material/table";
 import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../filter.pipe";
-
-
+import {LoadingService} from "../../Duplicados/loading.service";
+import {TorresService} from "../torres-junical/torres.service";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs";
 
 interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 
 
 interface Piso {
   id: number;
   pisoName: string;
-  //pisoDescripc: string;
   pisoNumber: string;
   torre: Torre;
-  habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 interface SearchHistoryItem {
   // Define la estructura de un elemento del historial de búsqueda
@@ -40,10 +37,9 @@ interface SearchHistoryItem {
 interface Item {
   id: number;
   pisoName: string;
-
 }
 @Component({
-  providers: [PisoService, HttpClient],
+  providers: [PisoService, HttpClient, LoadingService, TorresService],
   selector: 'app-piso-junical',
   standalone: true,
   imports: [
@@ -62,14 +58,12 @@ interface Item {
     NgbTooltip,
     NgbTooltipModule,
     FilterPipe
-
   ],
   templateUrl: './piso-junical.component.html',
   styleUrl: './piso-junical.component.css'
 })
 export class PisoJunicalComponent implements OnInit {
 
-  //piso: Piso = { id: 0, pisoName: '', pisoDescripc: '', pisoNumber: '',habilitado:false, torre  };
   piso!: Piso;
   pisos: Piso[] = [];
   torres: Torre[] = [];
@@ -78,6 +72,8 @@ export class PisoJunicalComponent implements OnInit {
   totalPages = 0; // Número total de páginas
   currentColumn: string = 'id'; // Columna inicial para ordenar
   sortOrder: string = 'asc';
+
+  collectionSize: number = 0;
 
   // piso Eliminar
   showAlert: boolean = false;
@@ -109,29 +105,19 @@ export class PisoJunicalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private pisoService: PisoService,
+    private torreService: TorresService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
   ) {}
 
   ngOnInit() {
     this.cargarPisos();
-    //this.cargarTorres();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement; // Type assertion
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
-
+    this.cargarTorres();
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   printTable() {
     window.print();
@@ -142,123 +128,41 @@ export class PisoJunicalComponent implements OnInit {
   // Actualizar piso
   onActualizarPiso(piso: Piso) {
     const pisoId = piso.id;
-    this.router.navigate(['editar-piso', pisoId]);
+    this.router.navigate(['/editar-piso', pisoId]);
   }
   protected readonly Math = Math;
-  private column: any;
 
-  // Carga los datos de la base de datos.
+// Carga los datos de la base de datos.
   cargarPisos() {
-    // Lógica para cargar los pisos desde el servicio
-    this.pisoService.recuperarTodosPisos().subscribe(
-      data => {
-        this.pisos = data.map(piso => {
-          return {
-            id: piso.id,
-            pisoName: piso.pisoName,
-            //pisoDescripc: piso.pisoDescripc,
-            pisoNumber: piso.pisoNumber,
-            habilitado: piso.habilitado,
-            torre: piso.torre
-          };
-        });
-        console.log(this.pisos)
-        this.totalPages = Math.ceil(this.pisos.length / this.itemsPerPage);
+    this.pisoService.recuperarTodosPisos()
+      .pipe(
+        catchError(error => {
+          console.error('Error al cargar los pisos:', error);
+          this.errorMessage = 'Error al cargar los pisos. Intente nuevamente.';
+          return of([]);
+        })
+      )
+      .subscribe(pisos => {
+        this.pisos = pisos;
+        this.collectionSize = pisos.length;
+        this.totalPages = Math.ceil(this.collectionSize / this.itemsPerPage);
+      });
+  }
+
+  // Llama a esta función para cargar las torres
+
+  cargarTorres(): void {
+    this.torreService.recuperarTodosTorres().subscribe(
+      (torres: Torre[]) => {
+        this.torres = torres;
       },
-      error => {
-        console.error('Error al cargar los pisos:', error);
+      (error) => {
+        console.error(error);
       }
     );
   }
 
-cargarTorres() {
-  this.pisoService.recuperarTodosTorres().subscribe(
-    data  => {
-      this.torres = data;
-    },
-    error => {
-      console.error('Error al cargar las torres:', error);
-    }
-  );
-}
-
-
-// Método para preparar el piso para inhabilitación
-onInhabilitarPiso(pisoId: number) {
-  // Guarda el piso que se va a inhabilitar
-  this.pisoToInhabilitar = pisoId;
-  // Muestra la alerta
-  this.showInhabilitarAlert = true;
-}
-confirmInhabilitado() {
-  if (this.pisoToInhabilitar) {
-    this.pisoService.inhabilitarPiso(this.pisoToInhabilitar).subscribe(() => {
-      const piso  = this.pisos.find(p => p.id === this.pisoToInhabilitar);
-      if (piso){
-        piso['habilitado'] = false;
-      }
-      this.pisoToInhabilitar = null;
-      this.pisoDisable = true; // Mostrar mensaje de eliminación correcta
-      setTimeout(() => {
-        this.pisoDisable = false; // Ocultar el mensaje después de cierto tiempo (por ejemplo, 3 segundos)
-      }, 3000);
-    }, error => {
-      console.error('Error al Inhabilitar el piso:', error);
-      // Mostrar mensaje de error al instante
-      this.inhabilitarErrorMessage = 'Hubo un error al Inhabilitar el piso. Por favor, inténtalo de nuevo más tarde.';
-      // Ocultar el modal después de 8 segundos
-      setTimeout(() => {
-        this.showInhabilitarAlert = false;
-      }, 8000);
-    });
-    this.showInhabilitarAlert = false;
-  }
-}
-cancelInhabilitar() {
-  // Cierra la alerta
-  this.showInhabilitarAlert = false;
-  // Restablece el valor de this.pisoToInhabilitar
-  this.pisoToInhabilitar = null;
-}
-onHabilitarPiso(pisoId: number) {
-  // Guarda el piso que se va a habilitado
-  this.pisoToHabilitar = pisoId;
-  // Muestra la alerta
-  this.showHabilitarAlert = true;
-
-}
-confirmHabilitar() {
-  if (this.pisoToHabilitar) {
-    this.pisoService.habilitarPiso(this.pisoToHabilitar).subscribe(() => {
-      const piso  = this.pisos.find(p =>p.id === this.pisoToInhabilitar);
-      if (piso){
-        piso['habilitado'] = true;
-      }
-      this.pisoToHabilitar = null;
-      this.pisoEnable = true; // Mostrar mensaje de habilitacion correcta
-      setTimeout(() => {
-        this.pisoEnable = false; // Ocultar el mensaje después de cierto tiempo (por ejemplo, 3 segundos)
-      }, 3000);
-    }, error => {
-      console.error('Error al eliminar el piso:', error);
-      // Mostrar mensaje de error al instante
-      this.habilitarErrorMessage = 'Hubo un error al habilitar el piso. Por favor, inténtalo de nuevo más tarde.';
-      // Ocultar el modal después de 8 segundos
-      setTimeout(() => {
-        this.showHabilitarAlert = false;
-      }, 8000);
-    });
-    // Cierra el modal después de confirmar
-    this.showHabilitarAlert = false;
-  }
-}
-cancelHabilitar() {
-  // Cierra la alerta
-  this.showHabilitarAlert = false;
-  // Restablece el valor de this.pisoToInhabilitar
-  this.pisoToHabilitar = null;
-}
-exportToExcel() {
+  exportToExcel() {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Pisos');
 
@@ -267,8 +171,8 @@ exportToExcel() {
     {header: 'Nombre', key: 'pisoName', width: 30},
     {header: 'Descripción', key: 'pisoDescripc', width: 30},
     {header: 'Numero de Piso', key: 'pisoNumber', width: 15},
-    //{header: 'Torre', key: 'torre', width: 15},
-    {header: 'Habilitado', key: 'habilitado', width: 15}
+    {header: 'Torre', key: 'torre', width: 15},
+
   ];
 
   this.pisos.forEach(piso => {

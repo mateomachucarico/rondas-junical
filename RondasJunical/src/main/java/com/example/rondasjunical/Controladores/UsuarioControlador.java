@@ -13,8 +13,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:8080")
 public class UsuarioControlador {
 
-//    @Autowired
-//    public static final String ADMIN_ROLE = "ADMIN";
+    //    @Autowired
+    //    public static final String ADMIN_ROLE = "ADMIN";
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
@@ -23,41 +23,41 @@ public class UsuarioControlador {
     private UsuarioServicio usuarioServicio;
 
     //Registrar Usuarios
-    @GetMapping("/admin")
-    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario) {
-        try {
-            Usuario nuevoUsuario = usuarioServicio.registrarUsuario(usuario);
-            return ResponseEntity.ok(nuevoUsuario);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar usuario: " + e.getMessage());
-        }
-    }
+//    @GetMapping("/admin")
+//    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario) {
+//        try {
+//            Usuario nuevoUsuario = usuarioServicio.registrarUsuario(usuario);
+//            return ResponseEntity.ok(nuevoUsuario);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al registrar usuario: " + e.getMessage());
+//        }
+//    }
     //Inicio de seccion del Login
-    @PostMapping("/login")
+    //Ingresar al dashboard
+    @PostMapping("/usuarios/login")
     public ResponseEntity<?> loginUsuario(@RequestBody Usuario usuario){
         return usuarioServicio.loginUsuario(usuario);
     }
 
-    @PostMapping("/{id}/roles/{rolId}")
-    public ResponseEntity<?> agregarRolAUsuario(@PathVariable Long id, @PathVariable Long rolId) {
-        try {
-            // Lógica para agregar un rol a un usuario
-            usuarioServicio.agregarRolAUsuario(id, rolId);
-            return ResponseEntity.ok("Rol agregado correctamente al usuario.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al agregar rol al usuario: " + e.getMessage());
-        }
-    }
+//    @PostMapping("/{id}/roles/{rolId}")
+//    public ResponseEntity<?> agregarRolAUsuario(@PathVariable Long id, @PathVariable Long rolId) {
+//        try {
+//            usuarioServicio.agregarRolAUsuario(id, rolId);
+//            return ResponseEntity.ok("Rol agregado correctamente al usuario.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al agregar rol al usuario: " + e.getMessage());
+//        }
+//    }
 
     //CRUD
 
     // **Método para guardar un nuevo Usuario:**
-    @PostMapping("/usuarios/guardarUsuario")
-    public ResponseEntity<Usuario> guardarUsuario(@RequestBody Usuario usuario){
-        if (usuario.getUserName()==null || usuario.getEmail()==null || usuario.getPassword()==null || usuario.getIdentificacion()==null || usuario.getCelular()==null){
+    @PostMapping("/usuarios/guardarUsuarios")
+    public ResponseEntity<Usuario> guardarUsuarios(@RequestBody Usuario usuario){
+        if (usuario.getUserName()==null || usuario.getEmail()==null || usuario.getPassword()==null || usuario.getIdentificacion()==null || usuario.getCelular()==null || usuario.getRol()==null || usuario.getCargo()==null || usuario.getArea()==null ){
             return ResponseEntity.badRequest().build();
         }
-        Usuario usuarioGuardado = usuarioServicio.guardarUsuario(usuario);
+        Usuario usuarioGuardado = usuarioServicio.guardarUsuarios(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioGuardado);
     }
     // Recuperar todas los usuarios
@@ -97,18 +97,19 @@ public class UsuarioControlador {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Usuario con ID " + id + " eliminada correctamente.");
     }
     //Inhabilitar usuario
-    @PutMapping("/usuarios/{id}/inhabilitar")
-    public ResponseEntity<Void> inhabilitarUsuario(@PathVariable Long id) {
-        usuarioServicio.inhabilitarUsuario(id);
-        return ResponseEntity.ok().build();
-    }
+//    @PutMapping("/usuarios/{id}/inhabilitar")
+//    public ResponseEntity<Void> inhabilitarUsuario(@PathVariable Long id) {
+//        usuarioServicio.inhabilitarUsuario(id);
+//        return ResponseEntity.ok().build();
+//    }
     //Habilitar usuario
-    @PutMapping("/usuarios/{id}/habilitar")
-    public ResponseEntity<Void> habilitarUsuario(@PathVariable Long id) {
-        usuarioServicio.habilitarUsuario(id);
-        return ResponseEntity.ok().build();
-    }
+//    @PutMapping("/usuarios/{id}/habilitar")
+//    public ResponseEntity<Void> habilitarUsuario(@PathVariable Long id) {
+//        usuarioServicio.habilitarUsuario(id);
+//        return ResponseEntity.ok().build();
+//    }
     // verificar si un usuario existe en la base de datos
+
     @GetMapping("/usuarios/existe/{userName}")
     public ResponseEntity<?> verificarUsuarioExistente(@PathVariable String userName) {
         try {
@@ -128,9 +129,9 @@ public class UsuarioControlador {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al verificar si el Usuario existe por Identificación: " + e.getMessage());
         }
     }
-    //Verificar si un Email existe en la base de datos
+    // UsuarioController.java
     @GetMapping("/usuarios/userExiste/{email}")
-    public ResponseEntity<?> verificarExistentePorEmail(@RequestParam String email) {
+    public ResponseEntity<?> verificarExistentePorEmail(@PathVariable String email) {
         try {
             boolean existe = usuarioServicio.verificarExistentePorEmail(email);
             return ResponseEntity.ok(existe);
@@ -138,14 +139,14 @@ public class UsuarioControlador {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al verificar si el usuario existe por correo electrónico: " + e.getMessage());
         }
     }
+
     //Otros
-    @DeleteMapping("/usuarios/{id}/roles/{rolId}")
-    public ResponseEntity<?> eliminarRolDeUsuario(@PathVariable Long id, @PathVariable Long rolId) {
-        try {
-            // Lógica para eliminar un rol de un usuario
-            return ResponseEntity.ok("Rol eliminado correctamente del usuario.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar rol del usuario: " + e.getMessage());
-        }
-    }
+//    @DeleteMapping("/usuarios/{id}/roles/{rolId}")
+//    public ResponseEntity<?> eliminarRolDeUsuario(@PathVariable Long id, @PathVariable Long rolId) {
+//        try {
+//            return ResponseEntity.ok("Rol eliminado correctamente del usuario.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar rol del usuario: " + e.getMessage());
+//        }
+//    }
 }

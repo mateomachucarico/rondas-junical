@@ -19,8 +19,6 @@
     <img src="./assets/dist/img/JunicalCargar.png" style="width: 85px; height: 60px; " alt="imagLogo">
     <a href="https://www.junicalmedical.com.co/"><b class="font-weight-bold" >Rondas</b>ADMIN</a>
   </div>
-
-
   <div class="card">
     <div class="card-body register-card-body">
       <p class="login-box-msg text-primary font-weight-bold"> Crear Nuevo Registro</p>
@@ -28,18 +26,18 @@
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <!-- inicio de nombre completo-->
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="nombreCompleto" formControlName="nombreCompleto" placeholder="Ingresa el Nombre Completo">
+          <input type="text" class="form-control" id="userName" formControlName="userName" placeholder="Ingresa el Nombre Completo">
           <div class="input-group-append">
             <div class="input-group-text">
-              <i *ngIf="registerForm.get('nombreCompleto')?.valid || !registerForm.get('nombreCompleto')?.touched" class="fas fa-user"></i>
-              <i *ngIf="registerForm.get('nombreCompleto')?.invalid && registerForm.get('nombreCompleto')?.touched" class="fas fa-times-circle text-danger"></i>
+              <i *ngIf="registerForm.get('userName')?.valid || !registerForm.get('userName')?.touched" class="fas fa-user"></i>
+              <i *ngIf="registerForm.get('userName')?.invalid && registerForm.get('userName')?.touched" class="fas fa-times-circle text-danger"></i>
             </div>
           </div>
         </div>
-        <div *ngIf="registerForm.get('nombreCompleto')?.invalid && (registerForm.get('nombreCompleto')?.dirty || registerForm.get('nombreCompleto')?.touched)">
-          <div class="text-danger" *ngIf="registerForm.get('nombreCompleto')?.errors?.['required']">El nombre completo es obligatorio.</div>
-          <div class="text-danger" *ngIf="registerForm.get('nombreCompleto')?.errors?.['minlength']"><br>El nombre completo debe tener al menos 5 caracteres.</div>
-          <div class="text-danger" *ngIf="registerForm.get('nombreCompleto')?.errors?.['maxlength']">El nombre completo no debe exceder los 50 caracteres.</div>
+        <div *ngIf="registerForm.get('userName')?.invalid && (registerForm.get('userName')?.dirty || registerForm.get('userName')?.touched)">
+          <div class="text-danger" *ngIf="registerForm.get('userName')?.errors?.['required']">El nombre completo es obligatorio.</div>
+          <div class="text-danger" *ngIf="registerForm.get('userName')?.errors?.['minlength']"><br>El nombre completo debe tener al menos 5 caracteres.</div>
+          <div class="text-danger" *ngIf="registerForm.get('userName')?.errors?.['maxlength']">El nombre completo no debe exceder los 50 caracteres.</div>
         </div>
         <!-- fin de nombre completo-->
 
@@ -121,9 +119,10 @@
         </div>
         <!-- fin celular responsable -->
 
-
         <!-- inicio rol responsable -->
-        <!-- -->
+        <!--
+
+         -->
         <div class="form-group">
           <label for="rol">Rol Responsable</label>
           <div class="input-group">
@@ -135,7 +134,7 @@
             </div>
             <select class="form-control" id="rol" formControlName="rol">
               <option value="" disabled selected>Selecciona un rol</option>
-              <option *ngFor="let rol of roles" [value]="rol">{{ rol }}</option>
+              <option *ngFor="let rol of roles" [ngValue]="rol">{{ rol.rolName }}</option>
             </select>
           </div>
           <div *ngIf="registerForm.get('rol')?.invalid && (registerForm.get('rol')?.dirty || registerForm.get('rol')?.touched)">
@@ -144,8 +143,10 @@
         </div>
         <!-- fin rol responsable -->
 
-
         <!-- inicio cargo responsable -->
+        <!--
+
+        -->
         <div class="form-group">
           <label for="cargo">Cargo Responsable</label>
           <div class="input-group">
@@ -156,18 +157,19 @@
             </span>
             </div>
             <select class="form-control" id="cargo" formControlName="cargo">
-              <option value="" disabled selected>Selecciona un cargo</option> <!-- Opción predeterminada -->
-              <option *ngFor="let cargo of cargos" [value]="cargo">{{ cargo }}</option>
+              <option value="" disabled selected>Selecciona un cargo</option>
+              <option *ngFor="let cargo of cargos" [ngValue]="cargo">{{ cargo.cargoName }}</option>
             </select>
           </div>
           <div *ngIf="registerForm.get('cargo')?.invalid && (registerForm.get('cargo')?.dirty || registerForm.get('cargo')?.touched)">
             <div class="text-danger" *ngIf="registerForm.get('cargo')?.errors?.['required']">El cargo es obligatorio.</div>
           </div>
         </div>
-
         <!-- fin nombre responsable -->
+        <!--
 
-        <!-- inico area  responsable -->
+        -->
+        <!-- Inicio area  responsable -->
         <div class="form-group">
           <label for="area">Área Responsable</label>
           <div class="input-group">
@@ -178,28 +180,82 @@
             </span>
             </div>
             <select class="form-control" id="area" formControlName="area">
-              <option value="" disabled selected>Selecciona un área</option> <!-- Opción predeterminada -->
-              <option *ngFor="let area of areas" [value]="area">{{ area }}</option>
+              <option value="" disabled selected>Selecciona un área</option>
+              <option *ngFor="let area of areas" [ngValue]="area" >{{ area.areaName }}</option>
             </select>
           </div>
           <div *ngIf="registerForm.get('area')?.invalid && (registerForm.get('area')?.dirty || registerForm.get('area')?.touched)">
             <div class="text-danger" *ngIf="registerForm.get('area')?.errors?.['required']">El área es obligatoria.</div>
           </div>
         </div>
+        <!-- Fin area  responsable -->
 
-        <!-- fin area responsable -->
 
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-              <a href="login-junical" class="text-center">Ya tengo cuenta</a>
+        <!-- inicio -->
+        <div class="form-group">
+          <button type="button" class="btn btn-outline-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#confirmacionModal">
+            Crear Registro
+          </button>
+          <!-- Botones de Cancelar y Volver -->
+          <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
+          <a href="login-junical" class="btn btn-outline-info">Volver</a>
+        </div>
+        <!-- Modal de confirmación -->
+        <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Detalles del Usuario:</p>
+              </div>
+              <div class="modal-footer">
+                <!-- Botón para cancelar -->
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                <!-- Botón para confirmar y enviar el formulario -->
+                <button type="submit" class="btn btn-outline-primary" [disabled]="!registerForm.valid || registerEnProceso" (click)="registerCreado = true">Confirmar y Crear</button>
+              </div>
             </div>
           </div>
+        </div>
+        <div *ngIf="registerCreado" class="alert alert-success alert-dismissible fade show" role="alert">
+          Usuario creado correctamente.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div *ngIf="errorCrearRegister" class="alert alert-danger" role="alert">
+          Error al crear una Zona: {{ errorCrearRegister}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="cerrarMensaje()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <!--
+         <div class="row justify-content-between">
           <div class="col-12 col-md-4">
             <button type="submit" [disabled]="!registerForm.valid" class="btn btn-outline-primary btn-block">Registrar</button>
           </div>
-        </div>
+         -->
+
+          <!--
+           <div class="col-12 col-md-4 mt-md-0 mt-2">
+            <button type="button" class="btn btn-outline-primary btn-block icheck-style" id="agreeTerms" name="terms" value="agree">
+              <i class="fas fa-check"></i> Login
+            </button>
+          </div>
+           -->
+          <!--
+          <div class="col-12 col-md-4 mt-md-0 mt-2">
+            <button type="button" class="btn btn-outline-primary btn-block">Regresar</button>
+          </div>
+          -->
+
+
       </form>
       </div>
       </div>

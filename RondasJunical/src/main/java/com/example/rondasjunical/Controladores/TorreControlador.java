@@ -36,7 +36,11 @@ public class TorreControlador {
     @GetMapping("/torres/obtenerTodosLosTorres")
     public ResponseEntity<List<Torre>> obtenerTodosLosTorres() {
         List<Torre> torres = torreServicio.obtenerTodosLosTorres();
-            return ResponseEntity.ok(torres);
+        for (Torre torre : torres)
+        {
+            System.out.println(torre.getTorreName());
+        }
+        return ResponseEntity.ok(torres);
     }
 
     // Recuperar torre por ID

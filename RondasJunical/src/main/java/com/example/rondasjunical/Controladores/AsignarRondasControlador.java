@@ -27,9 +27,9 @@ public class AsignarRondasControlador {
             return ResponseEntity.status(HttpStatus.CREATED).body(AsignarRondaGuardado);
     }
 
-    // CRUD de asignar rondas
+    // CRUD de asignar Ronda
 
-    // Recuperar todas los asignar rondas
+    // Recuperar todas los asignar Ronda
     @GetMapping("/asignarRondas/obtenerTodosLosAsignarRonda")
     public ResponseEntity<List<AsignarRonda>> obtenerTodosLosAsignarRonda() {
         List<AsignarRonda> asignarRonda = asignarRondaServicio.obtenerTodosLosAsignarRonda();

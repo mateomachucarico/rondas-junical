@@ -11,13 +11,14 @@ import {MatCell, MatCellDef} from "@angular/material/table";
 import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../filter.pipe";
 import * as ExcelJS from 'exceljs';
+import {LoadingService} from "../../Duplicados/loading.service";
 
 interface Cargo {
   id: number;
   cargoName: string;
   cargoDescrips: string;
   habilitado:boolean;
-  [key: string]: boolean | number | string;
+  //[key: string]: boolean | number | string;
 }
 
 interface SearchHistoryItem {
@@ -31,7 +32,7 @@ interface Item {
 
 }
 @Component({
-  providers: [CargoService, HttpClient],
+  providers: [CargoService, HttpClient, LoadingService],
   selector: 'app-carg-respons',
   standalone: true,
   imports: [
@@ -56,6 +57,8 @@ interface Item {
   templateUrl: './carg-respons.component.html',
   styleUrl: './carg-respons.component.css'
 })
+
+
 export class CargResponsComponent implements OnInit{
   protected cargo!: Cargo;
   cargos: Cargo[]=[];
@@ -96,25 +99,15 @@ export class CargResponsComponent implements OnInit{
     private cargoServicio: CargoService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
     this.cargarCargos();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+// Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -130,7 +123,6 @@ export class CargResponsComponent implements OnInit{
     this.router.navigate(['/editar-cargo', cargoId]);
   }
   protected readonly Math = Math;
-  private column: any;
 
   // Carga los datos de la base de datos.
   cargarCargos() {
@@ -150,7 +142,6 @@ export class CargResponsComponent implements OnInit{
         console.log("Datos de cargos cargados correctamente:", this.cargos);
       },
       error => {
-        console.error('Error al cargar las cargos:', error);
         console.error('Error al cargar las cargos:', error);
       }
     );
@@ -256,8 +247,8 @@ export class CargResponsComponent implements OnInit{
   sortData() {
     if (this.currentColumn) {
       this.cargos.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }

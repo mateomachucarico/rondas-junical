@@ -4,28 +4,49 @@ import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {entornos} from "../../Entorno/entornos";
 
+interface Usuario {
+  id: number;
+  userName: string;
+}
 interface Torre {
   id: number;
   torreName: string;
-  [key: string]: boolean | number | string;
+
 }
 interface Piso {
   id: number;
   pisoName: string;
-  [key: string]: boolean | number | string;
+
 }
 interface Area {
   id: number;
   areaName: string;
-  [key: string]: boolean | number | string;
+
 }
 interface Zona {
   id: number;
   zonaName: string;
-  [key: string]: boolean | number | string;
+
+}
+interface Categoria{
+  id: number;
+  categName: string;
+
+}
+interface ResponJefeArea {
+  id: number;
+  responName: string;
+
 }
 interface Ronda{
   id: number;
+  usuario: Usuario;
+  torre: Torre;
+  piso: Piso;
+  area: Area;
+  zona: Zona;
+  categoria: Categoria;
+  responJefeArea: ResponJefeArea;
   rondaFecha: string;
   rondaHoraInicio: string;
   rondaHoraFin: string;
@@ -51,7 +72,7 @@ export class RondaService {
   }
   //Guardar la ronda final
   guardarRondaFinal(ronda: Ronda): Observable<Ronda> {
-    return this.http.post<Ronda>(`${this.baseUrl}/rondas/guardarArea`, ronda)
+    return this.http.post<Ronda>(`${this.baseUrl}/rondas/guardarRonda`, ronda)
       .pipe(
         catchError(this.handleError)
       );
@@ -70,7 +91,57 @@ export class RondaService {
         catchError(this.handleError)
       );
   }
+  //Parametrizacion
 
+  //Obtener Torres
+  recuperarTodosTorres(): Observable<Torre[]> {
+    return this.http.get<Torre[]>(`${this.baseUrl}/torres/obtenerTodosLosTorres`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener Pisos
+  recuperarTodosPisos(): Observable<Piso[]> {
+    return this.http.get<Piso[]>(`${this.baseUrl}/pisos/obtenerTodosLosPisos`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener Areas
+  recuperarTodosAreas(): Observable<Area[]>{
+    return this.http.get<Area[]>(`${this.baseUrl}/areas/obtenerTodosLosAreas`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener Zonas
+  recuperarTodosZonas(): Observable<Zona[]>{
+    return this.http.get<Zona[]>(`${this.baseUrl}/zonas/obtenerTodosLosZonas`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener Categoria
+  recuperarTodosCategorias(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.baseUrl}/categSopor/obtenerTodosLosCategSopors`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener ResponJefeArea
+  recuperarTodosResponJefeAreas(): Observable<ResponJefeArea[]>{
+    return this.http.get<ResponJefeArea[]>(`${this.baseUrl}/responJefeAreas/obtenerTodosLosResponJefeArea`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  //Obtener Usuarios Responsables del Soporte
+  recuperarTodosLosUsuarios(): Observable<Usuario[]>{
+    return this.http.get<Usuario[]>(`${this.baseUrl}/usuarios/obtenerTodosLosUsuarios`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
 
 
@@ -86,5 +157,4 @@ export class RondaService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
-
 }

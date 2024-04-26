@@ -11,32 +11,13 @@ import {FilterPipe} from "../filter.pipe";
 import {ResponJefeAreaService} from "./respon-jefe-area.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as ExcelJS from "exceljs";
+import {LoadingService} from "../../Duplicados/loading.service";
 
-
-interface Area
-{
-  id: number;
-  areaName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
-interface Cargo
-{
-  id: number;
-  cargoName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
 interface ResponJefeArea {
   id: number;
   responName: string;
   responEmail: string;
-  area: Area;
-  cargo: Cargo;
-  //responFirma: string;
   habilitado:boolean;
-  [key: string]: any;
-
 }
 interface SearchHistoryItem {
   // Define la estructura de un elemento del historial de búsqueda
@@ -49,7 +30,7 @@ interface Item {
 
 }
 @Component({
-  providers: [ResponJefeAreaService, HttpClient],
+  providers: [ResponJefeAreaService, HttpClient, LoadingService],
   selector: 'app-area-jefe-respons',
   standalone: true,
   imports: [
@@ -114,25 +95,15 @@ export class AreaJefeResponsComponent implements  OnInit{
     private responJefeAreaServicio: ResponJefeAreaService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
     this.cargarResponJefeAreas();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -148,7 +119,6 @@ export class AreaJefeResponsComponent implements  OnInit{
     this.router.navigate(['/editar-jefe', responJefeAreaId]);
   }
   protected readonly Math = Math;
-  private column: any;
 
   // Carga los datos de la base de datos.
   cargarResponJefeAreas() {
@@ -161,9 +131,6 @@ export class AreaJefeResponsComponent implements  OnInit{
             id: responJefeArea.id,
             responName: responJefeArea.responName,
             responEmail: responJefeArea.responEmail,
-            area: responJefeArea.area,
-            cargo: responJefeArea.cargo,
-            //responFirma: responJefeArea.responFirma,
             habilitado: responJefeArea.habilitado, // Almacena directamente el valor de habilitado
           };
         });
@@ -171,7 +138,6 @@ export class AreaJefeResponsComponent implements  OnInit{
         console.log("Datos de los jefes de area cargados correctamente:", this.responJefeAreas);
       },
       error => {
-        console.error('Error al cargar jefes de area:', error);
         console.error('Error al cargar jefes de area:', error);
       }
     );
@@ -253,8 +219,6 @@ export class AreaJefeResponsComponent implements  OnInit{
       {header: 'ID', key: 'id', width: 10},
       {header: 'Nombre', key: 'responName', width: 30},
       {header: 'Email', key: 'responEmail', width: 30},
-      {header: 'Area', key: 'responArea', width: 30},
-      {header: 'Cargo', key: 'responCargo', width: 30},
       {header: 'Habilitado', key: 'habilitado', width: 15}
     ];
     this.responJefeAreas.forEach(responJefeArea => {
@@ -278,8 +242,8 @@ export class AreaJefeResponsComponent implements  OnInit{
   sortData() {
     if (this.currentColumn) {
       this.responJefeAreas.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }

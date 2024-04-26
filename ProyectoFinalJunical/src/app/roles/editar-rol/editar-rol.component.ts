@@ -13,7 +13,7 @@ interface Rol {
   rolFechaCreac: Date;
   rolFechaModic: Date;
   habilitado: boolean;
-  [key: string]: boolean | number | string | Date;
+
 }
 @Component({
   providers: [RolesService, HttpClient],
@@ -31,14 +31,8 @@ interface Rol {
 })
 export class EditarRolComponent implements OnInit {
   editarForm!: FormGroup;
-  rol: Rol = {
-    id: 0,
-    rolName: '',
-    rolDescripc: '',
-    rolFechaCreac: new Date(),
-    rolFechaModic: new Date(),
-    habilitado: false
-  };
+  rol!: Rol;
+  roles: Rol [] = [];
   rolCreado: boolean = false;
   errorEditarRol: string = '';
   rolEnProceso: boolean = false;
@@ -72,7 +66,7 @@ export class EditarRolComponent implements OnInit {
               rolDescripc: response.rolDescripc,
               rolFechaCreac: response.rolFechaCreac,
               rolFechaModic: response.rolFechaModic,
-
+              habilitado: response.habilitado
             });
           },
           (error) => {

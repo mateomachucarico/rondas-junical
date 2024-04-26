@@ -11,14 +11,35 @@ import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../filter.pipe";
 import {AreaService} from "./area.service";
 import * as ExcelJS from "exceljs";
+import {LoadingService} from "../../Duplicados/loading.service";
+
+interface ResponJefeArea {
+  id: number;
+  responName: string;
+  responEmail: string;
+  habilitado:boolean;
+}
+/*
+interface Torre {
+  id: number;
+  torreName: string;
+  habilitado: boolean;
+}
+interface Piso {
+  id: number;
+  pisoName: string;
+  pisoNumber: string;
+
+}
+*/
 
 interface Area {
   id: number;
   areaName: string;
-  //areaDescripc: string;
   habilitado: boolean;
-  [key: string]: boolean | number | string;
-
+  //torre: Torre;
+  //piso: Piso;
+  responJefeArea: ResponJefeArea;
 }
 
 interface SearchHistoryItem {
@@ -32,7 +53,7 @@ interface Item {
 
 }
 @Component({
-  providers:[AreaService, HttpClient],
+  providers:[AreaService, HttpClient, LoadingService],
   selector: 'app-area-respons',
   standalone: true,
   imports: [
@@ -59,8 +80,11 @@ interface Item {
 })
 export class AreaResponsComponent implements OnInit{
 
+  //pisos: Piso[] = [];
+  //torres: Torre[] = [];
   areas: Area[]=[];
-  area: Area = {id: 0, areaName: '', habilitado: false};
+  responJefeAreas: ResponJefeArea[] = [];
+  area!: Area;
   page = 1; // Inicializa la página en 1
   itemsPerPage = 5; // Número de elementos por página
   totalPages = 0; // Número total de páginas
@@ -99,25 +123,19 @@ export class AreaResponsComponent implements OnInit{
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private areaServicio: AreaService,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
     this.cargarAreas();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement;
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    //this.cargarTorres();
+    //this.cargarPisos();
+    this.cargarResponJefeArea();
+
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   //Imprimir
   printTable() {
@@ -132,7 +150,6 @@ export class AreaResponsComponent implements OnInit{
     this.router.navigate(['/editar-area', areaId]);
   }
   protected readonly Math = Math;
-  private column: any;
 
   // Carga los datos de la base de datos.
   cargarAreas() {
@@ -144,7 +161,10 @@ export class AreaResponsComponent implements OnInit{
           return {
             id: area.id,
             areaName: area.areaName,
-            habilitado: area.habilitado, // Almacena directamente el valor de habilitado
+            habilitado: area.habilitado,
+            //torre: area.torre,
+            //piso: area.piso,
+            responJefeArea: area.responJefeArea
           };
         });
         this.totalPages = Math.ceil(this.areas.length / this.itemsPerPage);
@@ -155,6 +175,75 @@ export class AreaResponsComponent implements OnInit{
       }
     );
   }
+
+  cargarResponJefeArea() {
+    this.areaServicio.recuperarTodosResponJefeArea().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.responJefeAreas = data.map(responJefe => {
+          return {
+            id: responJefe.id,
+            responName: responJefe.responName,
+            responEmail: responJefe.responEmail,
+            habilitado: responJefe.habilitado
+          };
+        });
+        console.log("Datos de los responsables/jefes de área cargados correctamente:", this.responJefeAreas);
+        if (this.responJefeAreas) {
+          this.totalPages = Math.ceil(this.responJefeAreas.length / this.itemsPerPage);
+        }
+      },
+      error => {
+        console.error('Error al cargar los responsables/jefes de área:', error);
+      }
+    );
+  }
+  /*
+  cargarTorres() {
+    this.areaServicio.recuperarTodosTorres().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.torres = data.map(torre => {
+          return {
+            id: torre.id,
+            torreName: torre.torreName,
+            habilitado: torre.habilitado
+          };
+        });
+        console.log("Datos de las torres cargados correctamente:", this.torres);
+        if (this.torres) {
+          this.totalPages = Math.ceil(this.torres.length / this.itemsPerPage);
+        }
+      },
+      error => {
+        console.error('Error al cargar las torres:', error);
+      }
+    );
+  }
+  cargarPisos() {
+    this.areaServicio.recuperarTodosPisos().subscribe(
+      data => {
+        console.log("Datos recibidos del servidor:", data);
+        this.pisos = data.map(piso => {
+          return {
+            id: piso.id,
+            pisoName: piso.pisoName,
+            pisoNumber: piso.pisoNumber,
+
+          };
+        });
+        console.log("Datos de los pisos cargados correctamente:", this.pisos);
+        if (this.pisos) {
+          this.totalPages = Math.ceil(this.pisos.length / this.itemsPerPage);
+        }
+      },
+      error => {
+        console.error('Error al cargar los pisos:', error);
+      }
+    );
+  }
+  */
+
   // Método para prepara Area para inhabilitación
   onInhabilitarArea(areaId: number) {
     // Guarda el ID de la area que se va a inhabilitar
@@ -255,8 +344,8 @@ export class AreaResponsComponent implements OnInit{
   sortData() {
     if (this.currentColumn) {
       this.areas.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }

@@ -4,22 +4,19 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {entornos} from "../../../../Entorno/entornos";
 
+
 interface Torre {
   id: number;
   torreName: string;
   habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 
 
 interface Piso {
   id: number;
   pisoName: string;
-  //pisoDescripc: string;
   pisoNumber: string;
   torre: Torre;
-  habilitado: boolean;
-  //[key: string]: boolean | number | string;
 }
 @Injectable({
   providedIn: 'root'
@@ -63,6 +60,8 @@ export class PisoService {
         catchError(this.handleError)
       );
   }
+
+
   // Recuperar los piso
   recuperarTodosPisos(): Observable<Piso[]> {
     return this.http.get<Piso[]>(`${this.baseUrl}/pisos/obtenerTodosLosPisos`)
@@ -72,12 +71,13 @@ export class PisoService {
   }
   // Recuperar las Torres
 
-recuperarTodosTorres(): Observable<Torre[]> {
-  return this.http.get<Torre[]>(`${this.baseUrl}/torres/obtenerTodosLosTorres`)
-    .pipe(
-      catchError(this.handleError)
-    );
-}
+  recuperarTodosTorres(): Observable<Torre[]> {
+    return this.http.get<Torre[]>(`${this.baseUrl}/torres/obtenerTodosLosTorres`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 
 //Obtener piso por Id
 obtenerPiso(id: number): Observable<Piso> {

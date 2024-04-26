@@ -21,12 +21,12 @@ public class ZonaControlador {
     // Método para guardar un nuevo zona
     @PostMapping("/zonas/guardarZona")
     public ResponseEntity<Zona> guardarZona(@RequestBody Zona zona) {
-        if (zona.getZonaName() == null) {
+        if (zona.getZonaName() == null || zona.getTorre()== null || zona.getPiso()== null || zona.getArea()==null) {
             // Manejar valores nulos (lanzar excepción, devolver mensaje de error)
             return ResponseEntity.badRequest().build();
         }
         Zona zonaGuardado = zonaServicio.guardarZona(zona);
-        return ResponseEntity.status(HttpStatus.CREATED).body(zonaGuardado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(zonaGuardado);
     }
 
     // CRUD de zona
@@ -44,7 +44,6 @@ public class ZonaControlador {
         Zona zona = zonaServicio.obtenerZonaPorId(id);
         return ResponseEntity.ok(zona);
     }
-
     // Actualizar zona
     @PutMapping("/zonas/{id}")
     public ResponseEntity<?> actualizarZona(@PathVariable("id") Long id, @RequestBody Zona zonaActualizada) {

@@ -9,7 +9,7 @@ import {
   coerceNumberProperty,
   getRtlScrollAxisType,
   supportsScrollBehavior
-} from "./chunk-TUXR7SX5.js";
+} from "./chunk-2A2USTHH.js";
 import {
   DOCUMENT
 } from "./chunk-T76VOUY2.js";
@@ -77,6 +77,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery
 } from "./chunk-X5ES6DHX.js";
+import "./chunk-SAVXX6OM.js";
 import {
   animationFrameScheduler,
   asapScheduler,
@@ -84,7 +85,6 @@ import {
   isObservable,
   merge
 } from "./chunk-SG3BCSKH.js";
-import "./chunk-SAVXX6OM.js";
 import {
   BehaviorSubject,
   ConnectableObservable,

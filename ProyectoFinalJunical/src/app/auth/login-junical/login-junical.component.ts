@@ -4,45 +4,21 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {NgIf} from "@angular/common";
+import {LoadingService} from "../../Duplicados/loading.service";
 
-interface Rol
-{
-  id: number;
-  rolName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
-//Interfaces
-interface Cargo {
-  id: number;
-  cargoName: string;
-  cargoDescrips: string;
-  habilitado:boolean;
-  [key: string]: boolean | number | string;
-}
-interface Area
-{
-  id: number;
-  areaName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
+
 
 interface Usuario {
   id: number;
-  username: string;
+  userName: string;
   email: string;
   password: string;
   identificacion: string;
   celular: string;
-  rol: Rol;
-  cargo: Cargo;
-  area: Area;
 }
 
-
 @Component({
-  providers: [AuthService, HttpClient],
+  providers: [AuthService, HttpClient, LoadingService],
   selector: 'app-login-junical',
   templateUrl: './login-junical.component.html',
   standalone: true,
@@ -58,87 +34,68 @@ export class LoginJunicalComponent implements OnInit {
   loginForm!: FormGroup;
   usuario: Usuario = {
     id: 0,
-    username: '',
+    userName: '',
     email: '',
     password: '',
     identificacion: '',
-    celular: '',
-    rol: {id: 0, rolName: '', habilitado: false},
-    cargo: {id: 0, cargoName: '', cargoDescrips: '', habilitado: false},
-    area: {id: 0, areaName: '', habilitado: false}
+    celular: ''
   };
-  errorMessage: string | undefined;
 
+  errorMessage: string | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService,
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(10)]]
+      password: ['', [Validators.required]],
     });
   }
-
   ngOnInit(): void {
-    // Lógica que se ejecuta al inicializar el componente
     //Logica para el Listener de carga
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement; // Type assertion
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
-
   get email() {
     return this.loginForm.get('email');
   }
-
   get password() {
     return this.loginForm.get('password');
   }
-
-
   onSubmit(): void {
-    console.log("ENTRE")
-
     if (this.loginForm.valid) {
       // Asignar valores del formulario a usuario
       this.usuario.email = this.loginForm.value.email;
       this.usuario.password = this.loginForm.value.password;
 
-      /*
-            this.authService.login(this.usuario).subscribe(
-              (response: any) => {
-                console.log('Inicio de sesión exitoso', response);
-                if (response) {
-                  this.router.navigate(['/dashboard']);
-                } else {
-                  this.errorMessage = 'Correo electrónico o contraseña incorrectos.';
-                }
-              },
-              (error: any) => {
-                console.error('Error al iniciar sesión', error);
-                this.errorMessage = 'Error al iniciar sesión. Intente nuevamente más tarde.';
-              }
-            );
+      this.authService.login(this.usuario).subscribe(
+        (response) => {
+          console.log('Inicio de sesión exitoso', response);
+          if (response) {
+            this.router.navigate(['/dashboard']);
           } else {
-            this.errorMessage = 'Formulario de inicio de sesión inválido. Complete todos los campos.';
+            this.errorMessage = 'Correo electrónico o contraseña incorrectos.';
+          }
+        },
+        (error) => {
+          console.error('Error al iniciar sesión', error);
+          if (error.status === 401) {
+            this.errorMessage = 'Correo electrónico o contraseña incorrectos.';
+          } else {
+            this.errorMessage = 'Error al iniciar sesión. Intente nuevamente más tarde.';
           }
         }
+      );
 
-       */
+      // Limpiar los campos del formulario después del envío
+      this.loginForm.reset();
+    } else {
+      this.errorMessage = 'Formulario de inicio de sesión inválido. Complete todos los campos.';
     }
   }
 }

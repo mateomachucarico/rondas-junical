@@ -4,8 +4,6 @@ import com.example.rondasjunical.Entidades.Area;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 
 // Correct:

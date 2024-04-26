@@ -15,28 +15,10 @@ import {ResponJefeAreaService} from "../respon-jefe-area.service";
 import {ActivatedRoute} from "@angular/router";
 import SignaturePad from "signature_pad";
 
-
-interface Area
-{
-  id: number;
-  areaName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
-interface Cargo
-{
-  id: number;
-  cargoName: string;
-  habilitado: boolean;
-  [key: string]: boolean | number | string;
-}
 interface ResponJefeArea {
   id: number;
   responName: string;
   responEmail: string;
-  area: Area;
-  cargo: Cargo;
-  //responFirma: string;
   habilitado:boolean;
 
 }
@@ -60,9 +42,6 @@ export class EditarJefeComponent implements OnInit {
     id: 0,
     responName: '',
     responEmail: '',
-    area: {id: 0, areaName: '', habilitado: false},
-    cargo: {id: 0, cargoName: '', habilitado: false},
-    //responFirma: '',
     habilitado: false
   };
   // Variables para mensajes
@@ -70,10 +49,6 @@ export class EditarJefeComponent implements OnInit {
   errorEditarResponJefeArea: string = '';
   responJefeAreaEnProceso: boolean = false;
   responJefeAreaId: number = 0;
-  areas: Area[] = [];
-  cargos: Cargo[] = [];
-  private signaturePad: any;
-  private firmaLimpiada: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,9 +61,6 @@ export class EditarJefeComponent implements OnInit {
     this.editarForm = this.formBuilder.group({
       responName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
       responEmail: ['', [Validators.required, Validators.email]],
-      area: ['', [Validators.required]],
-      cargo: ['', [Validators.required]],
-      //responFirma: ['', [this.firmaRequeridaValidator()]], // Agregar validación de firma requerida
     });
     // Obtener el ID del Jefe responsable de los parámetros de la URL
     this.activatedRoute.params.subscribe(params => {
@@ -102,9 +74,6 @@ export class EditarJefeComponent implements OnInit {
             this.editarForm.patchValue({
               responName: response.responName,
               responEmail: response.responEmail,
-              area: response.area,
-              cargo: response.cargo,
-              //responFirma: response.responFirma,
             });
           },
           (error) => {
@@ -116,34 +85,6 @@ export class EditarJefeComponent implements OnInit {
         console.error('No se proporcionó un ID válido en la URL.');
       }
     });
-    this.cargarAreas();
-    this.cargarCargos();
-  }
-  cargarAreas(): void {
-    // Llamar a tu servicio para obtener todas las torres
-    this.responJefeAreaService.recuperarTodosAreas().subscribe(
-      (areas: Area[]) => {
-        // Filtrar solo las torres habilitadas
-        this.areas = areas.filter(area => area.habilitado);
-      },
-      (error) => {
-        console.error(error);
-        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
-      }
-    );
-  }
-  cargarCargos(): void {
-    // Llamar a tu servicio para obtener todas las torres
-    this.responJefeAreaService.recuperarTodosCargos().subscribe(
-      (cargos: Cargo[]) => {
-        // Filtrar solo las torres habilitadas
-        this.cargos = cargos.filter(cargo => cargo.habilitado);
-      },
-      (error) => {
-        console.error(error);
-        // Manejar el error, por ejemplo, mostrar un mensaje al usuario
-      }
-    );
   }
   onSubmit(): void {
     // Verificar si el ID del Jefe de Área es válido
@@ -184,33 +125,5 @@ export class EditarJefeComponent implements OnInit {
   cerrarMensaje() {
     this.responJefeAreaCreado = false;
     this.errorEditarResponJefeArea = '';
-  }
-  // hacer la firma
-  limpiarFirma() {
-    if (this.signaturePad) {
-      this.signaturePad.clear();
-      this.firmaLimpiada = true;
-    } else {
-      console.error('SignaturePad no inicializado.');
-    }
-  }
-  initSignaturePad() {
-    const canvas = document.getElementById('firmaResponsableArea') as HTMLCanvasElement;
-    if (canvas) {
-      this.signaturePad = new SignaturePad(canvas);
-      this.signaturePad.on();
-    } else {
-      console.error('Elemento de lienzo no encontrado.');
-    }
-  }
-  // Función para validar que la firma es obligatoria
-  firmaRequeridaValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const firma = control.value;
-      if (!firma) {
-        return { firmaRequerida: true };
-      }
-      return null;
-    };
   }
 }

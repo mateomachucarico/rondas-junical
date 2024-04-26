@@ -54,26 +54,6 @@
             </div>
             <!-- fin nombre piso  -->
 
-            <!-- inicio  descripcion del piso -->
-            <!-- <div class="form-group">
-              <label for="pisoDescripc">Descripción del Piso</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i *ngIf="crearForm.get('pisoDescripc')?.valid || !crearForm.get('pisoDescripc')?.touched" class="fas fa-ghost"></i>
-                <i *ngIf="crearForm.get('pisoDescripc')?.invalid && crearForm.get('pisoDescripc')?.touched" class="fas fa-times-circle text-danger"></i>
-              </span>
-                </div>
-                <textarea class="form-control" id="pisoDescripc" formControlName="pisoDescripc" placeholder="Ingrese la Descripción del Piso"></textarea>
-              </div>
-              <div *ngIf="crearForm.get('pisoDescripc')?.invalid && (crearForm.get('pisoDescripc')?.dirty || crearForm.get('pisoDescripc')?.touched)">
-                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['required']">La Descripción  es obligatorio.</div>
-                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['minlength']"><br>La Descripción  debe tener al menos 5 caracteres.</div>
-                <div class="text-danger" *ngIf="crearForm.get('pisoDescripc')?.errors?.['maxlength']">La Descripción no debe exceder los 50 caracteres.</div>
-              </div>
-            </div>-->
-            <!-- fin descripcion del piso  -->
-
             <!-- inicio numero del piso -->
             <div class="form-group">
               <label for="pisoNumber">Número de Piso</label>
@@ -93,8 +73,7 @@
             <!-- fin numero de piso-->
 
             <!-- inicio nombre de la torre para el piso-->
-            <!--  -->
-            <div class="form-group">
+             <div class="form-group">
               <label for="torre">Nombre de la Torre</label>
               <div class="input-group">
                 <div class="input-group-prepend">
@@ -121,7 +100,7 @@
               </button>
               <!-- Botones de Cancelar y Volver -->
               <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
-              <a href="piso-junical" class="btn btn-outline-info">Volver</a>
+              <a href="dashboard/piso-junical" class="btn btn-outline-info">Volver</a>
             </div>
             <!-- Modal de confirmación -->
               <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">

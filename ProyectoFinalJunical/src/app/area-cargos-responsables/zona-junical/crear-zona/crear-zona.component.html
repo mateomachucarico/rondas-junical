@@ -55,7 +55,71 @@
                 <div class="text-danger" *ngIf="crearForm.get('zonaName')?.errors?.['maxlength']">La zona no debe exceder los 50 caracteres.</div>
               </div>
             </div>
-            <!-- fin area  -->
+            <!-- fin nombre  -->
+
+            <!-- Inicio torre  -->
+            <div class="form-group">
+              <label for="torre">Nombre de la Torre</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i *ngIf="crearForm.get('torre')?.valid || !crearForm.get('torre')?.touched" class="fas fa-building"></i>
+                  <i *ngIf="crearForm.get('torre')?.invalid && crearForm.get('torre')?.touched" class="fas fa-times-circle text-danger"></i>
+                </span>
+                </div>
+                <select class="form-control" id="torre" formControlName="torre">
+                  <option value="" disabled selected>Selecciona una torre</option>
+                  <option *ngFor="let torre of torres" [ngValue]="torre"> {{ torre.torreName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('torre')?.invalid && (crearForm.get('torre')?.dirty || crearForm.get('torre')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('torre')?.errors?.['required']">El Nombre de la Torre es obligatorio.</div>
+              </div>
+            </div>
+            <!-- Fin torre  -->
+
+            <!-- Inicio Piso -->
+            <div class="form-group">
+              <label for="piso">Piso</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="crearForm.get('piso')?.valid || !crearForm.get('piso')?.touched" class="fas fa-building"></i>
+                    <i *ngIf="crearForm.get('piso')?.invalid && crearForm.get('piso')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <select class="form-control" id="piso" formControlName="piso">
+                  <option value="" disabled selected>Selecciona un piso</option>
+                  <option *ngFor="let piso of pisos" [ngValue]="piso"> {{ piso.pisoName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('piso')?.invalid && (crearForm.get('piso')?.dirty || crearForm.get('piso')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('piso')?.errors?.['required']">El campo de piso es obligatorio.</div>
+              </div>
+            </div>
+            <!-- Fin Piso -->
+
+            <!-- Inicio de Area -->
+            <div class="form-group">
+              <label for="area">Área</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i *ngIf="crearForm.get('area')?.valid || !crearForm.get('area')?.touched" class="fas fa-map"></i>
+                    <i *ngIf="crearForm.get('area')?.invalid && crearForm.get('area')?.touched" class="fas fa-times-circle text-danger"></i>
+                  </span>
+                </div>
+                <select class="form-control" id="area" formControlName="area">
+                  <option value="" disabled selected>Selecciona un área</option>
+                  <option *ngFor="let area of areas" [ngValue]="area"> {{ area.areaName }} </option>
+                </select>
+              </div>
+              <div *ngIf="crearForm.get('area')?.invalid && (crearForm.get('area')?.dirty || crearForm.get('area')?.touched)">
+                <div class="text-danger" *ngIf="crearForm.get('area')?.errors?.['required']">El campo de área es obligatorio.</div>
+              </div>
+            </div>
+
+            <!-- Fin Area -->
 
             <!-- inicio -->
             <!-- Botón para abrir el modal de confirmación -->
@@ -65,7 +129,7 @@
             </button>
               <!-- Botones de Cancelar y Volver -->
               <button type="button" class="btn btn-outline-secondary" style="margin-right: 10px;" (click)="cancelar()">Cancelar</button>
-              <a href="zona-junical" class="btn btn-outline-info">Volver</a>
+              <a href="dashboard/zona-junical" class="btn btn-outline-info">Volver</a>
             </div>
             <!-- Modal de confirmación -->
             <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">

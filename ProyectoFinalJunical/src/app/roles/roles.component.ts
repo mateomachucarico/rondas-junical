@@ -11,6 +11,7 @@ import {MatCell, MatCellDef} from "@angular/material/table";
 import {NgbTooltip, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import {FilterPipe} from "../area-cargos-responsables/filter.pipe";
 import * as ExcelJS from "exceljs";
+import {LoadingService} from "../Duplicados/loading.service";
 
 interface Rol {
   id: number;
@@ -19,9 +20,7 @@ interface Rol {
   rolFechaCreac: Date;
   rolFechaModic: Date;
   habilitado: boolean;
-  [key: string]: boolean | number | string | Date;
 }
-
 interface SearchHistoryItem {
   // Define la estructura de un elemento del historial de búsqueda
   query: string;
@@ -30,10 +29,9 @@ interface SearchHistoryItem {
 interface Item {
   id: number;
   rolName: string;
-
 }
 @Component({
-  providers: [RolesService, HttpClient],
+  providers: [RolesService, HttpClient, LoadingService],
   selector: 'app-roles',
   standalone: true,
   imports: [
@@ -57,15 +55,7 @@ interface Item {
   styleUrl: './roles.component.css'
 })
 export class RolesComponent implements  OnInit{
-
-  rol: Rol = {
-    id: 0,
-    rolName: '',
-    rolDescripc: '',
-    rolFechaCreac: new Date(),
-    rolFechaModic: new Date(),
-    habilitado: false
-  };
+  rol!: Rol;
   roles: Rol [] = [];
   page = 1; // Inicializa la página en 1
   itemsPerPage = 5; // Número de elementos por página
@@ -104,24 +94,14 @@ export class RolesComponent implements  OnInit{
     private http: HttpClient,
     private rolesService: RolesService,
     private activatedRoute: ActivatedRoute,
+    private loadingService: LoadingService
   ) { }
   ngOnInit(): void {
     this.cargarRoles();
-    document.addEventListener('DOMContentLoaded', () => {
-      const loader = document.getElementById('loader') as HTMLDivElement; // Type assertion
-      if (loader) {
-        setTimeout(() => {
-          loader.style.display = 'none';
-          // Muestra el contenido oculto después de que se oculta el loader
-          const contenidoOculto = document.querySelector('.contenido-oculto');
-          if (contenidoOculto) {
-            (contenidoOculto as HTMLElement).style.display = 'block'; // Type assertion
-          }
-        }, 1000);
-      } else {
-        console.error("No se encontró el elemento con ID 'loader'");
-      }
-    });
+    // Ocultar el cargador y mostrar el contenido después de un tiempo
+    setTimeout(() => {
+      this.loadingService.hideLoader();
+    }, 1000);
   }
   printTable() {
     window.print();
@@ -168,8 +148,8 @@ export class RolesComponent implements  OnInit{
   confirmInhabilitado() {
     if (this.rolToInhabilitar) {
       this.rolesService.inhabilitarRol(this.rolToInhabilitar).subscribe(() => {
-        const rol  = this.roles.find(p => p.id === this.rolToInhabilitar);
-        if (rol){
+        const rol = this.roles.find(p => p.id === this.rolToInhabilitar);
+        if (rol) {
           rol['habilitado'] = false;
         }
         this.rolToInhabilitar = null;
@@ -204,8 +184,8 @@ export class RolesComponent implements  OnInit{
   confirmHabilitar() {
     if (this.rolToHabilitar) {
       this.rolesService.habilitarRol(this.rolToHabilitar).subscribe(() => {
-        const rol  = this.roles.find(p =>p.id === this.rolToInhabilitar);
-        if (rol){
+        const rol = this.roles.find(p => p.id === this.rolToHabilitar);
+        if (rol) {
           rol['habilitado'] = true;
         }
         this.rolToHabilitar = null;
@@ -214,7 +194,7 @@ export class RolesComponent implements  OnInit{
           this.rolEnable = false; // Ocultar el mensaje después de cierto tiempo (por ejemplo, 3 segundos)
         }, 3000);
       }, error => {
-        console.error('Error al eliminar el rol:', error);
+        console.error('Error al habilitar el rol:', error);
         // Mostrar mensaje de error al instante
         this.habilitarErrorMessage = 'Hubo un error al habilitar el rol. Por favor, inténtalo de nuevo más tarde.';
         // Ocultar el modal después de 8 segundos
@@ -267,8 +247,8 @@ export class RolesComponent implements  OnInit{
   sortData() {
     if (this.currentColumn) {
       this.roles.sort((a, b) => {
-        const aValue = a[this.currentColumn];
-        const bValue = b[this.currentColumn];
+        const aValue = a.id;
+        const bValue = b.id;
         if (aValue < bValue) {
           return this.sortOrder === 'asc' ? -1 : 1;
         }
@@ -291,6 +271,7 @@ export class RolesComponent implements  OnInit{
     if (this.rolToDelete) {
       this.showAlert = false;
       this.rolesService.eliminarRol(this.rolToDelete.id).subscribe(() => {
+        console.log('Rol eliminado:', this.rolToDelete); // Registrar el rol eliminado en la consola
         this.roles = this.roles.filter(p => p.id !== this.rolToDelete!.id);
         this.rolToDelete = null;
         this.rolEliminado = true; // Mostrar mensaje de eliminación correcta

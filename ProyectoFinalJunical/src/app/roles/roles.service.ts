@@ -11,7 +11,6 @@ interface Rol {
   rolFechaCreac: Date;
   rolFechaModic: Date;
   habilitado: boolean;
-  [key: string]: boolean | number | string | Date;
 }
 
 @Injectable({
@@ -40,19 +39,24 @@ export class RolesService {
       );
   }
   //Inhabilitar rol
-  inhabilitarRol(id: number): Observable<void>{
+  inhabilitarRol(id: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/roles/${id}/inhabilitar`, null)
       .pipe(
-        catchError(this.handleError)
+        catchError((error) => {
+          console.error('Error al inhabilitar el rol:', error);
+          return throwError(error);
+        })
       );
   }
+
   //Habilitar rol
-  habilitarRol(id: number): Observable<void>{
+  habilitarRol(id: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/roles/${id}/habilitar`, null)
       .pipe(
         catchError(this.handleError)
       );
   }
+
   // Recuperar todos los roles
   recuperarTodosLosRoles(): Observable<Rol[]>{
     return this.http.get<Rol[]>(`${this.baseUrl}/roles/obtenerTodosLosRoles`)

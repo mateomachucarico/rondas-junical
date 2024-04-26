@@ -53,7 +53,8 @@ public class RolServicio {
     public Rol actualizarRol(Rol rol) {
         return rolRepositorio.save(rol);
     }
-    //Inhabilitar rol
+
+//    //Inhabilitar rol
     public void inhabilitarRol(Long id) {
         Rol rol = rolRepositorio.findById(id)
                 .orElseThrow(()-> new RuntimeException("Rol no encontrado con el Id:"+ id));

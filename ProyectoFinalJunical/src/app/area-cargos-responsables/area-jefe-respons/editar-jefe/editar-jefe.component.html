@@ -79,60 +79,6 @@
             </div>
             <!-- fin correo jefe area responsable -->
 
-            <!-- inico area  responsable -->
-            <div class="form-group">
-              <label for="area">Área</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-            <span class="input-group-text">
-                <i *ngIf="editarForm.get('area')?.valid || !editarForm.get('area')?.touched" class="fas fa-briefcase"></i>
-                <i *ngIf="editarForm.get('area')?.invalid && editarForm.get('area')?.touched" class="fas fa-times-circle text-danger"></i>
-            </span>
-                </div>
-                <select class="form-control" id="area" formControlName="area">
-                  <option value="" disabled selected>Selecciona un área</option> <!-- Opción predeterminada -->
-                  <option *ngFor="let area of areas" [ngValue]="area">{{ area.areaName}}</option>
-                </select>
-              </div>
-              <div *ngIf="editarForm.get('area')?.invalid && (editarForm.get('area')?.dirty || editarForm.get('area')?.touched)">
-                <div class="text-danger" *ngIf="editarForm.get('area')?.errors?.['required']">El área es obligatoria.</div>
-              </div>
-            </div>
-            <!-- fin area responsable -->
-
-            <!-- inico cargo  responsable -->
-            <div class="form-group">
-              <label for="cargo">Cargo</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-            <span class="input-group-text">
-                <i *ngIf="editarForm.get('cargo')?.valid || !editarForm.get('cargo')?.touched" class="fas fa-briefcase"></i>
-                <i *ngIf="editarForm.get('cargo')?.invalid && editarForm.get('cargo')?.touched" class="fas fa-times-circle text-danger"></i>
-            </span>
-                </div>
-                <select class="form-control" id="cargo" formControlName="cargo">
-                  <option value="" disabled selected>Selecciona un cargo</option> <!-- Opción predeterminada -->
-                  <option *ngFor="let cargo of cargos" [ngValue]="cargo">{{ cargo.cargoName }}</option>
-                </select>
-              </div>
-              <div *ngIf="editarForm.get('cargo')?.invalid && (editarForm.get('cargo')?.dirty || editarForm.get('cargo')?.touched)">
-                <div class="text-danger" *ngIf="editarForm.get('cargo')?.errors?.['required']">El cargo es obligatorio.</div>
-              </div>
-            </div>
-            <!-- fin Cargo responsable -->
-
-            <!-- inicio firma responsable -->
-            <!-- <div class="form-group d-flex flex-column align-items-center">
-              <label for="firmaResponsableArea" class="control-label">Firma del responsable:</label>
-              <div>
-                <canvas id="firmaResponsableArea" width="300" height="100" style="border: 1px solid #ccc;"
-                        (mousedown)="initSignaturePad()"></canvas>
-                <br>
-              </div>
-            </div> -->
-
-            <!-- fin firma responsable -->
-
             <div class="text-center">
               <!-- Inicio Botón para abrir el modal de confirmación -->
               <div class="form-group">
@@ -146,7 +92,7 @@
                   <button type="button" class="btn btn-outline-secondary btn-block" style="margin-bottom: 10px;" (click)="cancelar()">Cancelar</button>
                 </div>
                 <div class="col-md-4">
-                  <a href="respons-jefearea" class="btn btn-outline-info btn-block" style="margin-bottom: 10px;">Volver</a>
+                  <a href="dashboard/respons-jefearea" class="btn btn-outline-info btn-block" style="margin-bottom: 10px;">Volver</a>
                   <!-- Botón para limpiar la firma -->
                   <!-- <button type="button" class="btn btn-outline-success btn-block" style="margin-bottom: 10px;" (click)="limpiarFirma()">Limpiar firma</button> -->
                 </div>

@@ -9,18 +9,38 @@
 
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title text-center text-primary font-weight-bold">Agregar Nueva Ronda</h3>
+              <h1 class="card-title text-center text-primary font-weight-bold">Agregar Nueva Ronda</h1>
             </div>
             <div class="card-body">
               <form [formGroup]="crearForm" (ngSubmit)="onSubmit()">
 
-                <!-- Usuario Responsable Inicio -->
+                <!-- Usuario Inicio -->
                 <div class="card card-primary">
                   <div class="card-header">
-                    <h3 class="card-title">Responsable del Soporte</h3>
+                    <h3 class="card-title">Usuario</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="usuario">Usuarios de Soporte</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i *ngIf="crearForm.get('usuario')?.valid || !crearForm.get('usuario')?.touched" class="fas fa-user"></i>
+                        <i *ngIf="crearForm.get('usuario')?.invalid && crearForm.get('usuario')?.touched" class="fas fa-times-circle text-danger"></i>
+                    </span>
+                        </div>
+                        <select class="form-control" id="usuario" formControlName="usuario">
+                          <option value="" disabled selected>Seleccione su usuario</option>
+                          <option *ngFor="let usuario of usuarios" [ngValue]="usuario">{{ usuario.userName }}</option>
+                        </select>
+                      </div>
+                      <div *ngIf="crearForm.get('usuario')?.invalid && (crearForm.get('usuario')?.dirty || crearForm.get('usuario')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('usuario')?.errors?.['required']">Seleccionar un usuario es obligatorio.</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <!-- Usuario Responsable Fin -->
+                <!-- Usuario Fin -->
 
                 <!-- Parametrización Inicio -->
                 <div class="card card-primary">
@@ -165,34 +185,60 @@
                 </div>
                 <!-- Area Responsable Fin -->
 
-
                 <!-- Inicio de Fecha y Hora -->
-              <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title">Fecha y Horario</h3>
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h3 class="card-title">Fecha y Horario</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="rondaFecha">Fecha:</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i *ngIf="crearForm.get('rondaFecha')?.valid || !crearForm.get('rondaFecha')?.touched" class="fas fa-calendar"></i>
+                        <i *ngIf="crearForm.get('rondaFecha')?.invalid && crearForm.get('rondaFecha')?.touched" class="fas fa-times-circle text-danger"></i>
+                    </span>
+                        </div>
+                        <input type="date" class="form-control" id="rondaFecha" formControlName="rondaFecha">
+                      </div>
+                      <div *ngIf="crearForm.get('rondaFecha')?.invalid && (crearForm.get('rondaFecha')?.dirty || crearForm.get('rondaFecha')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaFecha')?.errors?.['required']">Selecciona una fecha.</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="rondaHoraInicio">Hora de inicio:</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i *ngIf="crearForm.get('rondaHoraInicio')?.valid || !crearForm.get('rondaHoraInicio')?.touched" class="fas fa-clock"></i>
+                        <i *ngIf="crearForm.get('rondaHoraInicio')?.invalid && crearForm.get('rondaHoraInicio')?.touched" class="fas fa-times-circle text-danger"></i>
+                    </span>
+                        </div>
+                        <input type="time" class="form-control" id="rondaHoraInicio" formControlName="rondaHoraInicio">
+                      </div>
+                      <div *ngIf="crearForm.get('rondaHoraInicio')?.invalid && (crearForm.get('rondaHoraInicio')?.dirty || crearForm.get('rondaHoraInicio')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaHoraInicio')?.errors?.['required']">Selecciona una hora de inicio.</div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="rondaHoraFin">Hora final:</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i *ngIf="crearForm.get('rondaHoraFin')?.valid || !crearForm.get('rondaHoraFin')?.touched" class="fas fa-clock"></i>
+                        <i *ngIf="crearForm.get('rondaHoraFin')?.invalid && crearForm.get('rondaHoraFin')?.touched" class="fas fa-times-circle text-danger"></i>
+                    </span>
+                        </div>
+                        <input type="time" class="form-control" id="rondaHoraFin" formControlName="rondaHoraFin">
+                      </div>
+                      <div *ngIf="crearForm.get('rondaHoraFin')?.invalid && (crearForm.get('rondaHoraFin')?.dirty || crearForm.get('rondaHoraFin')?.touched)">
+                        <div class="text-danger" *ngIf="crearForm.get('rondaHoraFin')?.errors?.['required']">Selecciona una hora final.</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="rondaFecha" class="control-label">Fecha:</label>
-                    <div>
-                      <input type="date" class="form-control" id="rondaFecha" formControlName="rondaFecha" placeholder="Fecha requerida" required>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="rondaHoraInicio" class="control-label">Hora de inicio:</label>
-                    <div>
-                      <input type="time" class="form-control" id="rondaHoraInicio" formControlName="rondaHoraInicio" placeholder="Hora de inicio requerida" required>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="rondaHoraFin" class="control-label">Hora final:</label>
-                    <div>
-                      <input type="time" class="form-control" id="rondaHoraFin" formControlName="rondaHoraFin" placeholder="Hora final requerida" required>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- Fin de Fecha y Hora -->
+                <!-- Fin de Fecha y Hora -->
 
               <!-- Inicio de Hallazgo -->
               <!-- inicio  Descripción -->
@@ -221,21 +267,29 @@
                     <!-- Inicio Prioridad -->
                     <div class="form-group">
                       <label for="rondaPrioridad">Prioridad del Hallazgo</label>
-                      <select class="form-control" id="rondaPrioridad" formControlName="rondaPrioridad">
-                        <option value="">Seleccione una prioridad</option>
-                        <option value="baja">Prioridad Baja</option>
-                        <option value="media">Prioridad Media</option>
-                        <option value="alta">Prioridad Alta</option>
-                        <option value="casoEspecial">Caso Especial</option>
-                      </select>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i *ngIf="crearForm.get('rondaPrioridad')?.valid || !crearForm.get('rondaPrioridad')?.touched" class="fas fa-flag"></i>
+                                <i *ngIf="crearForm.get('rondaPrioridad')?.invalid && crearForm.get('rondaPrioridad')?.touched" class="fas fa-times-circle text-danger"></i>
+                            </span>
+                        </div>
+                        <select class="form-control" id="rondaPrioridad" formControlName="rondaPrioridad">
+                          <option value="">Seleccione una prioridad</option>
+                          <option value="baja">Prioridad Baja</option>
+                          <option value="media">Prioridad Media</option>
+                          <option value="alta">Prioridad Alta</option>
+                          <option value="casoEspecial">Caso Especial</option>
+                        </select>
+                      </div>
                       <div *ngIf="crearForm.get('rondaPrioridad')?.invalid && (crearForm.get('rondaPrioridad')?.dirty || crearForm.get('rondaPrioridad')?.touched)">
                         <div class="text-danger" *ngIf="crearForm.get('rondaPrioridad')?.errors?.['required']">La Prioridad es obligatoria.</div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <!-- Fin de prioridad  -->
+                    <!-- Fin de prioridad -->
+                <!--
 
+                -->
                 <!-- Inicio de Foto del hallazgo  -->
                 <div class="card card-primary">
                   <div class="card-header">
@@ -317,25 +371,36 @@
                 <!-- Fin de acciones correctivas del hallazgo  -->
 
                 <!-- Inicio de solución del hallazgo -->
-                <div class="card card-primary">
-                  <div class="card-header">
-                    <h3 class="card-title">Soluciones del Hallazgo</h3>
-                  </div>
-                  <div class="card-body">
-                    <div class="form-group">
-                      <label for="rondaSolucion">¿Se solucionó el hallazgo?</label>
-                      <select class="form-control" id="rondaSolucion" formControlName="rondaSolucion">
-                        <option value="">Seleccione una opción</option>
-                        <option value="true">Sí</option>
-                        <option value="false">No</option>
-                      </select>
-                      <div *ngIf="crearForm.get('rondaSolucion')?.invalid && (crearForm.get('rondaSolucion')?.dirty || crearForm.get('rondaSolucion')?.touched)">
-                        <div class="text-danger">La selección es obligatoria.</div>
+                    <!-- Inicio de solución del hallazgo -->
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h3 class="card-title">Soluciones del Hallazgo</h3>
+                      </div>
+                      <div class="card-body">
+                        <div class="form-group">
+                          <label for="rondaSolucion">¿Se solucionó el hallazgo?</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                  <i *ngIf="crearForm.get('rondaSolucion')?.valid || !crearForm.get('rondaSolucion')?.touched" class="fas fa-check-circle"></i>
+                                  <i *ngIf="crearForm.get('rondaSolucion')?.invalid && crearForm.get('rondaSolucion')?.touched" class="fas fa-times-circle text-danger"></i>
+                              </span>
+                            </div>
+                            <select class="form-control" id="rondaSolucion" formControlName="rondaSolucion">
+                              <option value="">Seleccione una opción</option>
+                              <option value="true">Sí</option>
+                              <option value="false">No</option>
+                            </select>
+                          </div>
+                          <div *ngIf="crearForm.get('rondaSolucion')?.invalid && (crearForm.get('rondaSolucion')?.dirty || crearForm.get('rondaSolucion')?.touched)">
+                            <div class="text-danger">La selección es obligatoria.</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <!-- Fin de solución del hallazgo -->
+                    <!-- Fin de solución del hallazgo -->
+
+                    <!-- Fin de solución del hallazgo -->
 
                 <!-- Inicio No solucionado -->
                 <div class="card card-primary">
@@ -367,7 +432,6 @@
                   </div>
                 </div>
                 <!-- Fin No solucionado -->
-
                 <!-- Fin de Hallazgo -->
 
                 <!-- inicio Modal-->
@@ -385,7 +449,7 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Area</h5>
+                        <h5 class="modal-title" id="confirmacionModalLabel">Confirmar creación de Ronda</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -418,9 +482,13 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                  </div>
+                </div>
                 <!-- fin -->
               </form>
             </div>
           </div>
-
 </div>
+<!--
+
+-->

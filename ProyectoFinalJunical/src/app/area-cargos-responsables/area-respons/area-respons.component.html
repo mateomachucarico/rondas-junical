@@ -164,12 +164,27 @@
           <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
         </span>
               </th>
-              <!-- <th (click)="sortColumn('areaDescripc')">
-                Descripción
-                <span *ngIf="currentColumn === 'areaDescripc'" class="sorting-icon">
-          <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
-        </span>
-              </th> -->
+              <!--
+              <th (click)="sortColumn('torre.torreName')">
+                Torre
+                <span *ngIf="currentColumn === 'torre.torreName'" class="sorting-icon">
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
+              </th>
+              <th (click)="sortColumn('piso.pisoName')">
+                Piso
+                <span *ngIf="currentColumn === 'piso.pisoName'" class="sorting-icon">
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
+              </th>
+              -->
+
+              <th (click)="sortColumn('responJefeArea.responName')">
+                Jefe de Area
+                <span *ngIf="currentColumn === 'responJefeArea.responName'" class="sorting-icon">
+                        <i class="fas fa-caret-{{ sortOrder === 'asc' ? 'up' : 'down' }}"></i>
+                    </span>
+              </th>
 
               <th (click)="sortColumn('habilitado')">
                 Estado
@@ -184,7 +199,9 @@
             <tr *ngFor="let area of areas | filterBy: searchText | paginate: { itemsPerPage: 5, currentPage: page }">
               <td class="text-center">{{ area.id }}</td>
               <td [innerHTML]="highlightMatches(area.areaName, searchText)"></td>
-              <!--<td class="text-center">{{ area.areaDescripc }}</td>-->
+              <!-- <td>{{ area.torre.torreName }}</td> -->
+              <!-- <td>{{ area.piso.pisoName }}</td> -->
+              <td>{{ area.responJefeArea?.responName }}</td>
               <td class="text-center" [ngClass]="{'inhabilitada': !area.habilitado}">
                 {{ area.habilitado ? 'Habilitado' : 'Inhabilitado' }}
               </td>
